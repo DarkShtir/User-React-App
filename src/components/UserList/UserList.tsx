@@ -7,9 +7,14 @@ interface State {
 	users: User[];
 }
 
+interface Props {
+	users: User[];
+	userToggle(): void;
+}
+
 const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
 
-export class UserList extends React.Component<{}, State> {
+export class UserList extends React.Component<Props, State> {
 	state = {
 		users: [
 			{
@@ -60,7 +65,7 @@ export class UserList extends React.Component<{}, State> {
 						</tr>
 					</thead>
 					<tbody>
-						{this.state.users.map((user, index) => (
+						{this.props.users.map((user, index) => (
 							<UserListItem
 								onRemove={(): void => {
 									this.deleteHandler(user.id);
@@ -71,7 +76,9 @@ export class UserList extends React.Component<{}, State> {
 						))}
 					</tbody>
 				</table>
-				<button className={myNewClass}>Add User</button>
+				<button className={myNewClass} onClick={this.props.userToggle}>
+					Add User
+				</button>
 			</div>
 		);
 	}

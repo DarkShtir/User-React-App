@@ -25,7 +25,7 @@ const UserListItem: React.FC<Props> = ({ user, onRemove }) => {
 						Edit
 					</button>
 					<button
-						onClick={(event): any => {
+						onClick={(event): void => {
 							removeHandler(event, user.id);
 						}}
 						className="waves-effect waves-teal btn red"
