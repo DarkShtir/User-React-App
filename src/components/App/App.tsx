@@ -2,7 +2,7 @@ import React from 'react';
 import { CreateForm } from '../CreateForm/CreateForm';
 import { EditForm } from '../EditForm/EditForm';
 import { UserList } from '../UserList/UserList';
-import { User } from '../../interfaces';
+// import { User } from '../../interfaces';
 
 const App: React.FC = () => {
 	// const addHandler = (user: User) => {
@@ -18,10 +18,14 @@ const App: React.FC = () => {
 	// 	};
 
 	// };
+
+	const addUser = (user: object): void => {
+		console.log('Added', user);
+	};
+
 	return (
 		<div>
-			<CreateForm />
-			{/* <CreateForm onAdd={addHandler} /> */}
+			<CreateForm onUserAdded={addUser} />
 			<UserList />
 			<EditForm />
 		</div>
