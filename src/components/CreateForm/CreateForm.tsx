@@ -5,6 +5,7 @@ import { User } from '../../interfaces';
 
 interface Props {
 	onUserAdded(user: object): void;
+	userAddToggle(): void;
 }
 interface State {
 	user: User;
@@ -26,18 +27,27 @@ export class CreateForm extends Component<Props, State> {
 
 	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		// const newId = Date.now();
-		// const userWithId: User = { ...this.state.user, id: newId };
-		// this.setState(() => {
-		// 	return { user: userWithId };
-		// });
+		this.props.onUserAdded(this.state.user);
+		this.setState({
+			user: {
+				id: 0,
+				login: '',
+				password: '',
+				name: '',
+				lastName: '',
+				nat: '',
+				gender: '',
+				phone: '',
+			},
+		});
+		this.props.userAddToggle();
 	};
 
 	handleInputChanges = (value: string, fieldName: string): void => {
-		console.log(fieldName, value);
+		// console.log(fieldName, value);
 		const newId = Date.now();
 		const newUser: User = { ...this.state.user, [fieldName]: value, id: newId };
-		console.log(newUser);
+		// console.log(newUser);
 		this.setState(() => {
 			return {
 				user: newUser,
@@ -53,7 +63,7 @@ export class CreateForm extends Component<Props, State> {
 					return (
 						<React.Fragment key={fieldName + index}>
 							<Input
-								value={''}
+								value={this.state.user}
 								label={fieldName}
 								type={
 									fieldName === 'password'
@@ -80,10 +90,7 @@ export class CreateForm extends Component<Props, State> {
 				<form className="col s12 " onSubmit={this.submitHandler}>
 					{this.renderInputField()}
 
-					<button
-						onClick={(): void => this.props.onUserAdded(this.state.user)}
-						className="btn-floating btn-large waves-effect waves-light yellow darken-4 center"
-					>
+					<button className="btn-floating btn-large waves-effect waves-light yellow darken-4 center">
 						Add
 					</button>
 				</form>

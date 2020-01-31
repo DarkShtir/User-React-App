@@ -9,46 +9,19 @@ interface State {
 
 interface Props {
 	users: User[];
-	userToggle(): void;
+	userAddToggle(): void;
+	userEditToggle(id: number): void;
+	userRemove(id: number): void;
+	// userEdit(id: number): void;
 }
 
 const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
 
 export class UserList extends React.Component<Props, State> {
-	state = {
-		users: [
-			{
-				id: 1,
-				login: 'Vas',
-				password: '123456',
-				name: 'Vasya',
-				lastName: 'Petrov',
-				nat: 'RU',
-				gender: 'Male',
-				phone: '+375 29 1234567',
-			},
-			{
-				id: 2,
-				login: 'Mar',
-				password: '123456',
-				name: 'Maria',
-				lastName: 'Petrova',
-				nat: 'RU',
-				gender: 'Female',
-				phone: '+375 29 2234567',
-			},
-		],
+	userEdit = (id: number): void => {
+		this.props.userEditToggle(id);
+		// this.props.userEdit(id);
 	};
-
-	deleteHandler = (id: number): void => {
-		this.setState(({ users }) => {
-			// const idx = users.findIndex(el => el.id === id);
-
-			const newArr = users.filter(user => user.id !== id);
-			return { users: newArr };
-		});
-	};
-
 	render(): JSX.Element {
 		return (
 			<div className="container center-align">
@@ -67,8 +40,11 @@ export class UserList extends React.Component<Props, State> {
 					<tbody>
 						{this.props.users.map((user, index) => (
 							<UserListItem
+								onEdit={(): void => {
+									this.userEdit(user.id);
+								}}
 								onRemove={(): void => {
-									this.deleteHandler(user.id);
+									this.props.userRemove(user.id);
 								}}
 								user={user}
 								key={index}
@@ -76,7 +52,7 @@ export class UserList extends React.Component<Props, State> {
 						))}
 					</tbody>
 				</table>
-				<button className={myNewClass} onClick={this.props.userToggle}>
+				<button className={myNewClass} onClick={this.props.userAddToggle}>
 					Add User
 				</button>
 			</div>

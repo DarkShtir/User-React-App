@@ -4,12 +4,18 @@ import { User } from '../../../interfaces';
 interface Props {
 	user: User;
 	onRemove: (id: number) => void;
+	onEdit: (id: number) => void;
 }
 
-const UserListItem: React.FC<Props> = ({ user, onRemove }) => {
+const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 	const removeHandler = (event: React.MouseEvent, id: number): void => {
 		event.preventDefault();
 		onRemove(id);
+	};
+
+	const editHandler = (event: React.MouseEvent, id: number): void => {
+		event.preventDefault();
+		onEdit(id);
 	};
 
 	return (
@@ -21,7 +27,12 @@ const UserListItem: React.FC<Props> = ({ user, onRemove }) => {
 				<td>{user.gender}</td>
 				<td>{user.phone}</td>
 				<td>
-					<button className="waves-effect waves-light btn deep-purple darken-2">
+					<button
+						className="waves-effect waves-light btn deep-purple darken-2"
+						onClick={(event): void => {
+							editHandler(event, user.id);
+						}}
+					>
 						Edit
 					</button>
 					<button
