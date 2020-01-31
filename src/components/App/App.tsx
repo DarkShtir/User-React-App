@@ -3,20 +3,21 @@ import { CreateForm } from '../CreateForm/CreateForm';
 import { EditForm } from '../EditForm/EditForm';
 import { UserList } from '../UserList/UserList';
 import { User } from '../../interfaces';
+import UserService from '../../services/user-service';
 interface State {
 	newUsers: User[] | [];
 	needAdd: boolean;
 	needEdit: boolean;
-	idEditUser: number;
+	idEditUser: string;
 }
 export class App extends Component<{}, State> {
 	state = {
 		newUsers: [
 			{
-				id: 1,
+				_id: '1',
 				login: 'Vas',
 				password: '123456',
-				name: 'Vasya',
+				firstName: 'Vasya',
 				lastName: 'Petrov',
 				nat: 'RU',
 				gender: 'Male',
@@ -25,21 +26,38 @@ export class App extends Component<{}, State> {
 		],
 		needAdd: false,
 		needEdit: false,
-		idEditUser: 0,
+		idEditUser: '0',
 	};
+
 	addUser = (user: object): void => {
+		// UserService.addUser(user);
 		this.setState(({ newUsers }): object => {
 			const newUser = [...newUsers, user];
 			return { newUsers: newUser };
 		});
+		console.log(this.state.newUsers);
 	};
 
-	updateUser = (user: object, id: number): void => {
+	async componentDidMount(): Promise<void> {
+		const res = await UserService.getAllUsers();
+		console.log(res);
+		this.setState(({ newUsers }): object => {
+			const newArr = [...newUsers, ...res];
+			return { newUsers: newArr };
+		});
+	}
+
+	async getAllUsers(): Promise<void> {
+		const res = await UserService.getAllUsers();
+		console.log(res);
+	}
+
+	updateUser = (user: object, id: string): void => {
 		this.setState(({ newUsers }): object => {
 			const newUser = [...newUsers];
 			// eslint-disable-next-line
 			newUser.find(oldUser => {
-				if (oldUser.id === id) {
+				if (oldUser._id === id) {
 					Object.assign(oldUser, user);
 					return true;
 				}
@@ -48,12 +66,12 @@ export class App extends Component<{}, State> {
 		});
 	};
 
-	deleteHandler = (id: number): void => {
+	deleteHandler = (id: string): void => {
 		console.log(id);
 		this.setState(({ newUsers }): object => {
 			// const idx = users.findIndex(el => el.id === id);
 
-			const newArr = newUsers.filter(user => user.id !== id);
+			const newArr = newUsers.filter(user => user._id !== id);
 			return { newUsers: newArr };
 		});
 	};
@@ -64,20 +82,14 @@ export class App extends Component<{}, State> {
 		});
 	};
 
-	editUserToggle = (id: number): void => {
+	editUserToggle = (id: string): void => {
 		this.setState(({ needEdit }) => {
 			return { needEdit: !needEdit, idEditUser: id };
 		});
 	};
 
-	editUser = (): any => {
-		return this.state.newUsers.find(user => {
-			if (user.id === this.state.idEditUser) {
-				return true;
-			} else {
-				return false;
-			}
-		});
+	editUser = (): object | undefined => {
+		return this.state.newUsers.find(user => user._id === this.state.idEditUser);
 	};
 
 	render(): JSX.Element {
@@ -93,9 +105,12 @@ export class App extends Component<{}, State> {
 				)}
 				<UserList
 					users={this.state.newUsers}
+					// users={this.getUsers}
+					// users={UserService.getAllUsers()}
 					userAddToggle={this.addUserToggle}
 					userEditToggle={this.editUserToggle}
 					userRemove={this.deleteHandler}
+					getUsersFromDB={this.getAllUsers}
 				/>
 				{this.state.needEdit ? (
 					<EditForm

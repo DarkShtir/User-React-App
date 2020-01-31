@@ -4,9 +4,9 @@ import { User } from '../../interfaces';
 // import classes from './EditForm.module.scss';
 
 interface Props {
-	onUserUpdated(user: object, id: number): void;
-	userToggle(id: number): void;
-	editUser: object;
+	onUserUpdated(user: object, id: string): void;
+	userToggle(id: string): void;
+	editUser: object | undefined;
 }
 
 interface State {
@@ -15,10 +15,10 @@ interface State {
 export class EditForm extends Component<Props, State> {
 	state = {
 		user: {
-			id: 0,
+			_id: '0',
 			login: '',
 			password: '',
-			name: '',
+			firstName: '',
 			lastName: '',
 			nat: '',
 			gender: '',
@@ -28,26 +28,12 @@ export class EditForm extends Component<Props, State> {
 
 	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		this.props.onUserUpdated(this.state.user, this.state.user.id);
-		console.log('New user ', this.state.user);
-		// this.setState({
-		// 	user: {
-		// 		id: 0,
-		// 		login: '',
-		// 		password: '',
-		// 		name: '',
-		// 		lastName: '',
-		// 		nat: '',
-		// 		gender: '',
-		// 		phone: '',
-		// 	},
-		// });
-		this.props.userToggle(this.state.user.id);
+		this.props.onUserUpdated(this.state.user, this.state.user._id);
+		this.props.userToggle(this.state.user._id);
 	};
 
 	handleInputChanges = (value: string, fieldName: string): void => {
 		const newUser: User = { ...this.state.user, [fieldName]: value };
-		console.log(newUser);
 		this.setState(() => {
 			return {
 				user: newUser,
@@ -70,9 +56,11 @@ export class EditForm extends Component<Props, State> {
 			// eslint-disable-next-line
 			(fieldName, index): void | JSX.Element => {
 				if (
-					fieldName !== 'id' &&
+					fieldName !== '_id' &&
 					fieldName !== 'login' &&
-					fieldName !== 'password'
+					fieldName !== 'password' &&
+					fieldName !== '__v' &&
+					fieldName !== 'tokens'
 				) {
 					return (
 						<React.Fragment key={fieldName + index}>
@@ -108,7 +96,12 @@ export class EditForm extends Component<Props, State> {
 						Save Changes
 					</button>
 				</form>
-				<button className="btn waves-effect waves-light red center">
+				<button
+					className="btn waves-effect waves-light red center"
+					onClick={(): void => {
+						this.props.userToggle(this.state.user._id);
+					}}
+				>
 					Cancel Changes
 				</button>
 			</div>

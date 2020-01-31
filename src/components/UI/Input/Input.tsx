@@ -11,7 +11,6 @@ type InputProps = {
 };
 
 const Input = (props: InputProps): JSX.Element => {
-	console.log(props.value);
 	const inputType = props.type || 'text';
 	const htmlFor = `${inputType}-${Math.random()}`;
 	const cls = [classes.Input, 'input-field col s12'];

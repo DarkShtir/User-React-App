@@ -14,10 +14,10 @@ interface State {
 export class CreateForm extends Component<Props, State> {
 	state = {
 		user: {
-			id: 0,
+			_id: '0',
 			login: '',
 			password: '',
-			name: '',
+			firstName: '',
 			lastName: '',
 			nat: '',
 			gender: '',
@@ -30,10 +30,10 @@ export class CreateForm extends Component<Props, State> {
 		this.props.onUserAdded(this.state.user);
 		this.setState({
 			user: {
-				id: 0,
+				_id: '0',
 				login: '',
 				password: '',
-				name: '',
+				firstName: '',
 				lastName: '',
 				nat: '',
 				gender: '',
@@ -45,8 +45,11 @@ export class CreateForm extends Component<Props, State> {
 
 	handleInputChanges = (value: string, fieldName: string): void => {
 		// console.log(fieldName, value);
-		const newId = Date.now();
-		const newUser: User = { ...this.state.user, [fieldName]: value, id: newId };
+		// const newId = Date.now();
+		const newUser: User = {
+			...this.state.user,
+			[fieldName]: value,
+		};
 		// console.log(newUser);
 		this.setState(() => {
 			return {
@@ -59,7 +62,7 @@ export class CreateForm extends Component<Props, State> {
 		return Object.keys(this.state.user).map(
 			// eslint-disable-next-line
 			(fieldName, index): void | JSX.Element => {
-				if (fieldName !== 'id') {
+				if (fieldName !== '_id') {
 					return (
 						<React.Fragment key={fieldName + index}>
 							<Input

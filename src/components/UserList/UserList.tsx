@@ -10,15 +10,16 @@ interface State {
 interface Props {
 	users: User[];
 	userAddToggle(): void;
-	userEditToggle(id: number): void;
-	userRemove(id: number): void;
+	userEditToggle(id: string | undefined): void;
+	userRemove(id: string | undefined): void;
+	getUsersFromDB(): void;
 	// userEdit(id: number): void;
 }
 
 const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
 
 export class UserList extends React.Component<Props, State> {
-	userEdit = (id: number): void => {
+	userEdit = (id: string | undefined): void => {
 		this.props.userEditToggle(id);
 		// this.props.userEdit(id);
 	};
@@ -41,10 +42,10 @@ export class UserList extends React.Component<Props, State> {
 						{this.props.users.map((user, index) => (
 							<UserListItem
 								onEdit={(): void => {
-									this.userEdit(user.id);
+									this.userEdit(user._id);
 								}}
 								onRemove={(): void => {
-									this.props.userRemove(user.id);
+									this.props.userRemove(user._id);
 								}}
 								user={user}
 								key={index}
@@ -54,6 +55,9 @@ export class UserList extends React.Component<Props, State> {
 				</table>
 				<button className={myNewClass} onClick={this.props.userAddToggle}>
 					Add User
+				</button>
+				<button className={myNewClass} onClick={this.props.getUsersFromDB}>
+					GET User
 				</button>
 			</div>
 		);

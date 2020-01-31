@@ -1,10 +1,11 @@
 export interface User {
-	id: number;
+	_id?: string | undefined;
 	login: string;
 	password: string;
-	name: string;
+	gender: string;
+	firstName: string;
 	lastName: string;
 	nat: string;
-	gender: string;
-	phone: string;
+	phone?: string;
+	tokens?: [];
 }
