@@ -41,10 +41,14 @@ export class App extends Component<{}, State> {
 	async componentDidMount(): Promise<void> {
 		const res = await UserService.getAllUsers();
 		console.log(res);
-		this.setState(({ newUsers }): object => {
-			const newArr = [...newUsers, ...res];
-			return { newUsers: newArr };
-		});
+		if (res === undefined) {
+			console.log('Сервер не отвечает');
+		} else {
+			this.setState(({ newUsers }): object => {
+				const newArr = [...newUsers, ...res];
+				return { newUsers: newArr };
+			});
+		}
 	}
 
 	async getAllUsers(): Promise<void> {
