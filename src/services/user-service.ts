@@ -19,7 +19,7 @@ class UserService {
 		];
 	}
 
-	getAllUsers = async (): Promise<any> => {
+	getAllUsers = async (): Promise<any | undefined> => {
 		try {
 			const response = await axios.get('http://localhost:8080/users/');
 			const users = response.data;
