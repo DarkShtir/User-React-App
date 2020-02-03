@@ -17,7 +17,7 @@ export class App extends Component<{}, State> {
 				_id: '1',
 				login: 'Vas',
 				password: '123456',
-				firstName: 'Vasya',
+				firstName: 'SuperVasya',
 				lastName: 'Petrov',
 				nat: 'RU',
 				gender: 'Male',
@@ -40,7 +40,6 @@ export class App extends Component<{}, State> {
 
 	async componentDidMount(): Promise<void> {
 		const res = await UserService.getAllUsers();
-		console.log(res);
 		if (res === undefined) {
 			console.log('Сервер не отвечает');
 		} else {
@@ -71,10 +70,7 @@ export class App extends Component<{}, State> {
 	};
 
 	deleteHandler = (id: string): void => {
-		console.log(id);
 		this.setState(({ newUsers }): object => {
-			// const idx = users.findIndex(el => el.id === id);
-
 			const newArr = newUsers.filter(user => user._id !== id);
 			return { newUsers: newArr };
 		});
@@ -105,12 +101,10 @@ export class App extends Component<{}, State> {
 						userAddToggle={this.addUserToggle}
 					/>
 				) : (
-						<></>
-					)}
+					<></>
+				)}
 				<UserList
 					users={this.state.newUsers}
-					// users={this.getUsers}
-					// users={UserService.getAllUsers()}
 					userAddToggle={this.addUserToggle}
 					userEditToggle={this.editUserToggle}
 					userRemove={this.deleteHandler}
@@ -123,8 +117,8 @@ export class App extends Component<{}, State> {
 						onUserUpdated={this.updateUser}
 					/>
 				) : (
-						<></>
-					)}
+					<></>
+				)}
 			</div>
 		);
 	}

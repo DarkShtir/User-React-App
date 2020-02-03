@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Input from '../UI/Input/Input';
 import { User } from '../../interfaces';
+import Form from '../Form/Form';
 // import classes from './EditForm.module.scss';
 
 interface Props {
@@ -33,7 +33,10 @@ export class EditForm extends Component<Props, State> {
 	};
 
 	handleInputChanges = (value: string, fieldName: string): void => {
-		const newUser: User = { ...this.state.user, [fieldName]: value };
+		const newUser: User = {
+			...this.state.user,
+			[fieldName]: value,
+		};
 		this.setState(() => {
 			return {
 				user: newUser,
@@ -50,52 +53,18 @@ export class EditForm extends Component<Props, State> {
 		});
 	};
 
-	renderInputField(): object {
-		const cls = ['active'];
-		return Object.keys(this.state.user).map(
-			// eslint-disable-next-line
-			(fieldName, index): void | JSX.Element => {
-				if (
-					fieldName !== '_id' &&
-					fieldName !== 'login' &&
-					fieldName !== 'password' &&
-					fieldName !== '__v' &&
-					fieldName !== 'tokens'
-				) {
-					return (
-						<React.Fragment key={fieldName + index}>
-							<Input
-								className={cls}
-								value={this.state.user}
-								label={fieldName}
-								type={
-									fieldName === 'password'
-										? fieldName
-										: fieldName === 'phone'
-										? 'tel'
-										: ''
-								}
-								onChange={(event): void => {
-									this.handleInputChanges(event.target.value, fieldName);
-								}}
-							/>
-						</React.Fragment>
-					);
-				}
-			}
-		);
-	}
-
 	render(): JSX.Element {
 		return (
 			<div className="row center-align container">
 				<h2>Edit User</h2>
-				<form className="col s12 " onSubmit={this.submitHandler}>
-					{this.renderInputField()}
-					<button className="btn btn-large waves-effect waves-light deep-purple darken-2 center">
-						Save Changes
-					</button>
-				</form>
+
+				<Form
+					user={this.state.user}
+					inputHandler={this.handleInputChanges}
+					onSubmit={this.submitHandler}
+					formType={'edit'}
+				/>
+
 				<button
 					className="btn waves-effect waves-light red center"
 					onClick={(): void => {
