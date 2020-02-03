@@ -17,7 +17,7 @@ export class App extends Component<{}, State> {
 				_id: '1',
 				login: 'Vas',
 				password: '123456',
-				firstName: 'SuperVasya',
+				firstName: 'Vasya',
 				lastName: 'Petrov',
 				nat: 'RU',
 				gender: 'Male',
@@ -30,11 +30,11 @@ export class App extends Component<{}, State> {
 	};
 
 	addUser = (user: object): void => {
-		// UserService.addUser(user);
-		this.setState(({ newUsers }): object => {
-			const newUser = [...newUsers, user];
-			return { newUsers: newUser };
-		});
+		UserService.addUser(user);
+		// this.setState(({ newUsers }): object => {
+		// 	const newUser = [...newUsers, user];
+		// 	return { newUsers: newUser };
+		// });
 		console.log(this.state.newUsers);
 	};
 
@@ -69,9 +69,11 @@ export class App extends Component<{}, State> {
 		});
 	};
 
-	deleteHandler = (id: string): void => {
+	deleteHandler = async (id: string): Promise<void> => {
+		await UserService.deleteUser(id);
 		this.setState(({ newUsers }): object => {
 			const newArr = newUsers.filter(user => user._id !== id);
+
 			return { newUsers: newArr };
 		});
 	};

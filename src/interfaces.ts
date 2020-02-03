@@ -7,5 +7,5 @@ export interface User {
 	lastName: string;
 	nat: string;
 	phone?: string;
-	tokens?: [];
+	tokens?: [{ token: string }] | [];
 }

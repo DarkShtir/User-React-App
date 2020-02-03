@@ -14,7 +14,7 @@ interface State {
 export class CreateForm extends Component<Props, State> {
 	state = {
 		user: {
-			_id: '0',
+			// _id: '0',
 			login: '',
 			password: '',
 			firstName: '',
@@ -30,7 +30,7 @@ export class CreateForm extends Component<Props, State> {
 		this.props.onUserAdded(this.state.user);
 		this.setState({
 			user: {
-				_id: '0',
+				// _id: '0',
 				login: '',
 				password: '',
 				firstName: '',
