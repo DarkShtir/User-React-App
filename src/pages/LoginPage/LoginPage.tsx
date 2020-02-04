@@ -17,7 +17,7 @@ export class LoginPage extends Component<{}, State> {
 			login = !login;
 		});
 	};
-	//Проверка привязки SSH
+	//TODO Added route on user page after login
 	render(): JSX.Element {
 		return (
 			<div>
