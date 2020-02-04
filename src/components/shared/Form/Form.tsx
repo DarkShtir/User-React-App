@@ -1,11 +1,11 @@
 import React from 'react';
-import { User } from '../../interfaces';
+import { User, UserLogin } from '../../../interfaces';
 import Input from '../UI/Input/Input';
 import { Button } from '@material-ui/core';
 import classes from './Form.module.scss';
 
 interface Props {
-	user: User;
+	user: UserLogin | User;
 	inputHandler: (value: string, fieldName: string) => void;
 	onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 	formType?: string;

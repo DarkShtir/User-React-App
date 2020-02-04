@@ -9,3 +9,8 @@ export interface User {
 	phone?: string;
 	tokens?: [{ token: string }] | [];
 }
+
+export interface UserLogin {
+	login: string;
+	password: string;
+}

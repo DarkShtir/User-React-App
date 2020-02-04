@@ -5,9 +5,6 @@ import { UserList } from '../UserList/UserList';
 import { User } from '../../interfaces';
 import UserService from '../../services/user-service';
 import { Container } from '@material-ui/core';
-import LoginPage from '../../pages/LoginPage/LoginPage';
-import RegistrationPage from '../../pages/RegistrationPage/RegistrationPage';
-import UsersPage from '../../pages/UsersPage/UsersPage';
 import MainPage from '../../pages/MainPage/MainPage';
 interface State {
 	newUsers: User[] | [];
@@ -102,9 +99,6 @@ export class App extends Component<{}, State> {
 	render(): JSX.Element {
 		return (
 			<Container>
-				<LoginPage />
-				<RegistrationPage />
-				<UsersPage />
 				<MainPage />
 				{this.state.needAdd ? (
 					<CreateForm

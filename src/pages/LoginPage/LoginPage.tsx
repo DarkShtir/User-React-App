@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
+import UserService from '../../services/user-service';
+import { UserLogin } from '../../interfaces';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
-const LoginPage = () => {
-	return <div></div>;
-};
+interface State {
+	login: boolean;
+}
 
-export default LoginPage;
+export class LoginPage extends Component<{}, State> {
+	state = {
+		login: false,
+	};
+	loginUser = (loginData: UserLogin): void => {
+		UserService.login(loginData);
+		this.setState(({ login }) => {
+			login = !login;
+		});
+	};
+	render(): JSX.Element {
+		return (
+			<div>
+				<LoginForm onUserLogin={this.loginUser} />
+			</div>
+		);
+	}
+}

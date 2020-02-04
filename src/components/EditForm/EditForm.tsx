@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { User } from '../../interfaces';
-import Form from '../Form/Form';
+import Form from '../shared/Form/Form';
 import { Container, Button, Typography } from '@material-ui/core';
 // import classes from './EditForm.module.scss';
 

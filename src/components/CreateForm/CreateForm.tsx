@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './CreateForm.module.scss';
 import { User } from '../../interfaces';
-import Form from '../Form/Form';
+import Form from '../shared/Form/Form';
 import { Typography, Container } from '@material-ui/core';
 
 interface Props {
@@ -28,7 +28,6 @@ export class CreateForm extends Component<Props, State> {
 
 	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		console.log('Субмит работает');
 		this.props.onUserAdded(this.state.user);
 		this.setState({
 			user: {
