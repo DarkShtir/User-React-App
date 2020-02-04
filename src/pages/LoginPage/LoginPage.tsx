@@ -17,6 +17,7 @@ export class LoginPage extends Component<{}, State> {
 			login = !login;
 		});
 	};
+	//Проверка привязки SSH
 	render(): JSX.Element {
 		return (
 			<div>
