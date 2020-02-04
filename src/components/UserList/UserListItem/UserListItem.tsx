@@ -1,5 +1,6 @@
 import React from 'react';
 import { User } from '../../../interfaces';
+import { Button, TableRow, TableCell, ButtonGroup } from '@material-ui/core';
 
 interface Props {
 	user: User;
@@ -27,31 +28,35 @@ const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 
 	return (
 		<>
-			<tr>
-				<td>{user.firstName}</td>
-				<td>{user.lastName}</td>
-				<td>{user.nat}</td>
-				<td>{user.gender}</td>
-				<td>{user.phone}</td>
-				<td>
-					<button
-						className="waves-effect waves-light btn deep-purple darken-2"
-						onClick={(event): void => {
-							editHandler(event, user._id);
-						}}
-					>
-						Edit
-					</button>
-					<button
-						onClick={(event): void => {
-							removeHandler(event, user._id);
-						}}
-						className="waves-effect waves-teal btn red"
-					>
-						Delete
-					</button>
-				</td>
-			</tr>
+			<TableRow>
+				<TableCell align="center">{user.firstName}</TableCell>
+				<TableCell align="center">{user.lastName}</TableCell>
+				<TableCell align="center">{user.nat}</TableCell>
+				<TableCell align="center">{user.gender}</TableCell>
+				<TableCell align="center">{user.phone}</TableCell>
+				<TableCell align="center">
+					<ButtonGroup>
+						<Button
+							color="primary"
+							className="waves-effect waves-light btn deep-purple darken-2"
+							onClick={(event): void => {
+								editHandler(event, user._id);
+							}}
+						>
+							Edit
+						</Button>
+						<Button
+							color="secondary"
+							onClick={(event): void => {
+								removeHandler(event, user._id);
+							}}
+							className="waves-effect waves-teal btn red"
+						>
+							Delete
+						</Button>
+					</ButtonGroup>
+				</TableCell>
+			</TableRow>
 		</>
 	);
 };

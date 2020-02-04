@@ -2,6 +2,16 @@ import React from 'react';
 import classes from './UserList.module.scss';
 import UserListItem from './UserListItem/UserListItem';
 import { User } from '../../interfaces';
+import Button from '@material-ui/core/Button';
+import {
+	Grid,
+	Table,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableBody,
+	Typography,
+} from '@material-ui/core';
 
 interface State {
 	users: User[];
@@ -16,7 +26,10 @@ interface Props {
 	// userEdit(id: number): void;
 }
 
-const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
+// const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
+// const cls = classes.button;
+const cls = classes;
+console.log(cls.button);
 
 export class UserList extends React.Component<Props, State> {
 	userEdit = (id: string | undefined): void => {
@@ -25,20 +38,20 @@ export class UserList extends React.Component<Props, State> {
 	};
 	render(): JSX.Element {
 		return (
-			<div className="container center-align">
-				<h2>User List</h2>
-				<table className="highlight centered">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Last Name</th>
-							<th>Nationality</th>
-							<th>Gender</th>
-							<th>Phone</th>
-							<th>Options</th>
-						</tr>
-					</thead>
-					<tbody>
+			<Grid container direction="column" justify="center" alignItems="center">
+				<Typography variant="h3">User List</Typography>
+				<Table className="highlight centered">
+					<TableHead>
+						<TableRow>
+							<TableCell align="center">Name</TableCell>
+							<TableCell align="center">Last Name</TableCell>
+							<TableCell align="center">Nationality</TableCell>
+							<TableCell align="center">Gender</TableCell>
+							<TableCell align="center">Phone</TableCell>
+							<TableCell align="center">Options</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
 						{this.props.users.map((user, index) => (
 							<UserListItem
 								onEdit={(): void => {
@@ -51,15 +64,27 @@ export class UserList extends React.Component<Props, State> {
 								key={index}
 							/>
 						))}
-					</tbody>
-				</table>
-				<button className={myNewClass} onClick={this.props.userAddToggle}>
-					Add User
-				</button>
-				<button className={myNewClass} onClick={this.props.getUsersFromDB}>
+					</TableBody>
+				</Table>
+				<div className={classes.button}>
+					<Button
+						variant="contained"
+						color="primary"
+						size="large"
+						className={classes.button}
+						onClick={this.props.userAddToggle}
+					>
+						Add User
+					</Button>
+				</div>
+				<Button
+					variant="contained"
+					className={classes.button}
+					onClick={this.props.getUsersFromDB}
+				>
 					GET User
-				</button>
-			</div>
+				</Button>
+			</Grid>
 		);
 	}
 }

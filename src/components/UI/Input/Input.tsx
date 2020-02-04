@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Input.module.scss';
+import { TextField, Container } from '@material-ui/core';
 
 type InputProps = {
 	type?: string,
@@ -15,20 +16,34 @@ const Input = (props: InputProps): JSX.Element => {
 	const htmlFor = `${inputType}-${Math.random()}`;
 	const cls = [classes.Input, 'input-field col s12'];
 	return (
-		<div className="row">
-			<div className={cls.join(' ')}>
-				<label htmlFor={htmlFor} className={props.className}>
-					{props.label}
-				</label>
-				<input
-					id={htmlFor}
-					type={inputType}
-					onChange={props.onChange}
-					value={props.value[props.label]}
-					required
-				/>
-			</div>
-		</div>
+		// <div className="row">
+		// 	<div className={cls.join(' ')}>
+		// 		<label htmlFor={htmlFor} className={props.className}>
+		// 			{props.label}
+		// 		</label>
+		// 		<input
+		// 			id={htmlFor}
+		// 			type={inputType}
+		// 			onChange={props.onChange}
+		// 			value={props.value[props.label]}
+		// 			required
+		// 		/>
+		// 	</div>
+		// </div>
+		<Container>
+			<TextField
+				id={htmlFor}
+				label={props.label}
+				type={inputType}
+				className={cls.join(' ')}
+				fullWidth
+				margin="normal"
+				variant="outlined"
+				onChange={props.onChange}
+				value={props.value[props.label]}
+				required
+			/>
+		</Container>
 	);
 };
 

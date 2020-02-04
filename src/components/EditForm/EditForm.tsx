@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { User } from '../../interfaces';
 import Form from '../Form/Form';
+import { Container, Button, Typography } from '@material-ui/core';
 // import classes from './EditForm.module.scss';
 
 interface Props {
@@ -55,8 +56,8 @@ export class EditForm extends Component<Props, State> {
 
 	render(): JSX.Element {
 		return (
-			<div className="row center-align container">
-				<h2>Edit User</h2>
+			<Container>
+				<Typography variant="h3">Edit User</Typography>
 
 				<Form
 					user={this.state.user}
@@ -65,15 +66,15 @@ export class EditForm extends Component<Props, State> {
 					formType={'edit'}
 				/>
 
-				<button
-					className="btn waves-effect waves-light red center"
+				<Button
+					color="secondary"
 					onClick={(): void => {
 						this.props.userToggle(this.state.user._id);
 					}}
 				>
 					Cancel Changes
-				</button>
-			</div>
+				</Button>
+			</Container>
 		);
 	}
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { User } from '../../interfaces';
 import Input from '../UI/Input/Input';
+import { Button } from '@material-ui/core';
+import classes from './Form.module.scss';
 
 interface Props {
 	user: User;
@@ -52,20 +54,20 @@ const Form: React.FC<Props> = ({
 
 	if (formType === 'edit') {
 		return (
-			<form className="col s12 " onSubmit={onSubmit}>
+			<form onSubmit={onSubmit} className={classes.Form}>
 				{renderInputField(formType)}
-				<button className="btn btn-large waves-effect waves-light deep-purple darken-2 center">
+				<Button color="primary" variant="outlined" type="submit">
 					Save Changes
-				</button>
+				</Button>
 			</form>
 		);
 	} else {
 		return (
-			<form className="col s12 " onSubmit={onSubmit}>
+			<form className={classes.Form} onSubmit={onSubmit}>
 				{renderInputField(formType)}
-				<button className="btn-floating btn-large waves-effect waves-light yellow darken-4 center">
+				<Button color="primary" variant="outlined" type="submit">
 					Add
-				</button>
+				</Button>
 			</form>
 		);
 	}

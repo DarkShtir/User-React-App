@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './CreateForm.module.scss';
 import { User } from '../../interfaces';
 import Form from '../Form/Form';
+import { Typography, Container } from '@material-ui/core';
 
 interface Props {
 	onUserAdded(user: object): void;
@@ -27,6 +28,7 @@ export class CreateForm extends Component<Props, State> {
 
 	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
+		console.log('Субмит работает');
 		this.props.onUserAdded(this.state.user);
 		this.setState({
 			user: {
@@ -57,15 +59,14 @@ export class CreateForm extends Component<Props, State> {
 
 	render(): JSX.Element {
 		return (
-			<div className="row center-align container">
-				<h2>Create User</h2>
-
+			<Container>
+				<Typography variant="h3">Create User</Typography>
 				<Form
 					user={this.state.user}
 					inputHandler={this.handleInputChanges}
 					onSubmit={this.submitHandler}
 				/>
-			</div>
+			</Container>
 		);
 	}
 }

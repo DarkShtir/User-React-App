@@ -4,6 +4,11 @@ import { EditForm } from '../EditForm/EditForm';
 import { UserList } from '../UserList/UserList';
 import { User } from '../../interfaces';
 import UserService from '../../services/user-service';
+import { Container } from '@material-ui/core';
+import LoginPage from '../../pages/LoginPage/LoginPage';
+import RegistrationPage from '../../pages/RegistrationPage/RegistrationPage';
+import UsersPage from '../../pages/UsersPage/UsersPage';
+import MainPage from '../../pages/MainPage/MainPage';
 interface State {
 	newUsers: User[] | [];
 	needAdd: boolean;
@@ -96,7 +101,11 @@ export class App extends Component<{}, State> {
 
 	render(): JSX.Element {
 		return (
-			<div>
+			<Container>
+				<LoginPage />
+				<RegistrationPage />
+				<UsersPage />
+				<MainPage />
 				{this.state.needAdd ? (
 					<CreateForm
 						onUserAdded={this.addUser}
@@ -121,7 +130,7 @@ export class App extends Component<{}, State> {
 				) : (
 					<></>
 				)}
-			</div>
+			</Container>
 		);
 	}
 }
