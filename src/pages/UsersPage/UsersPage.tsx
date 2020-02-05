@@ -1,11 +1,12 @@
 import React from 'react';
 import CardComponent from '../../components/CardComponent/CardComponent';
+import { Paper } from '@material-ui/core';
 
 const UsersPage = (): JSX.Element => {
 	return (
-		<div>
+		<Paper>
 			<CardComponent />
-		</div>
+		</Paper>
 	);
 };
 

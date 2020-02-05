@@ -10,14 +10,14 @@ import classes from './CardComponent.module.scss';
 
 const CardComponent = (): JSX.Element => {
 	return (
-		<Card className={classes.root}>
+		<Card className={classes.CardComponent}>
 			<CardContent>
 				<Typography
 					className={classes.title}
 					color="textSecondary"
 					gutterBottom
 				>
-					Word of the Day
+					New Word of the Day
 				</Typography>
 				<Typography variant="h5" component="h2">
 					Some text

@@ -28,8 +28,6 @@ interface Props {
 
 // const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
 // const cls = classes.button;
-const cls = classes;
-console.log(cls.button);
 
 export class UserList extends React.Component<Props, State> {
 	userEdit = (id: string | undefined): void => {

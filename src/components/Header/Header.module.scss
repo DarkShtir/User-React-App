@@ -1,10 +1,23 @@
-.Header {
-  display: block;
-  background-color: #e65100;
-  color: #fff;
-  text-align: center;
+@import url(https://fonts.googleapis.com/css?family=VT323);
 
-  span {
-    font-size: 2rem;
+.Header {
+  font-family: 'VT323';
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(150deg, rgba(2, 0, 36, 0.9860788863109049) 0%, rgba(9, 9, 121, 1) 39%, rgba(0, 212, 255, 1) 100%);
+
+  h2 {
+    display: flex;
+    font-size: 3rem;
+    color: #e1bee7;
+    margin: 0.5rem;
+  }
+
+  .menu_btn_group {
+    display: flex;
+
+    .btn {
+      color: white
+    }
   }
 }
