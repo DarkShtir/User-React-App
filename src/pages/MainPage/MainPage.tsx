@@ -1,17 +1,13 @@
 import React from 'react';
-import Footer from '../../components/Footer/Footer';
-import Header from '../../components/Header/Header';
-import { Typography } from '@material-ui/core';
+import { Typography, Paper } from '@material-ui/core';
 
 const MainPage = (): JSX.Element => {
 	return (
-		<div>
-			<Header />
+		<Paper>
 			<Typography variant="h2" align="center">
 				Добро пожаловать сюдысти!
 			</Typography>
-			<Footer />
-		</div>
+		</Paper>
 	);
 };
 

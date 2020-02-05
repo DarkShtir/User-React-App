@@ -1,11 +1,14 @@
 import React from 'react';
 import classes from './Footer.module.scss';
+import { Paper, Typography } from '@material-ui/core';
 
 const Footer = (): JSX.Element => {
 	return (
-		<div className={classes.Footer}>
-			<div className={classes.footer}>FOOOTER</div>
-		</div>
+		<Paper className={classes.Footer}>
+			<Typography variant="h6" className={classes.message}>
+				FOOOTER
+			</Typography>
+		</Paper>
 	);
 };
 

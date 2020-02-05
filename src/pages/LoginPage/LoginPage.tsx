@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import UserService from '../../services/user-service';
 import { UserLogin } from '../../interfaces';
 import LoginForm from '../../components/LoginForm/LoginForm';
+import { Paper } from '@material-ui/core';
 
 interface State {
 	login: boolean;
 }
 
-export class LoginPage extends Component<{}, State> {
+export default class LoginPage extends Component<{}, State> {
 	state = {
 		login: false,
 	};
@@ -20,9 +21,9 @@ export class LoginPage extends Component<{}, State> {
 	//TODO Added route on user page after login
 	render(): JSX.Element {
 		return (
-			<div>
+			<Paper>
 				<LoginForm onUserLogin={this.loginUser} />
-			</div>
+			</Paper>
 		);
 	}
 }

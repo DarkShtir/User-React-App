@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { EditForm } from '../../components/EditForm/EditForm';
 import { User } from '../../interfaces';
+import { Paper } from '@material-ui/core';
 
 interface State {
 	newUsers: User[] | [];
@@ -55,13 +56,13 @@ export default class EditPage extends Component<{}, State> {
 
 	render(): JSX.Element {
 		return (
-			<div>
+			<Paper>
 				<EditForm
 					userToggle={this.editUserToggle}
 					editUser={this.editUser()}
 					onUserUpdated={this.updateUser}
 				/>
-			</div>
+			</Paper>
 		);
 	}
 }

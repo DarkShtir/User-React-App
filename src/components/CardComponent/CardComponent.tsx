@@ -32,7 +32,9 @@ const CardComponent = (): JSX.Element => {
 				</Typography>
 			</CardContent>
 			<CardActions>
-				<Button size="small">Learn More</Button>
+				<Button className={classes.button} size="small">
+					Learn More
+				</Button>
 			</CardActions>
 		</Card>
 	);

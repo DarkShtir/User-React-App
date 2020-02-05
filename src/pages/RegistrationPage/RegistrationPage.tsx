@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { CreateForm } from '../../components/CreateForm/CreateForm';
 import UserService from '../../services/user-service';
 import { User } from '../../interfaces';
+import { Paper } from '@material-ui/core';
 
 interface State {
 	needAdd: boolean;
 }
 
-export class RegistrationPage extends Component<{}, State> {
+export default class RegistrationPage extends Component<{}, State> {
 	state = {
 		needAdd: false,
 	};
@@ -22,12 +23,12 @@ export class RegistrationPage extends Component<{}, State> {
 	};
 	render(): JSX.Element {
 		return (
-			<div>
+			<Paper>
 				<CreateForm
 					onUserAdded={this.addUser}
 					userAddToggle={this.addUserToggle}
 				/>
-			</div>
+			</Paper>
 		);
 	}
 }
