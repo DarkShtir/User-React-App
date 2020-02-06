@@ -38,7 +38,6 @@ const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 					<ButtonGroup>
 						<Button
 							color="primary"
-							className="waves-effect waves-light btn deep-purple darken-2"
 							onClick={(event): void => {
 								editHandler(event, user._id);
 							}}
@@ -50,7 +49,6 @@ const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 							onClick={(event): void => {
 								removeHandler(event, user._id);
 							}}
-							className="waves-effect waves-teal btn red"
 						>
 							Delete
 						</Button>

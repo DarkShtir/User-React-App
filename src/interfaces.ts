@@ -8,6 +8,7 @@ export interface User {
 	nat: string;
 	phone?: string;
 	tokens?: [{ token: string }] | [];
+	avatarUrl?: string;
 }
 
 export interface UserLogin {

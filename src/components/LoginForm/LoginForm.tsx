@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Typography, Container } from '@material-ui/core';
 import Form from '../shared/Form/Form';
 import { UserLogin } from '../../interfaces';
+import classes from './LoginForm.module.scss';
 
 interface State {
 	user: UserLogin;
@@ -38,8 +39,10 @@ export default class LoginForm extends Component<Props, State> {
 
 	render(): JSX.Element {
 		return (
-			<Container>
-				<Typography variant="h3">LogIn</Typography>
+			<Container className={classes.LoginForm}>
+				<Typography variant="h3" align="center">
+					Login
+				</Typography>
 				<Form
 					user={this.state.user}
 					inputHandler={this.handleInputChanges}

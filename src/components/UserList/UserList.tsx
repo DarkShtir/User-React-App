@@ -26,9 +26,6 @@ interface Props {
 	// userEdit(id: number): void;
 }
 
-// const myNewClass = classes.mt1 + ' waves-effect waves-teal btn yellow darken-4';
-// const cls = classes.button;
-
 export class UserList extends React.Component<Props, State> {
 	userEdit = (id: string | undefined): void => {
 		this.props.userEditToggle(id);
@@ -36,7 +33,7 @@ export class UserList extends React.Component<Props, State> {
 	};
 	render(): JSX.Element {
 		return (
-			<Grid container direction="column" justify="center" alignItems="center">
+			<Grid container className={classes.UserList}>
 				<Typography variant="h3">User List</Typography>
 				<Table className="highlight centered">
 					<TableHead>
@@ -64,17 +61,15 @@ export class UserList extends React.Component<Props, State> {
 						))}
 					</TableBody>
 				</Table>
-				<div className={classes.button}>
-					<Button
-						variant="contained"
-						color="primary"
-						size="large"
-						className={classes.button}
-						onClick={this.props.userAddToggle}
-					>
-						Add User
-					</Button>
-				</div>
+				<Button
+					variant="contained"
+					color="primary"
+					size="large"
+					className={classes.button}
+					onClick={this.props.userAddToggle}
+				>
+					Add User
+				</Button>
 				<Button
 					variant="contained"
 					className={classes.button}

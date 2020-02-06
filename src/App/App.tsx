@@ -22,7 +22,7 @@ export class App extends Component<{}, State> {
 				<Switch>
 					<Route path="/login" component={Login} />
 					<Route path="/registration" component={Reg} />
-					<Route path="/user/:id" component={User} />
+					<Route exact path="/user/:id" component={User} />
 					<Route path="/user-list" component={UsersList} />
 					<Route path="/user/:id/edit" component={Edit} />
 					<Route exact path="/" component={Main} />

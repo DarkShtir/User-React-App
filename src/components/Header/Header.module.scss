@@ -3,7 +3,7 @@
 .Header {
   font-family: 'VT323';
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   background: linear-gradient(150deg, rgba(2, 0, 36, 0.9860788863109049) 0%, rgba(9, 9, 121, 1) 39%, rgba(0, 212, 255, 1) 100%);
 
   h2 {
@@ -15,6 +15,7 @@
 
   .menu_btn_group {
     display: flex;
+    justify-content: flex-end;
 
     .btn {
       color: white

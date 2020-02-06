@@ -65,7 +65,12 @@ const Form: React.FC<Props> = ({
 		return (
 			<form className={classes.Form} onSubmit={onSubmit}>
 				{renderInputField(formType)}
-				<Button color="primary" variant="outlined" type="submit">
+				<Button
+					className={classes.button}
+					color="primary"
+					variant="outlined"
+					type="submit"
+				>
 					Add
 				</Button>
 			</form>

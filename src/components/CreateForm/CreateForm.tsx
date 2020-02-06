@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './CreateForm.module.scss';
+import classes from './CreateForm.module.scss';
 import { User } from '../../interfaces';
 import Form from '../shared/Form/Form';
 import { Typography, Container } from '@material-ui/core';
@@ -58,8 +58,10 @@ export class CreateForm extends Component<Props, State> {
 
 	render(): JSX.Element {
 		return (
-			<Container>
-				<Typography variant="h3">Create User</Typography>
+			<Container className={classes.CreateForm}>
+				<Typography variant="h3" align="center">
+					Create User
+				</Typography>
 				<Form
 					user={this.state.user}
 					inputHandler={this.handleInputChanges}

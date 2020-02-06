@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { User } from '../../interfaces';
 import Form from '../shared/Form/Form';
 import { Container, Button, Typography } from '@material-ui/core';
-// import classes from './EditForm.module.scss';
+import classes from './EditForm.module.scss';
 
 interface Props {
 	onUserUpdated(user: object, id: string): void;
@@ -56,8 +56,10 @@ export class EditForm extends Component<Props, State> {
 
 	render(): JSX.Element {
 		return (
-			<Container>
-				<Typography variant="h3">Edit User</Typography>
+			<Container className={classes.EditForm}>
+				<Typography variant="h3" align="center">
+					Edit User
+				</Typography>
 
 				<Form
 					user={this.state.user}
