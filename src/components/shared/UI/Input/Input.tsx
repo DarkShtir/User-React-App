@@ -4,10 +4,11 @@ import { TextField, Container } from '@material-ui/core';
 
 type InputProps = {
 	type?: string,
-	value: object | any,
+	targetObject: object | any,
 	label: string,
 	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
 	className?: any,
+	fieldName: string,
 	// errorMessage: any,
 };
 
@@ -40,7 +41,7 @@ const Input = (props: InputProps): JSX.Element => {
 				margin="normal"
 				variant="outlined"
 				onChange={props.onChange}
-				value={props.value[props.label]}
+				value={props.targetObject[props.fieldName]}
 				required
 			/>
 		</Container>

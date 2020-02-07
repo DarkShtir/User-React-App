@@ -1,0 +1,22 @@
+@import url(https://fonts.googleapis.com/css?family=VT323);
+
+.MainPage {
+
+  background-image: radial-gradient(circle 926px at 2.7% 11%, rgba(17, 29, 94, 1) 0%, rgba(178, 31, 102, 1) 90%);
+  height: 80vh;
+
+  h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "VT323";
+    font-size: 3rem;
+    text-align: center;
+    color: #f7f443;
+  }
+
+  p {
+    font-family: 'Roboto';
+    margin: 0.5rem;
+  }
+}

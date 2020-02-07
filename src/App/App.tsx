@@ -3,8 +3,8 @@ import { Container } from '@material-ui/core';
 import { Main, Login, Reg, UsersList, User, Edit } from '../pages/pages';
 import classes from './App.module.scss';
 import { Route, Switch } from 'react-router-dom';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Header from '../components/shared/Header/Header';
+import Footer from '../components/shared/Footer/Footer';
 
 interface State {
 	login: boolean;

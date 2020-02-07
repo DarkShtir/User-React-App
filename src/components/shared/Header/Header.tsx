@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Header = (): JSX.Element => {
 	//! Заглушка, нужно реализоваьт проверку получен ли токен
-	const isLogin = true;
+	const isLogin = false;
 	return (
 		<Paper className={classes.Header}>
 			<h2>CyberSELO</h2>

@@ -1,12 +1,15 @@
 import React from 'react';
-import { Typography, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
+import classes from './MainPage.module.scss';
+import Loading from '../../components/shared/Loading/Loading';
 
 const MainPage = (): JSX.Element => {
 	return (
-		<Paper>
-			<Typography variant="h2" align="center">
-				Добро пожаловать сюдысти!
-			</Typography>
+		<Paper className={classes.MainPage}>
+			<h2>
+				Welcome <p>атседава</p> !
+			</h2>
+			<Loading />
 		</Paper>
 	);
 };

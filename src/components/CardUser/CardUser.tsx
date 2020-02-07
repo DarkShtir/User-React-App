@@ -14,15 +14,29 @@ interface Props {
 	user: User;
 }
 
+const userCardForm = {
+	firstName: 'Имя',
+	lastName: 'Фамилия',
+	gender: 'Пол',
+	nat: 'Национальность',
+	phone: 'Телефон',
+};
+
 const CardUser: React.FC<Props> = ({ user }): JSX.Element => {
-	const renderFields = (myUser: { [index: string]: any }): object => {
-		return Object.keys(myUser).map(
+	const renderFields = (
+		cardForm: { [index: string]: string },
+		user: { [index: string]: any }
+	): object => {
+		return Object.keys(cardForm).map(
 			(fieldName: string, index): void | JSX.Element => {
-				const property = myUser[fieldName];
+				const property = user[fieldName];
 				return (
 					<React.Fragment key={fieldName + index}>
 						<ListItem>
-							<ListItemText primary={property} secondary={fieldName} />
+							<ListItemText
+								primary={property}
+								secondary={cardForm[fieldName]}
+							/>
 						</ListItem>
 					</React.Fragment>
 				);
@@ -33,7 +47,7 @@ const CardUser: React.FC<Props> = ({ user }): JSX.Element => {
 	return (
 		<Card className={classes.CardComponent}>
 			<CardContent className={classes.content}>
-				{renderFields(user)}
+				{renderFields(userCardForm, user)}
 			</CardContent>
 			<CardActions>
 				<Button

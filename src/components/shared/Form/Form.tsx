@@ -1,14 +1,18 @@
 import React from 'react';
-import { User, UserLogin } from '../../../interfaces';
+// import { User, UserLogin } from '../../../interfaces';
 import Input from '../UI/Input/Input';
-import { Button } from '@material-ui/core';
+import { Button, ButtonGroup } from '@material-ui/core';
 import classes from './Form.module.scss';
 
 interface Props {
-	user: UserLogin | User;
+	user: { [value: string]: string | [] };
 	inputHandler: (value: string, fieldName: string) => void;
 	onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 	formType?: string;
+}
+
+interface TemplateForm {
+	[value: string]: string;
 }
 
 const Form: React.FC<Props> = ({
@@ -17,54 +21,132 @@ const Form: React.FC<Props> = ({
 	onSubmit,
 	formType = 'add',
 }) => {
-	const renderInputField = (formType: string): object => {
-		const unusedFields = ['_id'];
+	const userCreateForm = {
+		login: 'Логин',
+		password: 'Пароль',
+		firstName: 'Имя',
+		lastName: 'Фамилия',
+		gender: 'Пол',
+		nat: 'Национальность',
+		phone: 'Телефон',
+	};
+
+	const userEditForm = {
+		firstName: 'Имя',
+		lastName: 'Фамилия',
+		gender: 'Пол',
+		nat: 'Национальность',
+		phone: 'Телефон',
+	};
+
+	const userLoginForm = {
+		login: 'Логин',
+		password: 'Пароль',
+	};
+
+	const renderInputField = (
+		formType: string,
+		user: { [value: string]: any },
+		templateForm: TemplateForm
+	): object => {
+		// const unusedFields = ['_id'];
 		let cls: [string];
 		if (formType === 'edit') {
-			unusedFields.push('login', 'password', '__v', 'tokens');
+			// unusedFields.push('login', 'password', '__v', 'tokens');
 			cls = ['active'];
 		}
-		return Object.keys(user).map(
+		return Object.keys(templateForm).map(
 			// eslint-disable-next-line
 			(fieldName, index): void | JSX.Element => {
-				if (!unusedFields.includes(fieldName)) {
-					return (
-						<React.Fragment key={fieldName + index}>
-							<Input
-								className={cls}
-								value={user}
-								label={fieldName}
-								type={
-									fieldName === 'password'
-										? fieldName
-										: fieldName === 'phone'
-										? 'tel'
-										: ''
-								}
-								onChange={(event): void => {
-									inputHandler(event.target.value, fieldName);
-								}}
-							/>
-						</React.Fragment>
-					);
-				}
+				return (
+					<React.Fragment key={fieldName + index}>
+						<Input
+							className={cls}
+							targetObject={user}
+							label={templateForm[fieldName]}
+							type={
+								fieldName === 'password'
+									? fieldName
+									: fieldName === 'phone'
+									? 'tel'
+									: ''
+							}
+							onChange={(event): void => {
+								inputHandler(event.target.value, fieldName);
+							}}
+							fieldName={fieldName}
+						/>
+					</React.Fragment>
+				);
+
+				// if (!unusedFields.includes(fieldName)) {
+				// 	return (
+				// 		<React.Fragment key={fieldName + index}>
+				// 			<Input
+				// 				className={cls}
+				// 				value={user}
+				// 				label={fieldName}
+				// 				type={
+				// 					fieldName === 'password'
+				// 						? fieldName
+				// 						: fieldName === 'phone'
+				// 						? 'tel'
+				// 						: ''
+				// 				}
+				// 				onChange={(event): void => {
+				// 					inputHandler(event.target.value, fieldName);
+				// 				}}
+				// 			/>
+				// 		</React.Fragment>
+				// 	);
+				// }
 			}
 		);
 	};
 
 	if (formType === 'edit') {
 		return (
-			<form onSubmit={onSubmit} className={classes.Form}>
-				{renderInputField(formType)}
-				<Button color="primary" variant="outlined" type="submit">
-					Save Changes
+			<form className={classes.Form} onSubmit={onSubmit}>
+				{renderInputField(formType, user, userEditForm)}
+				<ButtonGroup>
+					<Button
+						className={classes.button}
+						color="primary"
+						variant="outlined"
+						type="submit"
+					>
+						Save Changes
+					</Button>
+					<Button
+						className={classes.button}
+						color="secondary"
+						onClick={(): void => {
+							// this.props.userToggle(this.state.user._id);
+						}}
+					>
+						Cancel Changes
+					</Button>
+				</ButtonGroup>
+			</form>
+		);
+	} else if (formType === 'login') {
+		return (
+			<form className={classes.Form} onSubmit={onSubmit}>
+				{renderInputField(formType, user, userLoginForm)}
+				<Button
+					className={classes.button}
+					color="primary"
+					variant="outlined"
+					type="submit"
+				>
+					Войти
 				</Button>
 			</form>
 		);
 	} else {
 		return (
 			<form className={classes.Form} onSubmit={onSubmit}>
-				{renderInputField(formType)}
+				{renderInputField(formType, user, userCreateForm)}
 				<Button
 					className={classes.button}
 					color="primary"

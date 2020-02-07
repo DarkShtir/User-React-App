@@ -18,11 +18,7 @@ const CardAvatar: React.FC<Props> = ({ user }): JSX.Element => {
 	return (
 		<Card className={classes.CardComponent}>
 			<CardContent>
-				<Typography
-					className={classes.title}
-					color="textSecondary"
-					gutterBottom
-				>
+				<Typography className={classes.title} gutterBottom>
 					Cyber-Хата сельчанина: <b>{user.firstName}</b>
 				</Typography>
 				<CardMedia
@@ -33,10 +29,10 @@ const CardAvatar: React.FC<Props> = ({ user }): JSX.Element => {
 					image={user.avatarUrl}
 					title="My Avatar"
 				/>
-				<Typography variant="h5" component="h2">
+				<Typography variant="h5" component="h2" className={classes.name}>
 					{user.firstName}, {user.lastName} ({user.login})
 				</Typography>
-				<Typography className={classes.pos} color="textSecondary">
+				<Typography className={classes.pos}>
 					Цитатка про капусту, розы, и юных Хацкеров ХАРДКОД!!!
 				</Typography>
 			</CardContent>

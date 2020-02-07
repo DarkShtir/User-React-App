@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { User } from '../../interfaces';
 import Form from '../shared/Form/Form';
-import { Container, Button, Typography } from '@material-ui/core';
+import { Container, Typography } from '@material-ui/core';
 import classes from './EditForm.module.scss';
 
 interface Props {
@@ -68,14 +68,14 @@ export class EditForm extends Component<Props, State> {
 					formType={'edit'}
 				/>
 
-				<Button
+				{/* <Button
 					color="secondary"
 					onClick={(): void => {
 						this.props.userToggle(this.state.user._id);
 					}}
 				>
 					Cancel Changes
-				</Button>
+				</Button> */}
 			</Container>
 		);
 	}
