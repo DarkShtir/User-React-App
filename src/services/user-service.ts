@@ -1,6 +1,11 @@
 import { User } from '../interfaces';
 import axios from '../axios/axios-user';
 
+axios.interceptors.request.use(request => {
+	const token = localStorage.getItem('token');
+	request.headers['Authorization'] = token ? `Bearer ${token}` : '';
+	return request;
+});
 class UserService {
 	users: User[];
 
@@ -41,27 +46,33 @@ class UserService {
 			console.log(error);
 		}
 	};
-	//!Need Add login form
+
 	login = async (loginData: object): Promise<object | undefined> => {
 		try {
 			const response = await axios.post('/login', loginData);
-			const myData = response.data;
-			return myData;
+			const user = response.data;
+			const token = user.token;
+			this.setToken(token);
+			localStorage.setItem('id', user.user._id);
+
+			return user;
 		} catch (error) {
 			console.log(error);
 		}
 	};
-	//TODO added logout button on header
+
 	logout = async (): Promise<void | undefined> => {
 		try {
-			const token = localStorage.getItem('token');
-			const options = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			};
-			await axios.post('/logout', options);
+			// const token = localStorage.getItem('token');
+			// const options = {
+			// 	// Authorization: `Bearer ${token}`,
+			// 	headers: {
+			// 		['Authorization']: `Bearer ${token}`,
+			// 	},
+			// };
+			await axios.post('/logout');
 			localStorage.removeItem('token');
+			localStorage.removeItem('id');
 		} catch (error) {
 			console.log(error);
 		}

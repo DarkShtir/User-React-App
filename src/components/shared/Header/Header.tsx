@@ -1,11 +1,19 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import classes from './Header.module.scss';
 import { Button, Paper, Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import UserService from '../../../services/user-service';
+import { isLogin } from '../../utils/isLogin';
+import { MyContext } from '../../../App/App';
 
-const Header = (): JSX.Element => {
-	//! Заглушка, нужно реализоваьт проверку получен ли токен
-	const isLogin = false;
+const Header: React.FC = (): JSX.Element => {
+	const logout = (): void => {
+		// const token = localStorage.getItem('token');
+		UserService.logout();
+	};
+
+	const { login } = useContext(MyContext);
+
 	return (
 		<Paper className={classes.Header}>
 			<h2>CyberSELO</h2>
@@ -13,7 +21,7 @@ const Header = (): JSX.Element => {
 				<Button className={classes.btn} component={Link} to="/">
 					Главная
 				</Button>
-				{!isLogin ? (
+				{!isLogin() ? (
 					<React.Fragment>
 						<Button className={classes.btn} component={Link} to="/login">
 							Войти
@@ -27,7 +35,7 @@ const Header = (): JSX.Element => {
 						<Button className={classes.btn} component={Link} to="/user/:id">
 							Моя Хата
 						</Button>
-						<Button className={classes.btn} component={Link} to="/logout">
+						<Button className={classes.btn} onClick={logout}>
 							Вайсци атседава
 						</Button>
 					</>

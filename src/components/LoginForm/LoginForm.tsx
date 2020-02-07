@@ -20,6 +20,7 @@ export default class LoginForm extends Component<Props, State> {
 	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		this.props.onUserLogin(this.state.user);
+		console.log(this.state.user);
 		this.setState({
 			user: { login: '', password: '' },
 		});
