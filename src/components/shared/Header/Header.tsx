@@ -1,18 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import classes from './Header.module.scss';
 import { Button, Paper, Container } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import UserService from '../../../services/user-service';
-import { isLogin } from '../../utils/isLogin';
-import { MyContext } from '../../../App/App';
+import { isLoginContext } from '../../utils/state';
 
 const Header: React.FC = (): JSX.Element => {
-	const logout = (): void => {
-		// const token = localStorage.getItem('token');
-		UserService.logout();
-	};
+	const { login, setLogin, id } = useContext<any>(isLoginContext);
 
-	const { login } = useContext(MyContext);
+	const history = useHistory();
+
+	const logout = (): void => {
+		UserService.logout();
+		setLogin(false);
+		history.push('/');
+	};
 
 	return (
 		<Paper className={classes.Header}>
@@ -21,7 +23,16 @@ const Header: React.FC = (): JSX.Element => {
 				<Button className={classes.btn} component={Link} to="/">
 					Главная
 				</Button>
-				{!isLogin() ? (
+				{login ? (
+					<>
+						<Button className={classes.btn} component={Link} to={`/user/${id}`}>
+							Моя Хата
+						</Button>
+						<Button className={classes.btn} onClick={logout}>
+							Вайсци атседава
+						</Button>
+					</>
+				) : (
 					<React.Fragment>
 						<Button className={classes.btn} component={Link} to="/login">
 							Войти
@@ -30,15 +41,6 @@ const Header: React.FC = (): JSX.Element => {
 							Регистрация
 						</Button>
 					</React.Fragment>
-				) : (
-					<>
-						<Button className={classes.btn} component={Link} to="/user/:id">
-							Моя Хата
-						</Button>
-						<Button className={classes.btn} onClick={logout}>
-							Вайсци атседава
-						</Button>
-					</>
 				)}
 
 				<Button className={classes.btn} component={Link} to="/user-list">

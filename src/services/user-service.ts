@@ -34,6 +34,16 @@ class UserService {
 		}
 	};
 
+	getUserById = async (id: string): Promise<[User] | undefined> => {
+		try {
+			const response = await axios.get(`/${id}`);
+			const user = response.data;
+			return user;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	addUser = async (user: object): Promise<object | undefined> => {
 		try {
 			const response = await axios.post('/', user);
@@ -55,7 +65,7 @@ class UserService {
 			this.setToken(token);
 			localStorage.setItem('id', user.user._id);
 
-			return user;
+			return user.user;
 		} catch (error) {
 			console.log(error);
 		}
@@ -98,6 +108,16 @@ class UserService {
 			};
 			await axios.delete(`/${id}`, options);
 			localStorage.removeItem('token');
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	updateUser = async (id: string, user: {}): Promise<void | undefined> => {
+		try {
+			const response = await axios.put(`/${id}`, user);
+			const updateUser = response.data.user;
+			return updateUser;
 		} catch (error) {
 			console.log(error);
 		}

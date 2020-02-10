@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
 	Card,
 	CardContent,
@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core';
 import classes from './CardUser.module.scss';
 import { User } from '../../interfaces';
+import { isLoginContext } from '../utils/state';
+import { Link } from 'react-router-dom';
 
 interface Props {
 	user: User;
@@ -23,6 +25,8 @@ const userCardForm = {
 };
 
 const CardUser: React.FC<Props> = ({ user }): JSX.Element => {
+	const { id } = useContext<any>(isLoginContext);
+
 	const renderFields = (
 		cardForm: { [index: string]: string },
 		user: { [index: string]: any }
@@ -51,6 +55,8 @@ const CardUser: React.FC<Props> = ({ user }): JSX.Element => {
 			</CardContent>
 			<CardActions>
 				<Button
+					component={Link}
+					to={`/user/${id}/edit/`}
 					variant="contained"
 					color="primary"
 					className={classes.button}

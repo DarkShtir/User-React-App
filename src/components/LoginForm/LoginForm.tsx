@@ -1,56 +1,51 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
 import { Typography, Container } from '@material-ui/core';
 import Form from '../shared/Form/Form';
 import { UserLogin } from '../../interfaces';
-import classes from './LoginForm.module.scss';
+import { isLoginContext } from '../utils/state';
 
-interface State {
-	user: UserLogin;
-}
+import classes from './LoginForm.module.scss';
 
 interface Props {
 	onUserLogin(user: UserLogin): void;
 }
 
-export default class LoginForm extends Component<Props, State> {
-	state = {
-		user: { login: '', password: '' },
-	};
+export const LoginForm: React.FC<Props> = props => {
+	const { setLogin } = useContext<any>(isLoginContext);
 
-	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
+	const [user, setUser] = useState({
+		login: '',
+		password: '',
+	});
+
+	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		this.props.onUserLogin(this.state.user);
-		console.log(this.state.user);
-		this.setState({
-			user: { login: '', password: '' },
+		props.onUserLogin(user);
+		console.log(user);
+		setUser({
+			login: '',
+			password: '',
+		});
+		setLogin(true);
+	};
+
+	const handleInputChanges = (value: string, fieldName: string): void => {
+		setUser(prevState => {
+			return { ...prevState, [fieldName]: value };
 		});
 	};
 
-	handleInputChanges = (value: string, fieldName: string): void => {
-		const user: UserLogin = {
-			...this.state.user,
-			[fieldName]: value,
-		};
-		this.setState(() => {
-			return {
-				user: user,
-			};
-		});
-	};
-
-	render(): JSX.Element {
-		return (
-			<Container className={classes.LoginForm}>
-				<Typography variant="h3" align="center">
-					Login
-				</Typography>
-				<Form
-					user={this.state.user}
-					inputHandler={this.handleInputChanges}
-					onSubmit={this.submitHandler}
-					formType="login"
-				/>
-			</Container>
-		);
-	}
-}
+	return (
+		<Container className={classes.LoginForm}>
+			<Typography variant="h3" align="center">
+				Login
+			</Typography>
+			<Form
+				user={user}
+				inputHandler={handleInputChanges}
+				onSubmit={submitHandler}
+				formType="login"
+			/>
+		</Container>
+	);
+};

@@ -3,6 +3,7 @@ import React from 'react';
 import Input from '../UI/Input/Input';
 import { Button, ButtonGroup } from '@material-ui/core';
 import classes from './Form.module.scss';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
 	user: { [value: string]: string | [] };
@@ -21,6 +22,8 @@ const Form: React.FC<Props> = ({
 	onSubmit,
 	formType = 'add',
 }) => {
+	const history = useHistory();
+
 	const userCreateForm = {
 		login: 'Логин',
 		password: 'Пароль',
@@ -81,7 +84,7 @@ const Form: React.FC<Props> = ({
 
 				// if (!unusedFields.includes(fieldName)) {
 				// 	return (
-				// 		<React.Fragment key={fieldName + index}>
+				// 		<React.Fragment key={users/${}fieldName + index}>
 				// 			<Input
 				// 				className={cls}
 				// 				value={user}
@@ -120,8 +123,8 @@ const Form: React.FC<Props> = ({
 					<Button
 						className={classes.button}
 						color="secondary"
-						onClick={(): void => {
-							// this.props.userToggle(this.state.user._id);
+						onClick={() => {
+							history.goBack();
 						}}
 					>
 						Cancel Changes

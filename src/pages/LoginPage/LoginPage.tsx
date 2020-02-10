@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import UserService from '../../services/user-service';
 import { UserLogin } from '../../interfaces';
-import LoginForm from '../../components/LoginForm/LoginForm';
+import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { Paper } from '@material-ui/core';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { isLoginContext } from '../../components/utils/state';
 
 const LoginPage: React.FC = () => {
-	// let id: any = '';
-	// const history = useHistory();
+	const { id, setUserId, updateUserData, userData } = useContext<any>(
+		isLoginContext
+	);
 
-	const loginUser = async (loginData: UserLogin): Promise<void | undefined> => {
-		const data = await UserService.login(loginData);
-		if (!data && data === undefined) {
-			console.log('Пользователь на найден!!');
+	const history = useHistory();
+
+	const loginUser = async (loginData: UserLogin): Promise<void> => {
+		try {
+			const user = await UserService.login(loginData);
+			if (!user && user === undefined) {
+				console.log('Пользователь на найден!!');
+			}
+
+			setUserId(localStorage.getItem('id'));
+			updateUserData(user, userData);
+			history.push(`user/${id}`);
+		} catch (error) {
+			console.log(error);
 		}
-		// id = localStorage.getItem('id');
-		// history.push(`/user/${id}`);
 	};
 	//TODO Added route on user page after login
 	return (
