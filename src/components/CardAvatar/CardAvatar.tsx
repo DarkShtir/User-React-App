@@ -15,6 +15,7 @@ interface Props {
 }
 
 const CardAvatar: React.FC<Props> = ({ user }): JSX.Element => {
+	// const avatar = `localhost:8080/static/${user.avatarUrl}`;
 	return (
 		<Card className={classes.CardComponent}>
 			<CardContent>
@@ -26,7 +27,7 @@ const CardAvatar: React.FC<Props> = ({ user }): JSX.Element => {
 					component="img"
 					alt="Holop Avatar"
 					height="350"
-					image={user.avatarUrl}
+					src={`http://localhost:8080/static/${user.avatarUrl}`}
 					title="My Avatar"
 				/>
 				<Typography variant="h5" component="h2" className={classes.name}>

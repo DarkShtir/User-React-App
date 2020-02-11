@@ -13,6 +13,7 @@ import {
 	userData,
 	updateUserData,
 	getId,
+	setLogin,
 } from '../components/utils/state';
 
 import {
@@ -21,7 +22,7 @@ import {
 } from '../components/HOC/PrivateRouter';
 
 const defaultProtectedRouteProps: ProtectedRouteProps = {
-	isAuthenticated: isLogin,
+	isAuthenticated: setLogin(),
 	authenticationPath: '/login',
 };
 
@@ -29,6 +30,7 @@ const App: React.FC = () => {
 	const [login, setLogin] = useState<any>(isLogin);
 	const [id, setUserId] = useState<any>(userId);
 	const [activeUser, setUser] = useState();
+	const [pets, setPets] = useState();
 
 	return (
 		<Container className={classes.App}>
@@ -43,6 +45,8 @@ const App: React.FC = () => {
 					activeUser,
 					setUser,
 					getId,
+					pets,
+					setPets,
 				}}
 			>
 				<Header />

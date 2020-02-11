@@ -37,6 +37,7 @@ export const EditPage: React.FC = () => {
 	const updateUser = (id: string, user: {}): void => {
 		const newUser = userService.updateUser(id, user);
 		setUser(newUser);
+		console.log(activeUser);
 		history.push(`/user/${id}`);
 	};
 

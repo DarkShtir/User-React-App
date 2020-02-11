@@ -73,13 +73,6 @@ class UserService {
 
 	logout = async (): Promise<void | undefined> => {
 		try {
-			// const token = localStorage.getItem('token');
-			// const options = {
-			// 	// Authorization: `Bearer ${token}`,
-			// 	headers: {
-			// 		['Authorization']: `Bearer ${token}`,
-			// 	},
-			// };
 			await axios.post('/logout');
 			localStorage.removeItem('token');
 			localStorage.removeItem('id');
@@ -118,6 +111,29 @@ class UserService {
 			const response = await axios.put(`/${id}`, user);
 			const updateUser = response.data.user;
 			return updateUser;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	updateUserAvatar = async (
+		id: string,
+		user: {}
+	): Promise<void | undefined> => {
+		try {
+			const response = await axios.put(`/${id}`, user);
+			const updateUser = response.data.user;
+			return updateUser;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	getUserPets = async (id: string): Promise<void | undefined> => {
+		try {
+			const response = await axios.get(`/${id}/pets`);
+			const pets = response.data;
+			return pets;
 		} catch (error) {
 			console.log(error);
 		}
