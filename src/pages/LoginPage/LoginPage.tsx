@@ -4,16 +4,10 @@ import { UserLogin } from '../../interfaces';
 import { LoginForm } from '../../components/LoginForm/LoginForm';
 import { Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import {
-	isLoginContext,
-	isLogin,
-	setLogin,
-} from '../../components/utils/state';
+import { isLoginContext } from '../../components/utils/state';
 
 const LoginPage: React.FC = () => {
-	const { id, setUserId, updateUserData, userData } = useContext<any>(
-		isLoginContext
-	);
+	const { setUserId, setUser, setLogin } = useContext<any>(isLoginContext);
 
 	const history = useHistory();
 
@@ -25,12 +19,9 @@ const LoginPage: React.FC = () => {
 			}
 
 			setUserId(localStorage.getItem('id'));
-			await updateUserData(user, userData);
-			setLogin();
-			console.log(setLogin());
-			await history.push(`user/${id}`);
-			// if (id !== undefined && id !== null) {
-			// }
+			setUser(user);
+			setLogin(true);
+			history.push(`user/${localStorage.getItem('id')}`);
 		} catch (error) {
 			console.log(error);
 		}

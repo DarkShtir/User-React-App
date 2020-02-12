@@ -1,33 +1,48 @@
 import React from 'react';
 
-const checkLogin = (): boolean => {
+//функция проверки токнеа в локали
+export const checkLogin = (): boolean => {
 	if (localStorage.getItem('token')) {
 		return true;
 	} else {
 		return false;
 	}
 };
-
-export let isLogin = checkLogin();
-
-export const setLogin = () => {
-	return (isLogin = checkLogin());
-};
-
-export const getId = (): string | null | undefined => {
-	if (isLogin) {
-		return localStorage.getItem('id');
+//Получение ID
+export const getId = (): string => {
+	const id = localStorage.getItem('id');
+	if (checkLogin() && id) {
+		return id;
+	} else {
+		return '';
 	}
 };
 
-export const userId = getId();
-
-export const userData = {};
-export const pets = {};
-
-export const updateUserData = (user: object, store: object): void => {
-	store = user;
-	console.log(store);
-};
-
+//Общий контекст
 export const isLoginContext = React.createContext({});
+
+//Константа с тру или фолс на проверке есть ли токен в локали
+// export let isLogin = checkLogin();
+// isLogin();
+
+// export let isLogin = () => {
+// 	checkLogin();
+// };
+
+//Установка IsLogin  в новое значение, надо ли??
+// export const setLogin = () => {
+// 	return (isLogin = checkLogin());
+// };
+
+//константа с ID в зависимости, есть ли токен в локали, и есть ли там id
+// export const userId = getId();
+
+//Объект юзера, но можно же оперировать стейтом, вообще не понимаю зачем он тут
+// export const userData = {};
+// export const pets = {};
+
+//экспорт функции апдейта юзера в контексте, нужно ли????
+// export const updateUserData = (user: object, store: object): void => {
+// 	store = user;
+// 	console.log(store);
+// };

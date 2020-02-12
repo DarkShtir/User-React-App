@@ -7,30 +7,31 @@ import Header from '../components/shared/Header/Header';
 import Footer from '../components/shared/Footer/Footer';
 
 import {
-	isLogin,
-	userId,
+	// isLogin,
+	// userId,
+	// userData,
+	// updateUserData,
+	// setLogin,
 	isLoginContext,
-	userData,
-	updateUserData,
 	getId,
-	setLogin,
+	checkLogin,
 } from '../components/utils/state';
 
 import {
 	ProtectedRouteProps,
 	PrivateRouter,
 } from '../components/HOC/PrivateRouter';
-
-const defaultProtectedRouteProps: ProtectedRouteProps = {
-	isAuthenticated: setLogin(),
-	authenticationPath: '/login',
-};
+import UsersPage from '../pages/UsersPage/UsersPage';
 
 const App: React.FC = () => {
-	const [login, setLogin] = useState<any>(isLogin);
-	const [id, setUserId] = useState<any>(userId);
-	const [activeUser, setUser] = useState();
-	const [pets, setPets] = useState();
+	const [login, setLogin] = useState(checkLogin());
+	const [id, setUserId] = useState(getId());
+	const [activeUser, setUser] = useState({});
+	const defaultProtectedRouteProps: ProtectedRouteProps = {
+		isAuthenticated: login,
+		authenticationPath: '/login',
+	};
+	// const [pets, setPets] = useState({});
 
 	return (
 		<Container className={classes.App}>
@@ -40,13 +41,8 @@ const App: React.FC = () => {
 					setLogin,
 					id,
 					setUserId,
-					userData,
-					updateUserData,
 					activeUser,
 					setUser,
-					getId,
-					pets,
-					setPets,
 				}}
 			>
 				<Header />
@@ -61,6 +57,7 @@ const App: React.FC = () => {
 					/>
 					<Route path="/user-list" component={UsersList} />
 					<Route path="/user/:id/edit" component={Edit} />
+					<Route path="/users-cards" component={UsersPage} />
 					<Route exact path="/" component={Main} />
 					<Route
 						render={(): JSX.Element => {

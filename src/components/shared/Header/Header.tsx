@@ -43,8 +43,11 @@ const Header: React.FC = (): JSX.Element => {
 					</React.Fragment>
 				)}
 
-				<Button className={classes.btn} component={Link} to="/user-list">
+				<Button className={classes.btn} component={Link} to="/users-cards">
 					Местные
+				</Button>
+				<Button className={classes.btn} component={Link} to="/user-list">
+					Не суйся, для бацьки!
 				</Button>
 			</Container>
 		</Paper>

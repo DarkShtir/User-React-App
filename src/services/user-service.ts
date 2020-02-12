@@ -24,10 +24,12 @@ class UserService {
 		];
 	}
 
-	getAllUsers = async (): Promise<[User] | undefined> => {
+	getAllUsers = async (): Promise<// [User] | undefined
+	any> => {
 		try {
 			const response = await axios.get('/');
 			const users = response.data;
+			console.log(users);
 			return users;
 		} catch (error) {
 			console.log(error);
