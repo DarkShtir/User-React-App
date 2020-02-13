@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 
 interface Props {
 	user: User;
+	guest: boolean;
 }
 
 const userCardForm = {
@@ -24,7 +25,7 @@ const userCardForm = {
 	phone: 'Телефон',
 };
 
-const CardUser: React.FC<Props> = ({ user }): JSX.Element => {
+const CardUser: React.FC<Props> = ({ user, guest }): JSX.Element => {
 	const { id } = useContext<any>(isLoginContext);
 
 	const renderFields = (
@@ -55,6 +56,7 @@ const CardUser: React.FC<Props> = ({ user }): JSX.Element => {
 			</CardContent>
 			<CardActions>
 				<Button
+					disabled={guest}
 					component={Link}
 					to={`/user/${id}/edit/`}
 					variant="contained"

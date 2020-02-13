@@ -1,8 +1,10 @@
 .Loading {
   display: flex;
+  // justify-content: center;
+  align-items: center;
   position: relative;
   width: 80px;
-  height: 80px;
+  height: 80vh;
   margin: 0 auto;
 
   div {
@@ -16,7 +18,7 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: rgba(178, 31, 102, 1);
+      background: rgba(232, 248, 0, 0.89);
       margin: -4px 0 0 -4px;
     }
 

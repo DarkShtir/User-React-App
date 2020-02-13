@@ -6,6 +6,7 @@ import { isLoginContext } from '../../components/utils/state';
 import userService from '../../services/user-service';
 
 export const EditPage: React.FC = () => {
+	console.log('Я сюда попал');
 	const { activeUser, setUser } = useContext<any>(isLoginContext);
 	const history = useHistory();
 

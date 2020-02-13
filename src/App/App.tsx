@@ -27,6 +27,7 @@ const App: React.FC = () => {
 	const [login, setLogin] = useState(checkLogin());
 	const [id, setUserId] = useState(getId());
 	const [activeUser, setUser] = useState({});
+
 	const defaultProtectedRouteProps: ProtectedRouteProps = {
 		isAuthenticated: login,
 		authenticationPath: '/login',
@@ -52,11 +53,13 @@ const App: React.FC = () => {
 					<PrivateRouter
 						{...defaultProtectedRouteProps}
 						exact={true}
+						// path={`/user/:id`}
 						path={`/user/${id}`}
 						component={User}
 					/>
+					<Route path="/user/:id/" component={User} exact />
 					<Route path="/user-list" component={UsersList} />
-					<Route path="/user/:id/edit" component={Edit} />
+					<Route path={`/user/${id}/edit/`} component={Edit} />
 					<Route path="/users-cards" component={UsersPage} />
 					<Route exact path="/" component={Main} />
 					<Route

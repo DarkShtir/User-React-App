@@ -6,13 +6,14 @@ import UserService from '../../../services/user-service';
 import { isLoginContext } from '../../utils/state';
 
 const Header: React.FC = (): JSX.Element => {
-	const { login, setLogin, id } = useContext<any>(isLoginContext);
+	const { login, setLogin, id, setUserId } = useContext<any>(isLoginContext);
 
 	const history = useHistory();
 
 	const logout = (): void => {
 		UserService.logout();
 		setLogin(false);
+		setUserId('');
 		history.push('/');
 	};
 

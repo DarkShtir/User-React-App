@@ -12,9 +12,10 @@ import { User } from '../../interfaces';
 
 interface Props {
 	user: User;
+	guest: boolean;
 }
 
-const CardAvatar: React.FC<Props> = ({ user }): JSX.Element => {
+const CardAvatar: React.FC<Props> = ({ user, guest }): JSX.Element => {
 	// const avatar = `localhost:8080/static/${user.avatarUrl}`;
 	return (
 		<Card className={classes.CardComponent}>
@@ -43,6 +44,7 @@ const CardAvatar: React.FC<Props> = ({ user }): JSX.Element => {
 					color="primary"
 					className={classes.button}
 					size="small"
+					disabled={guest}
 				>
 					Edit Аву ёпт
 				</Button>
