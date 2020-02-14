@@ -1,11 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import UserService from '../../services/user-service';
 import { CardOtherUser } from '../../components/CardOtherUser/CardOtherUser';
 import Loading from '../../components/shared/Loading/Loading';
-import classes from './UsersPage.module.scss';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
+import UserService from '../../services/user-service';
+import classes from './UsersPage.module.scss';
 
-const UsersPage = () => {
+const UsersPage = (): JSX.Element => {
 	enum loadingEnum {
 		Loading,
 		Loaded,

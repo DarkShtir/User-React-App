@@ -26,7 +26,6 @@ const LoginPage: React.FC = () => {
 			console.log(error);
 		}
 	};
-	//TODO Added route on user page after login
 	return (
 		<Paper>
 			<LoginForm onUserLogin={loginUser} />

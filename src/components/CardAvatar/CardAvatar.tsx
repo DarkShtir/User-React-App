@@ -16,7 +16,6 @@ interface Props {
 }
 
 const CardAvatar: React.FC<Props> = ({ user, guest }): JSX.Element => {
-	// const avatar = `localhost:8080/static/${user.avatarUrl}`;
 	return (
 		<Card className={classes.CardComponent}>
 			<CardContent>

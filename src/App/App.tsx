@@ -1,27 +1,23 @@
 import React, { useState } from 'react';
-import { Container } from '@material-ui/core';
-import { Main, Login, Reg, UsersList, User, Edit } from '../pages/pages';
-import classes from './App.module.scss';
 import { Route, Switch } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+import {
+	Main,
+	Login,
+	Reg,
+	UsersList,
+	User,
+	Edit,
+	UsersPage,
+} from '../pages/pages';
 import Header from '../components/shared/Header/Header';
 import Footer from '../components/shared/Footer/Footer';
-
-import {
-	// isLogin,
-	// userId,
-	// userData,
-	// updateUserData,
-	// setLogin,
-	isLoginContext,
-	getId,
-	checkLogin,
-} from '../components/utils/state';
-
+import { isLoginContext, getId, checkLogin } from '../components/utils/state';
 import {
 	ProtectedRouteProps,
 	PrivateRouter,
 } from '../components/HOC/PrivateRouter';
-import UsersPage from '../pages/UsersPage/UsersPage';
+import classes from './App.module.scss';
 
 const App: React.FC = () => {
 	const [login, setLogin] = useState(checkLogin());
@@ -32,7 +28,6 @@ const App: React.FC = () => {
 		isAuthenticated: login,
 		authenticationPath: '/login',
 	};
-	// const [pets, setPets] = useState({});
 
 	return (
 		<Container className={classes.App}>
@@ -53,7 +48,6 @@ const App: React.FC = () => {
 					<PrivateRouter
 						{...defaultProtectedRouteProps}
 						exact={true}
-						// path={`/user/:id`}
 						path={`/user/${id}`}
 						component={User}
 					/>

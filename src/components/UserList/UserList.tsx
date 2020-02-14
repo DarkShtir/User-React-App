@@ -23,13 +23,11 @@ interface Props {
 	userEditToggle(id: string | undefined): void;
 	userRemove(id: string | undefined): void;
 	getUsersFromDB(): void;
-	// userEdit(id: number): void;
 }
 
 export class UserList extends React.Component<Props, State> {
 	userEdit = (id: string | undefined): void => {
 		this.props.userEditToggle(id);
-		// this.props.userEdit(id);
 	};
 	render(): JSX.Element {
 		return (

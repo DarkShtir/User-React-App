@@ -10,31 +10,6 @@ export const EditPage: React.FC = () => {
 	const { activeUser, setUser } = useContext<any>(isLoginContext);
 	const history = useHistory();
 
-	// const editUserToggle = (id: string): void => {
-	// 	this.setState(({ needEdit }) => {
-	// 		return { needEdit: !needEdit, idEditUser: id };
-	// 	});
-	// };
-
-	// const editUser = (): object | undefined => {
-	// 	return this.state.newUsers.find(user => user._id === this.state.idEditUser);
-	// };
-
-	// const updateUser = (user: object, id: string): void => {
-	// 	this.setState(({ newUsers }): object => {
-	// 		const newUser = [...newUsers];
-	// 		// eslint-disable-next-line
-	// 		newUser.find(oldUser => {
-	// 			if (oldUser._id === id) {
-	// 				Object.assign(oldUser, user);
-	// 				return true;
-	// 			}
-	// 		});
-	// 		console.log(newUser);
-	// 		return { newUsers: newUser };
-	// 	});
-	// };
-
 	const updateUser = (id: string, user: {}): void => {
 		const newUser = userService.updateUser(id, user);
 		setUser(newUser);
@@ -44,11 +19,7 @@ export const EditPage: React.FC = () => {
 
 	return (
 		<Paper>
-			<EditForm
-				// userToggle={this.editUserToggle}
-				editUser={activeUser}
-				onUserUpdated={updateUser}
-			/>
+			<EditForm editUser={activeUser} onUserUpdated={updateUser} />
 		</Paper>
 	);
 };

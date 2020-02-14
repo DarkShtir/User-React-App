@@ -7,14 +7,14 @@ export interface ProtectedRouteProps extends RouteProps {
 }
 
 export class PrivateRouter extends Route<ProtectedRouteProps> {
-	render() {
+	render(): JSX.Element {
 		let redirectPath = '';
 		if (!this.props.isAuthenticated) {
 			redirectPath = this.props.authenticationPath;
 		}
 
 		if (redirectPath) {
-			const renderComponent = () => (
+			const renderComponent = (): JSX.Element => (
 				<Redirect to={{ pathname: redirectPath }} />
 			);
 			return (

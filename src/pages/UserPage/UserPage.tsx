@@ -5,13 +5,16 @@ import React, {
 	useCallback,
 	useMemo,
 } from 'react';
+
 import CardUser from '../../components/CardUser/CardUser';
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
-import classes from './UserPage.module.scss';
-import { isLoginContext } from '../../components/utils/state';
-import userService from '../../services/user-service';
 import Loading from '../../components/shared/Loading/Loading';
-// import CardPets from '../../components/CardPets/CardPets';
+import { isLoginContext } from '../../components/utils/state';
+
+import userService from '../../services/user-service';
+
+import classes from './UserPage.module.scss';
+
 //!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ И ОТОБРАЖЕНИЕ ПЭТОВ!!!!!
 const UserPage = (props: any): JSX.Element => {
 	const { id, activeUser, setUser } = useContext<any>(isLoginContext);

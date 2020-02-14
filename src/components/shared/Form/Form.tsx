@@ -1,5 +1,4 @@
 import React from 'react';
-// import { User, UserLogin } from '../../../interfaces';
 import Input from '../UI/Input/Input';
 import { Button, ButtonGroup } from '@material-ui/core';
 import classes from './Form.module.scss';
@@ -52,10 +51,8 @@ const Form: React.FC<Props> = ({
 		user: { [value: string]: any },
 		templateForm: TemplateForm
 	): object => {
-		// const unusedFields = ['_id'];
 		let cls: [string];
 		if (formType === 'edit') {
-			// unusedFields.push('login', 'password', '__v', 'tokens');
 			cls = ['active'];
 		}
 		return Object.keys(templateForm).map(
@@ -81,28 +78,6 @@ const Form: React.FC<Props> = ({
 						/>
 					</React.Fragment>
 				);
-
-				// if (!unusedFields.includes(fieldName)) {
-				// 	return (
-				// 		<React.Fragment key={users/${}fieldName + index}>
-				// 			<Input
-				// 				className={cls}
-				// 				value={user}
-				// 				label={fieldName}
-				// 				type={
-				// 					fieldName === 'password'
-				// 						? fieldName
-				// 						: fieldName === 'phone'
-				// 						? 'tel'
-				// 						: ''
-				// 				}
-				// 				onChange={(event): void => {
-				// 					inputHandler(event.target.value, fieldName);
-				// 				}}
-				// 			/>
-				// 		</React.Fragment>
-				// 	);
-				// }
 			}
 		);
 	};
@@ -123,7 +98,7 @@ const Form: React.FC<Props> = ({
 					<Button
 						className={classes.button}
 						color="secondary"
-						onClick={() => {
+						onClick={(): void => {
 							history.goBack();
 						}}
 					>
