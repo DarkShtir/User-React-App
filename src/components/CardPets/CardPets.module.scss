@@ -1,27 +1,23 @@
-.CardComponent {
-  // flex-wrap: wrap;
+.CardPetsComponent {
   display: flex;
   flex-direction: column;
-  flex: 0.5;
   text-align: center;
   align-items: flex-start;
-  margin: 0 auto;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
   background-blend-mode: multiply, multiply;
+  width: fit-content;
+  margin: 0.5rem;
 
   .button {
     display: flex;
-    margin: 1rem;
+    margin: 0.1rem;
   }
 
   .content {
     display: flex;
-    flex-direction: column;
-    // flex-wrap: wrap;
-  }
-
-  .ListItemText {
-    display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    padding: 0;
+    margin: 0 auto;
+    align-items: flex-end;
   }
 }

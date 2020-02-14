@@ -1,16 +1,10 @@
 import React, { useContext } from 'react';
-import {
-	Card,
-	CardContent,
-	CardActions,
-	Button,
-	ListItem,
-	ListItemText,
-} from '@material-ui/core';
+import { Card, CardContent, CardActions, Button } from '@material-ui/core';
 import classes from './CardUser.module.scss';
 import { User } from '../../interfaces';
 import { isLoginContext } from '../utils/state';
 import { Link } from 'react-router-dom';
+import RenderFields from '../shared/RenderFields/RenderFields';
 
 interface Props {
 	user: User;
@@ -28,33 +22,12 @@ const userCardForm = {
 const CardUser: React.FC<Props> = ({ user, guest }): JSX.Element => {
 	const { id } = useContext<any>(isLoginContext);
 
-	const renderFields = (
-		cardForm: { [index: string]: string },
-		user: { [index: string]: any }
-	): object => {
-		return Object.keys(cardForm).map(
-			(fieldName: string, index): void | JSX.Element => {
-				const property = user[fieldName];
-				return (
-					<React.Fragment key={fieldName + index}>
-						<ListItem>
-							<ListItemText
-								primary={property}
-								secondary={cardForm[fieldName]}
-							/>
-						</ListItem>
-					</React.Fragment>
-				);
-			}
-		);
-	};
-
 	return (
 		<Card className={classes.CardComponent}>
 			<CardContent className={classes.content}>
-				{renderFields(userCardForm, user)}
+				<RenderFields cardForm={userCardForm} user={user} />
 			</CardContent>
-			<CardActions>
+			<CardActions className={classes.cardActions}>
 				<Button
 					disabled={guest}
 					component={Link}

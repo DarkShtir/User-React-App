@@ -31,7 +31,6 @@ const UsersPage = (): JSX.Element => {
 	useEffect(() => {
 		response();
 	}, [response]);
-	console.log(userList);
 	switch (loadingState) {
 		case loadingEnum.Error:
 			return <ErrorIndicator />;

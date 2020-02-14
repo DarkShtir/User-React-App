@@ -1,3 +1,19 @@
 .UserPage {
   display: flex;
+  justify-content: space-between;
+  height: 100%;
+
+  .infoWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%;
+    margin: 0 0 1rem 0.5rem;
+  }
+
+  .pets {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }

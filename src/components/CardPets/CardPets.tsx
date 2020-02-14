@@ -1,27 +1,18 @@
-import React, { useContext } from 'react';
-import {
-	Card,
-	CardContent,
-	CardActions,
-	Button,
-	ListItem,
-	ListItemText,
-} from '@material-ui/core';
+import React from 'react';
+import { Card, CardContent, CardActions, Button } from '@material-ui/core';
 import classes from './CardPets.module.scss';
-// import { User } from '../../interfaces';
-import { isLoginContext } from '../utils/state';
-import { Link } from 'react-router-dom';
+import RenderFields from '../shared/RenderFields/RenderFields';
 
+interface Pets {
+	_id: string;
+	name: string;
+	species: string;
+	ownerId?: string | any;
+	__v: number;
+}
 interface Props {
-	pets: [
-		{
-			_id: string,
-			name: string,
-			species: string,
-			ownerId?: string | any,
-			__v: number,
-		}
-	];
+	pet: Pets;
+	guest: boolean;
 }
 
 const petCardForm = {
@@ -29,45 +20,23 @@ const petCardForm = {
 	species: 'Вид',
 };
 
-const CardPets: React.FC<Props> = ({ pets }): JSX.Element => {
-	const { id } = useContext<any>(isLoginContext);
-
-	const renderFields = (
-		cardForm: { [index: string]: string },
-		pets: { [index: string]: any }
-	): object => {
-		return Object.keys(cardForm).map(
-			(fieldName: string, index): void | JSX.Element => {
-				const property = pets[fieldName];
-				return (
-					<React.Fragment key={fieldName + index}>
-						<ListItem>
-							<ListItemText
-								primary={property}
-								secondary={cardForm[fieldName]}
-							/>
-						</ListItem>
-					</React.Fragment>
-				);
-			}
-		);
-	};
-
+const CardPets: React.FC<Props> = ({ pet, guest }): JSX.Element => {
 	return (
-		<Card className={classes.CardComponent}>
+		<Card className={classes.CardPetsComponent}>
 			<CardContent className={classes.content}>
-				{renderFields(petCardForm, pets)}
+				<RenderFields cardForm={petCardForm} user={pet} />
 			</CardContent>
 			<CardActions>
 				<Button
-					component={Link}
-					to={`/user/${id}/edit/`}
+					// component={Link}
+					// to={`/user/${id}/edit/`}
 					variant="contained"
 					color="primary"
 					className={classes.button}
 					size="small"
+					disabled={guest}
 				>
-					Edit епт
+					Edit животину епт
 				</Button>
 			</CardActions>
 		</Card>

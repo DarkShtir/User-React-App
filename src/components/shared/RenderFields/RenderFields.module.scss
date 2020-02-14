@@ -1,0 +1,15 @@
+.RenderFields {
+  .listItem {
+    display: flex;
+    width: fit-content;
+    padding: 0 0.5rem;
+    text-align: center;
+    ;
+    align-items: flex-end;
+  }
+
+  .ListItemText {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
