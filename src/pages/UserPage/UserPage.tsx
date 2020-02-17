@@ -25,7 +25,7 @@ interface Pets {
 	__v: number;
 }
 
-//!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ И ОТОБРАЖЕНИЕ ПЭТОВ!!!!!
+//!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ!!!!!
 const UserPage = (props: any): JSX.Element => {
 	enum loadingEnum {
 		Loading,
@@ -49,13 +49,20 @@ const UserPage = (props: any): JSX.Element => {
 
 	const userWithCallback = useCallback(
 		async id => {
-			const newUser = await userService.getUserById(id);
-			const newPets = await userService.getUserPets(id);
-			if (newUser !== undefined && newUser !== null) {
-				setUser(newUser);
-				setPets(newPets);
-				setLoading(loadingEnum.Loaded);
-			} else {
+			console.log(id);
+			try {
+				const newUser = await userService.getUserById(id);
+				const newPets = await userService.getUserPets(id);
+				if (newUser !== undefined && newUser !== null && newUser) {
+					setUser(newUser);
+					setPets(newPets);
+					setLoading(loadingEnum.Loaded);
+				} else {
+					setLoading(loadingEnum.Error);
+					throw new Error('Пользователя не найдено!');
+				}
+			} catch (error) {
+				console.log(error);
 				setLoading(loadingEnum.Error);
 			}
 		},
@@ -65,7 +72,7 @@ const UserPage = (props: any): JSX.Element => {
 	useEffect(() => {
 		if (id && id !== undefined && id !== null && id !== '' && id === guestId) {
 			userWithCallback(id);
-		} else if (id !== guestId && id) {
+		} else if (id !== guestId /*&& id*/) {
 			userWithCallback(guestId);
 			console.log('You are guest User');
 		}

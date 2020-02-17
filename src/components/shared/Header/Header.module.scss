@@ -18,9 +18,21 @@
   .menu_btn_group {
     display: flex;
     justify-content: flex-end;
+    display: flex;
+    flex-wrap: wrap;
 
     .btn {
-      color: white
+      color: white;
+
+      &.qwe {
+        background-color: rgba(10, 255, 80, 0.5)
+      }
+
+      &:active {
+        color: yellow;
+      }
+
     }
+
   }
 }

@@ -28,17 +28,19 @@ const CardUser: React.FC<Props> = ({ user, guest }): JSX.Element => {
 				<RenderFields cardForm={userCardForm} user={user} />
 			</CardContent>
 			<CardActions className={classes.cardActions}>
-				<Button
-					disabled={guest}
-					component={Link}
-					to={`/user/${id}/edit/`}
-					variant="contained"
-					color="primary"
-					className={classes.button}
-					size="small"
-				>
-					Edit епт
-				</Button>
+				{!guest ? (
+					<Button
+						// disabled={guest}
+						component={Link}
+						to={`/user/${id}/edit/`}
+						variant="contained"
+						color="primary"
+						className={classes.button}
+						size="small"
+					>
+						Edit епт
+					</Button>
+				) : null}
 			</CardActions>
 		</Card>
 	);

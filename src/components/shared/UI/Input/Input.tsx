@@ -14,14 +14,14 @@ type InputProps = {
 const Input = (props: InputProps): JSX.Element => {
 	const inputType = props.type || 'text';
 	const htmlFor = `${inputType}-${Math.random()}`;
-	const cls = [classes.Input, 'input-field col s12'];
+	// const cls = [classes.Input];
 	return (
 		<Container>
 			<TextField
 				id={htmlFor}
 				label={props.label}
 				type={inputType}
-				className={cls.join(' ')}
+				className={classes.Input}
 				fullWidth
 				margin="normal"
 				variant="outlined"

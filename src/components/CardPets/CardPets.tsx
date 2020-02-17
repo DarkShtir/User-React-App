@@ -27,17 +27,19 @@ const CardPets: React.FC<Props> = ({ pet, guest }): JSX.Element => {
 				<RenderFields cardForm={petCardForm} user={pet} />
 			</CardContent>
 			<CardActions>
-				<Button
-					// component={Link}
-					// to={`/user/${id}/edit/`}
-					variant="contained"
-					color="primary"
-					className={classes.button}
-					size="small"
-					disabled={guest}
-				>
-					Edit животину епт
-				</Button>
+				{!guest ? (
+					<Button
+						// component={Link}
+						// to={`/user/${id}/edit/`}
+						variant="contained"
+						color="primary"
+						className={classes.button}
+						size="small"
+						// disabled={guest}
+					>
+						Edit животину епт
+					</Button>
+				) : null}
 			</CardActions>
 		</Card>
 	);

@@ -38,15 +38,17 @@ const CardAvatar: React.FC<Props> = ({ user, guest }): JSX.Element => {
 				</Typography>
 			</CardContent>
 			<CardActions>
-				<Button
-					variant="contained"
-					color="primary"
-					className={classes.button}
-					size="small"
-					disabled={guest}
-				>
-					Edit Аву ёпт
-				</Button>
+				{!guest ? (
+					<Button
+						variant="contained"
+						color="primary"
+						className={classes.button}
+						size="small"
+						// disabled={guest}
+					>
+						Edit Аву ёпт
+					</Button>
+				) : null}
 			</CardActions>
 		</Card>
 	);

@@ -23,6 +23,7 @@ const LoginPage: React.FC = () => {
 			setLoading(loadingEnum.Loading);
 			if (!user && user === undefined) {
 				setLoading(loadingEnum.Error);
+				setLogin(false);
 				throw new Error('Пользователь на найден!!');
 			}
 
@@ -39,7 +40,12 @@ const LoginPage: React.FC = () => {
 		<Paper className={classes.LoginPage}>
 			<LoginForm onUserLogin={loginUser} />
 			{loadingState === loadingEnum.Error ? (
-				<Typography variant="h2" align="center" color="error">
+				<Typography
+					variant="h2"
+					align="center"
+					color="error"
+					className={classes.errorMessage}
+				>
 					Пользователь не найден!
 				</Typography>
 			) : null}
