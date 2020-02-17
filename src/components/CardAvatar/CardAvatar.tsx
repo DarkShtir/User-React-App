@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	Card,
 	CardContent,
@@ -6,7 +6,9 @@ import {
 	CardActions,
 	Button,
 	CardMedia,
+	IconButton,
 } from '@material-ui/core';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import classes from './CardAvatar.module.scss';
 import { User } from '../../interfaces';
 
@@ -16,6 +18,7 @@ interface Props {
 }
 
 const CardAvatar: React.FC<Props> = ({ user, guest }): JSX.Element => {
+	const [avatar, setAvatar] = useState(user.avatarUrl);
 	return (
 		<Card className={classes.CardComponent}>
 			<CardContent>
@@ -27,9 +30,38 @@ const CardAvatar: React.FC<Props> = ({ user, guest }): JSX.Element => {
 					component="img"
 					alt="Holop Avatar"
 					height="350"
-					src={`http://localhost:8080/static/${user.avatarUrl}`}
+					// src={`http://localhost:8080/static/${user.avatarUrl}`}
+					src={`http://localhost:8080/static/${avatar}`}
 					title="My Avatar"
 				/>
+				{/*! Разобраться с фото !*/}
+				<form
+					// onSubmit={(e: any) => {
+					// 	handleSubmit(e);
+					// }}
+					action="/upload"
+					method="post"
+					encType="multipart/form-data"
+				>
+					<input
+						// onChange={handlerFiles}
+						accept="image/*"
+						className={classes.input}
+						id="icon-button-file"
+						type="file"
+						name="avatar_"
+					/>
+					<label htmlFor="icon-button-file">
+						<IconButton
+							color="primary"
+							aria-label="upload picture"
+							component="span"
+						>
+							<PhotoCamera />
+						</IconButton>
+					</label>
+				</form>
+				{/*! Разобраться с фото !*/}
 				<Typography variant="h5" component="h2" className={classes.name}>
 					{user.firstName}, {user.lastName} ({user.login})
 				</Typography>
@@ -46,7 +78,7 @@ const CardAvatar: React.FC<Props> = ({ user, guest }): JSX.Element => {
 						size="small"
 						// disabled={guest}
 					>
-						Edit Аву ёпт
+						Edit цитатку и Аву ёпт
 					</Button>
 				) : null}
 			</CardActions>
