@@ -116,14 +116,15 @@ class UserService {
 		}
 	};
 
-	updateUserAvatar = async (
-		id: string,
-		user: {}
-	): Promise<void | undefined> => {
+	setAvatar = async (id: string, avatar: any): Promise<void | undefined> => {
 		try {
-			const response = await axios.put(`/${id}`, user);
-			const updateUser = response.data.user;
-			return updateUser;
+			const fileData = new FormData();
+			fileData.append('avatar', avatar);
+			const response = await axios.post(`../upload/`, fileData);
+
+			const newUserAvatar = response.data;
+			console.log(newUserAvatar);
+			this.updateUser(id, { avatarUrl: newUserAvatar });
 		} catch (error) {
 			console.log(error);
 		}

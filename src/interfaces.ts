@@ -9,6 +9,7 @@ export interface User {
 	phone?: string;
 	tokens?: [{ token: string }] | [];
 	avatarUrl?: string;
+	quotes?: string;
 }
 
 export interface UserLogin {

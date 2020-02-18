@@ -38,6 +38,33 @@ const UserPage = (props: any): JSX.Element => {
 	const [guest, setGuest] = useState(false);
 	const [pets, setPets] = useState();
 
+	useEffect(() => {
+		setLoading(loadingEnum.Loading);
+		return () => {
+			console.log('clear first useEffect');
+		};
+	}, [activeUser, loadingEnum.Loading]);
+
+	const setUserAvatar = async (avatar: object): Promise<void> => {
+		try {
+			if (avatar) {
+				await userService.setAvatar(id, avatar);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const setUserQuotes = async (quotes: string): Promise<void> => {
+		try {
+			if (quotes) {
+				await userService.updateUser(id, { quotes: quotes });
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	useMemo(() => {
 		setGuestId(props.match.url.slice(6));
 		if (guestId !== id) {
@@ -91,7 +118,12 @@ const UserPage = (props: any): JSX.Element => {
 			return (
 				<div className={classes.UserPage}>
 					<>
-						<CardAvatar user={activeUser} guest={guest} />
+						<CardAvatar
+							user={activeUser}
+							guest={guest}
+							setUserAvatar={setUserAvatar}
+							setUserQuotes={setUserQuotes}
+						/>
 						<div className={classes.infoWrapper}>
 							<CardUser user={activeUser} guest={guest} />
 							{pets ? (

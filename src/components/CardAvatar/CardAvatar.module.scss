@@ -30,15 +30,61 @@
   }
 
   .media {
-    max-width: 600px;
+    max-width: 100%;
     display: flex;
     max-height: fit-content;
     object-fit: contain;
     height: auto;
+    border-radius: 1rem;
   }
 
   .input {
     display: none;
   }
 
+  .form {
+    height: 50px;
+    position: absolute;
+    bottom: 0px;
+    min-width: 100%;
+    background-color: rgba($color: black, $alpha: 0.5);
+    border-radius: 0 0 1rem 1rem;
+  }
+
+  .cardContent {
+    padding: 1rem 0 0 0;
+  }
+
+  .mediaContent {
+    position: relative;
+    max-width: 500px;
+    margin: 1rem 0;
+  }
+
+  .quotes {
+    width: 100%;
+
+    label {
+      color: yellow;
+    }
+
+    div {
+
+      &::before {
+        display: none;
+      }
+
+      &::after {
+        border-bottom: 2px solid yellow;
+      }
+
+      textarea {
+        color: yellow;
+        text-align: center;
+        height: auto;
+      }
+    }
+
+
+  }
 }

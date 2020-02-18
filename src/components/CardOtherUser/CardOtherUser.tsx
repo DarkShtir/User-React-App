@@ -29,7 +29,7 @@ export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
 					image={`http://localhost:8080/static/${user.avatarUrl}`}
 					title="Contemplative Reptile"
 				/>
-				<CardContent>
+				<CardContent className={classes.textContent}>
 					<Typography gutterBottom variant="h5" component="h2">
 						{user.firstName}
 					</Typography>

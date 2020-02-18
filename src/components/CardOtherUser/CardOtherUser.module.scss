@@ -5,15 +5,20 @@
   justify-content: center;
   text-align: center;
   min-width: 250px;
-  width: 30%;
+  width: 20%;
   margin: 1rem;
   background-color: #FF3CAC;
   background-image: linear-gradient(225deg, #FF3CAC 0%, #784BA0 50%, #2B86C5 100%);
 
   .media {
-    max-height: 50%;
-    max-width: 80%;
-    margin: 0 auto;
+    height: 90%;
+    width: 90%;
+    margin: 1rem auto;
+    border-radius: 1rem;
+  }
+
+  .textContent {
+    padding: 0 0 0.5rem 0;
   }
 
   .actions {
