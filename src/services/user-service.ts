@@ -6,6 +6,28 @@ axios.interceptors.request.use(request => {
 	request.headers['Authorization'] = token ? `Bearer ${token}` : '';
 	return request;
 });
+
+//!!! Обязательно спросить про обработку ошибок
+axios.interceptors.response.use(
+	response => {
+		return response;
+	},
+	error => {
+		console.log(error);
+
+		if (error.response.status === 400) {
+			throw new Error('Упс, запрос не прошёл, проверьте введенную информацию!');
+		} else if (error.response.status === 401) {
+			throw new Error(
+				'Эта информация доступна только авторизированным пользователям, авторизуйтесь'
+			);
+		} else if (error.message === 'Network Error') {
+			throw new Error('Проблемы с интернет соединением!');
+		}
+		return Promise.reject(error);
+	}
+);
+//!!! Обязательно спросить про обработку ошибок
 class UserService {
 	users: User[];
 
@@ -50,7 +72,8 @@ class UserService {
 			const newUser = response.data;
 			const token = newUser.token;
 			this.setToken(token);
-			console.log(token);
+			localStorage.setItem('id', newUser.user._id);
+			// console.log(token);
 			return newUser;
 		} catch (error) {
 			console.log(error);
@@ -100,7 +123,7 @@ class UserService {
 				},
 			};
 			await axios.delete(`/${id}`, options);
-			localStorage.removeItem('token');
+			// localStorage.removeItem('token');
 		} catch (error) {
 			console.log(error);
 		}

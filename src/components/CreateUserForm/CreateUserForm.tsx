@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classes from './CreateForm.module.scss';
+import classes from './CreateUserForm.module.scss';
 import { User } from '../../interfaces';
 import Form from '../shared/Form/Form';
 import { Typography, Container } from '@material-ui/core';
@@ -12,7 +12,7 @@ interface State {
 	user: User;
 }
 
-export class CreateForm extends Component<Props, State> {
+export class CreateUserForm extends Component<Props, State> {
 	state = {
 		user: {
 			login: '',
@@ -54,6 +54,16 @@ export class CreateForm extends Component<Props, State> {
 		});
 	};
 
+	userCreateFormTemplate = {
+		login: 'Логин',
+		password: 'Пароль',
+		firstName: 'Имя',
+		lastName: 'Фамилия',
+		gender: 'Пол',
+		nat: 'Национальность',
+		phone: 'Телефон',
+	};
+
 	render(): JSX.Element {
 		return (
 			<Container className={classes.CreateForm}>
@@ -64,6 +74,7 @@ export class CreateForm extends Component<Props, State> {
 					user={this.state.user}
 					inputHandler={this.handleInputChanges}
 					onSubmit={this.submitHandler}
+					templateForm={this.userCreateFormTemplate}
 				/>
 			</Container>
 		);

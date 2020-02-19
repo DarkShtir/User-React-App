@@ -13,6 +13,8 @@ interface Pets {
 interface Props {
 	pet: Pets;
 	guest: boolean;
+	// editPet: (pet: object) => void;
+	// deletePet: (id: string) => void;
 }
 
 const petCardForm = {

@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
-import { CreateForm } from '../../components/CreateForm/CreateForm';
+import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
 import UserService from '../../services/user-service';
 import { User } from '../../interfaces';
 import { Paper } from '@material-ui/core';
+import { createBrowserHistory } from 'history';
 
 interface State {
 	needAdd: boolean;
 }
 
+const history = createBrowserHistory();
 export default class RegistrationPage extends Component<{}, State> {
 	state = {
 		needAdd: false,
 	};
-	addUser = (user: User): void => {
-		UserService.addUser(user);
+	//!!! Спросить про редирект!!!!
+	addUser = async (user: User): Promise<any> => {
+		await UserService.addUser(user);
+		// const id = await localStorage.getItem('id');
+		if (await localStorage.getItem('id')) {
+			history.push(`../${localStorage.getItem('id')}`, null);
+		}
 	};
+
 	//TODO Added route on userpage after registration
 	addUserToggle = (): void => {
 		this.setState(({ needAdd }) => {
@@ -24,7 +32,7 @@ export default class RegistrationPage extends Component<{}, State> {
 	render(): JSX.Element {
 		return (
 			<Paper>
-				<CreateForm
+				<CreateUserForm
 					onUserAdded={this.addUser}
 					userAddToggle={this.addUserToggle}
 				/>

@@ -26,7 +26,6 @@ const CardAvatar: React.FC<Props> = ({
 	setUserAvatar,
 	setUserQuotes,
 }): JSX.Element => {
-	console.log(user.quotes);
 	const [avatar, setAvatar] = useState(
 		`http://localhost:8080/static/${user.avatarUrl}`
 	);
@@ -52,7 +51,7 @@ const CardAvatar: React.FC<Props> = ({
 
 	const handleInputChanges = (
 		event: React.ChangeEvent<HTMLInputElement>
-	): any => {
+	): void => {
 		event.preventDefault();
 		// console.log(event.target.value);
 		setNewQuotes(event.target.value);
@@ -133,7 +132,7 @@ const CardAvatar: React.FC<Props> = ({
 						size="small"
 						onClick={editHandler}
 					>
-						Edit цитатку и Аву ёпт
+						{!edit ? 'Edit цитатку и Аву ёпт' : 'Сохранить Епт!'}
 					</Button>
 				) : null}
 				{/* <Button

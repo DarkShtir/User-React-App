@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { EditForm } from '../../components/EditForm/EditForm';
 import { User } from '../../interfaces';
 import { Paper } from '@material-ui/core';
 

@@ -12,6 +12,7 @@ export class ErrorBoundry extends Component {
 
 	render(): JSX.Element | React.ReactNode {
 		if (this.state.hasError) {
+			console.log('Сработал оброботчик ошибок!');
 			return <ErrorIndicator />;
 		}
 

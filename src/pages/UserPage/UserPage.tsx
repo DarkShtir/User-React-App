@@ -17,13 +17,13 @@ import classes from './UserPage.module.scss';
 import CardPets from '../../components/CardPets/CardPets';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 
-interface Pets {
-	_id: string;
-	name: string;
-	species: string;
-	ownerId?: string | any;
-	__v: number;
-}
+// interface Pets {
+// 	_id: string;
+// 	name: string;
+// 	species: string;
+// 	ownerId?: string | any;
+// 	__v: number;
+// }
 
 //!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ!!!!!
 const UserPage = (props: any): JSX.Element => {
@@ -37,23 +37,6 @@ const UserPage = (props: any): JSX.Element => {
 	const [guestId, setGuestId] = useState('');
 	const [guest, setGuest] = useState(false);
 	const [pets, setPets] = useState();
-
-	useEffect(() => {
-		setLoading(loadingEnum.Loading);
-		return () => {
-			console.log('clear first useEffect');
-		};
-	}, [activeUser, loadingEnum.Loading]);
-
-	const setUserAvatar = async (avatar: object): Promise<void> => {
-		try {
-			if (avatar) {
-				await userService.setAvatar(id, avatar);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
 
 	const setUserQuotes = async (quotes: string): Promise<void> => {
 		try {
@@ -76,7 +59,6 @@ const UserPage = (props: any): JSX.Element => {
 
 	const userWithCallback = useCallback(
 		async id => {
-			console.log(id);
 			try {
 				const newUser = await userService.getUserById(id);
 				const newPets = await userService.getUserPets(id);
@@ -97,16 +79,32 @@ const UserPage = (props: any): JSX.Element => {
 	);
 
 	useEffect(() => {
+		setLoading(loadingEnum.Loading);
+		// return () => {
+		// 	console.log('clear first useEffect');
+		// };
+	}, [activeUser, loadingEnum.Loading]);
+
+	const setUserAvatar = async (avatar: object): Promise<void> => {
+		try {
+			if (avatar) {
+				await userService.setAvatar(id, avatar);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
 		if (id && id !== undefined && id !== null && id !== '' && id === guestId) {
 			userWithCallback(id);
 		} else if (id !== guestId /*&& id*/) {
 			userWithCallback(guestId);
-			console.log('You are guest User');
 		}
 
-		return (): void => {
-			console.log('cleared');
-		};
+		// return (): void => {
+		// 	console.log('cleared');
+		// };
 	}, [userWithCallback, id, guestId]);
 
 	switch (loading) {
@@ -126,10 +124,18 @@ const UserPage = (props: any): JSX.Element => {
 						/>
 						<div className={classes.infoWrapper}>
 							<CardUser user={activeUser} guest={guest} />
-							{pets ? (
+							{pets && pets.length > 0 ? (
 								<div className={classes.pets}>
 									{pets.map((pet: any, index: number) => {
-										return <CardPets pet={pet} key={index} guest={guest} />;
+										return (
+											<CardPets
+												pet={pet}
+												key={index}
+												guest={guest}
+												// editPet={handlerEditPet}
+												// deletePet={handlerDeletePet}
+											/>
+										);
 									})}
 								</div>
 							) : null}

@@ -4,15 +4,16 @@ import { Button, ButtonGroup } from '@material-ui/core';
 import classes from './Form.module.scss';
 import { useHistory } from 'react-router-dom';
 
+interface TemplateForm {
+	[value: string]: string;
+}
+
 interface Props {
 	user: { [value: string]: string | [] };
 	inputHandler: (value: string, fieldName: string) => void;
 	onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 	formType?: string;
-}
-
-interface TemplateForm {
-	[value: string]: string;
+	templateForm: TemplateForm;
 }
 
 const Form: React.FC<Props> = ({
@@ -20,31 +21,9 @@ const Form: React.FC<Props> = ({
 	inputHandler,
 	onSubmit,
 	formType = 'add',
+	templateForm,
 }) => {
 	const history = useHistory();
-
-	const userCreateForm = {
-		login: 'Логин',
-		password: 'Пароль',
-		firstName: 'Имя',
-		lastName: 'Фамилия',
-		gender: 'Пол',
-		nat: 'Национальность',
-		phone: 'Телефон',
-	};
-
-	const userEditForm = {
-		firstName: 'Имя',
-		lastName: 'Фамилия',
-		gender: 'Пол',
-		nat: 'Национальность',
-		phone: 'Телефон',
-	};
-
-	const userLoginForm = {
-		login: 'Логин',
-		password: 'Пароль',
-	};
 
 	const renderInputField = (
 		formType: string,
@@ -81,11 +60,9 @@ const Form: React.FC<Props> = ({
 			}
 		);
 	};
-
-	if (formType === 'edit') {
-		return (
-			<form className={classes.Form} onSubmit={onSubmit}>
-				{renderInputField(formType, user, userEditForm)}
+	const renderButtonGroup = (formType: string) => {
+		if (formType === 'edit') {
+			return (
 				<ButtonGroup>
 					<Button
 						className={classes.button}
@@ -93,7 +70,7 @@ const Form: React.FC<Props> = ({
 						variant="outlined"
 						type="submit"
 					>
-						Save Changes
+						Сохранить
 					</Button>
 					<Button
 						className={classes.button}
@@ -102,15 +79,12 @@ const Form: React.FC<Props> = ({
 							history.goBack();
 						}}
 					>
-						Cancel Changes
+						Отменить
 					</Button>
 				</ButtonGroup>
-			</form>
-		);
-	} else if (formType === 'login') {
-		return (
-			<form className={classes.Form} onSubmit={onSubmit}>
-				{renderInputField(formType, user, userLoginForm)}
+			);
+		} else if (formType === 'login') {
+			return (
 				<Button
 					className={classes.button}
 					color="primary"
@@ -119,23 +93,27 @@ const Form: React.FC<Props> = ({
 				>
 					Войти
 				</Button>
-			</form>
-		);
-	} else {
-		return (
-			<form className={classes.Form} onSubmit={onSubmit}>
-				{renderInputField(formType, user, userCreateForm)}
+			);
+		} else {
+			return (
 				<Button
 					className={classes.button}
 					color="primary"
 					variant="outlined"
 					type="submit"
 				>
-					Add
+					Регистрация
 				</Button>
-			</form>
-		);
-	}
+			);
+		}
+	};
+
+	return (
+		<form className={classes.Form} onSubmit={onSubmit}>
+			{renderInputField(formType, user, templateForm)}
+			{renderButtonGroup(formType)}
+		</form>
+	);
 };
 
 export default Form;

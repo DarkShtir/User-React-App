@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { User } from '../../interfaces';
 import Form from '../shared/Form/Form';
 import { Container, Typography } from '@material-ui/core';
-import classes from './EditForm.module.scss';
+import classes from './EditUserForm.module.scss';
 
 interface Props {
 	// userToggle?(id: string): void;
@@ -13,7 +13,7 @@ interface Props {
 interface State {
 	user: User;
 }
-export class EditForm extends Component<Props, State> {
+export class EditUserForm extends Component<Props, State> {
 	state = {
 		user: {
 			_id: '0',
@@ -56,6 +56,14 @@ export class EditForm extends Component<Props, State> {
 		});
 	};
 
+	userEditFormTemplate = {
+		firstName: 'Имя',
+		lastName: 'Фамилия',
+		gender: 'Пол',
+		nat: 'Национальность',
+		phone: 'Телефон',
+	};
+
 	render(): JSX.Element {
 		return (
 			<Container className={classes.EditForm}>
@@ -68,6 +76,7 @@ export class EditForm extends Component<Props, State> {
 					inputHandler={this.handleInputChanges}
 					onSubmit={this.submitHandler}
 					formType={'edit'}
+					templateForm={this.userEditFormTemplate}
 				/>
 			</Container>
 		);

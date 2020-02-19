@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { EditForm } from '../../components/EditForm/EditForm';
+import { EditUserForm } from '../../components/EditUserForm/EditUserForm';
 import { Paper } from '@material-ui/core';
 import { isLoginContext } from '../../components/utils/state';
 import userService from '../../services/user-service';
@@ -19,7 +19,7 @@ export const EditPage: React.FC = () => {
 
 	return (
 		<Paper>
-			<EditForm editUser={activeUser} onUserUpdated={updateUser} />
+			<EditUserForm editUser={activeUser} onUserUpdated={updateUser} />
 		</Paper>
 	);
 };

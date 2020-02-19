@@ -35,6 +35,11 @@ export const LoginForm: React.FC<Props> = props => {
 		});
 	};
 
+	const userLoginFormTemplate = {
+		login: 'Логин',
+		password: 'Пароль',
+	};
+
 	return (
 		<Container className={classes.LoginForm}>
 			<Typography variant="h3" align="center">
@@ -45,6 +50,7 @@ export const LoginForm: React.FC<Props> = props => {
 				inputHandler={handleInputChanges}
 				onSubmit={submitHandler}
 				formType="login"
+				templateForm={userLoginFormTemplate}
 			/>
 		</Container>
 	);
