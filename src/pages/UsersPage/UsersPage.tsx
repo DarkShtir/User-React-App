@@ -34,7 +34,7 @@ const UsersPage = (): JSX.Element => {
 
 	switch (loadingState) {
 		case loadingEnum.Error:
-			return <ErrorIndicator />;
+			return <ErrorIndicator error={null} />;
 		case loadingEnum.Loading:
 			return <Loading />;
 		case loadingEnum.Loaded:

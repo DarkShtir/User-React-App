@@ -72,7 +72,7 @@ export class EditUserForm extends Component<Props, State> {
 				</Typography>
 
 				<Form
-					user={this.state.user}
+					targetObject={this.state.user}
 					inputHandler={this.handleInputChanges}
 					onSubmit={this.submitHandler}
 					formType={'edit'}

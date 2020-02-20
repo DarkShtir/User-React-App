@@ -1,5 +1,5 @@
 import { User } from '../interfaces';
-import axios from '../axios/axios-user';
+import axios from '../axios/axios-users';
 
 axios.interceptors.request.use(request => {
 	const token = localStorage.getItem('token');
@@ -7,7 +7,7 @@ axios.interceptors.request.use(request => {
 	return request;
 });
 
-//!!! Обязательно спросить про обработку ошибок
+//!!! Обязательно спросить про обработку PROMISE!!!
 axios.interceptors.response.use(
 	response => {
 		return response;
@@ -24,27 +24,26 @@ axios.interceptors.response.use(
 		} else if (error.message === 'Network Error') {
 			throw new Error('Проблемы с интернет соединением!');
 		}
-		return Promise.reject(error);
+		// return Promise.reject(error);
 	}
 );
-//!!! Обязательно спросить про обработку ошибок
 class UserService {
-	users: User[];
+	// users: User[];
 
-	constructor() {
-		this.users = [
-			{
-				_id: '1',
-				login: 'Vas',
-				password: '123456',
-				firstName: 'SuperVasya',
-				lastName: 'MegaPetrov',
-				nat: 'RU',
-				gender: 'Male',
-				phone: '+375 29 1234567',
-			},
-		];
-	}
+	// constructor() {
+	// 	this.users = [
+	// 		{
+	// 			_id: '1',
+	// 			login: 'Vas',
+	// 			password: '123456',
+	// 			firstName: 'SuperVasya',
+	// 			lastName: 'MegaPetrov',
+	// 			nat: 'RU',
+	// 			gender: 'Male',
+	// 			phone: '+375 29 1234567',
+	// 		},
+	// 	];
+	// }
 
 	getAllUsers = async (): Promise<any> => {
 		try {
@@ -52,7 +51,8 @@ class UserService {
 			const users = response.data;
 			return users;
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method getAllUsers (front)');
+			throw error;
 		}
 	};
 
@@ -62,7 +62,8 @@ class UserService {
 			const user = response.data;
 			return user;
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method getUserById (front)');
+			throw error;
 		}
 	};
 
@@ -76,7 +77,8 @@ class UserService {
 			// console.log(token);
 			return newUser;
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method addUser (front)');
+			throw error;
 		}
 	};
 
@@ -90,7 +92,8 @@ class UserService {
 
 			return user.user;
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method login (front)');
+			throw error;
 		}
 	};
 
@@ -100,7 +103,8 @@ class UserService {
 			localStorage.removeItem('token');
 			localStorage.removeItem('id');
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method logout (front)');
+			throw error;
 		}
 	};
 
@@ -110,7 +114,8 @@ class UserService {
 				await localStorage.setItem('token', token);
 			}
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method setToken (front)');
+			throw error;
 		}
 	};
 
@@ -125,7 +130,8 @@ class UserService {
 			await axios.delete(`/${id}`, options);
 			// localStorage.removeItem('token');
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method deleteUser (front)');
+			throw error;
 		}
 	};
 
@@ -135,7 +141,8 @@ class UserService {
 			const updateUser = response.data.user;
 			return updateUser;
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method UpdateUser (front)');
+			throw error;
 		}
 	};
 
@@ -149,7 +156,8 @@ class UserService {
 			console.log(newUserAvatar);
 			this.updateUser(id, { avatarUrl: newUserAvatar });
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method setAvatar (front)');
+			throw error;
 		}
 	};
 
@@ -159,7 +167,8 @@ class UserService {
 			const pets = response.data;
 			return pets;
 		} catch (error) {
-			console.log(error);
+			console.log('Error in user-servicein method getUserPets (front)');
+			// throw error;
 		}
 	};
 }

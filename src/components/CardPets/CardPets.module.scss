@@ -1,12 +1,13 @@
 .CardPetsComponent {
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: center;
-  align-items: flex-start;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
   background-blend-mode: multiply, multiply;
   width: fit-content;
   margin: 0.5rem;
+
 
   .button {
     display: flex;
@@ -18,6 +19,5 @@
     flex-direction: row;
     padding: 0;
     margin: 0 auto;
-    align-items: flex-end;
   }
 }

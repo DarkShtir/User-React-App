@@ -2,19 +2,13 @@ import React from 'react';
 import { Card, CardContent, CardActions, Button } from '@material-ui/core';
 import classes from './CardPets.module.scss';
 import RenderFields from '../shared/RenderFields/RenderFields';
+import { Pet } from '../../interfaces';
 
-interface Pets {
-	_id: string;
-	name: string;
-	species: string;
-	ownerId?: string | any;
-	__v: number;
-}
 interface Props {
-	pet: Pets;
+	pet: Pet;
 	guest: boolean;
-	// editPet: (pet: object) => void;
-	// deletePet: (id: string) => void;
+	editPet: (pet: Pet) => void;
+	// deletePet: (petId: string, ownerId: string) => void;
 }
 
 const petCardForm = {
@@ -22,7 +16,7 @@ const petCardForm = {
 	species: 'Вид',
 };
 
-const CardPets: React.FC<Props> = ({ pet, guest }): JSX.Element => {
+const CardPets: React.FC<Props> = ({ pet, guest, editPet }): JSX.Element => {
 	return (
 		<Card className={classes.CardPetsComponent}>
 			<CardContent className={classes.content}>
@@ -37,6 +31,9 @@ const CardPets: React.FC<Props> = ({ pet, guest }): JSX.Element => {
 						color="primary"
 						className={classes.button}
 						size="small"
+						onClick={e => {
+							editPet(pet);
+						}}
 						// disabled={guest}
 					>
 						Edit животину епт

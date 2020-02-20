@@ -71,7 +71,7 @@ export class CreateUserForm extends Component<Props, State> {
 					Create User
 				</Typography>
 				<Form
-					user={this.state.user}
+					targetObject={this.state.user}
 					inputHandler={this.handleInputChanges}
 					onSubmit={this.submitHandler}
 					templateForm={this.userCreateFormTemplate}

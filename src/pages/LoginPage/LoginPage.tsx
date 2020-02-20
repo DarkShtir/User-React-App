@@ -16,7 +16,7 @@ const LoginPage: React.FC = () => {
 	}
 	const [loadingState, setLoading] = useState();
 	const history = useHistory();
-
+	//!!! Возможно проблема что не щёлкает login true
 	const loginUser = async (loginData: UserLogin): Promise<void> => {
 		try {
 			const user = await UserService.login(loginData);

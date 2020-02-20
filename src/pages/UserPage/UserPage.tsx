@@ -5,38 +5,34 @@ import React, {
 	useCallback,
 	useMemo,
 } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 
 import CardUser from '../../components/CardUser/CardUser';
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
+import CardPets from '../../components/CardPets/CardPets';
 import Loading from '../../components/shared/Loading/Loading';
+import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 import { isLoginContext } from '../../components/utils/state';
-
-import userService from '../../services/user-service';
+import { userService, petService } from '../../services/services';
+import { Pet } from '../../interfaces';
+import { EditPetForm } from '../../components/EditPetForm/EditPetForm';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import classes from './UserPage.module.scss';
-import CardPets from '../../components/CardPets/CardPets';
-import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 
-// interface Pets {
-// 	_id: string;
-// 	name: string;
-// 	species: string;
-// 	ownerId?: string | any;
-// 	__v: number;
-// }
-
-//!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ!!!!!
-const UserPage = (props: any): JSX.Element => {
+//!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ При получении PEts!!!!!
+const UserPage = (props: RouteComponentProps): JSX.Element => {
 	enum loadingEnum {
 		Loading,
 		Loaded,
 		Error,
 	}
-	const { id, activeUser, setUser } = useContext<any>(isLoginContext);
+	const { id, activeUser, setUser, login } = useContext<any>(isLoginContext);
 	const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [guestId, setGuestId] = useState('');
 	const [guest, setGuest] = useState(false);
 	const [pets, setPets] = useState();
+	const [editPet, setEditPet] = useState();
 
 	const setUserQuotes = async (quotes: string): Promise<void> => {
 		try {
@@ -80,9 +76,6 @@ const UserPage = (props: any): JSX.Element => {
 
 	useEffect(() => {
 		setLoading(loadingEnum.Loading);
-		// return () => {
-		// 	console.log('clear first useEffect');
-		// };
 	}, [activeUser, loadingEnum.Loading]);
 
 	const setUserAvatar = async (avatar: object): Promise<void> => {
@@ -101,15 +94,43 @@ const UserPage = (props: any): JSX.Element => {
 		} else if (id !== guestId /*&& id*/) {
 			userWithCallback(guestId);
 		}
-
-		// return (): void => {
-		// 	console.log('cleared');
-		// };
 	}, [userWithCallback, id, guestId]);
+
+	const handlerDeletePet = async (petId: string): Promise<void> => {
+		await petService.deletePet(petId);
+		const newPets = await userService.getUserPets(id);
+		setPets(newPets);
+		setEditPet(null);
+	};
+	//!!! Оюбязательно подправить переключение на экран пользователя  по приходу new Pet
+	// const updatePet = async (petId: string, pet: Pet): Promise<void> => {
+	// 	await petService.updatePet(petId, pet);
+	// 	const newPets = await userService.getUserPets(id);
+	// 	setPets(newPets);
+	// 	setEditPet(null);
+	// };
+
+	const updatePet = useCallback(
+		async (petId: string, pet: Pet): Promise<void> => {
+			try {
+				await petService.updatePet(petId, pet);
+				const newPets = await userService.getUserPets(id);
+				setPets(newPets);
+				setEditPet(null);
+			} catch (error) {
+				console.log(error);
+			}
+		},
+		[id]
+	);
+
+	const handlerEditPet = (pet: Pet): void => {
+		setEditPet(pet);
+	};
 
 	switch (loading) {
 		case loadingEnum.Error:
-			return <ErrorIndicator />;
+			return <ErrorIndicator error={null} />;
 		case loadingEnum.Loading:
 			return <Loading />;
 		case loadingEnum.Loaded:
@@ -124,15 +145,15 @@ const UserPage = (props: any): JSX.Element => {
 						/>
 						<div className={classes.infoWrapper}>
 							<CardUser user={activeUser} guest={guest} />
-							{pets && pets.length > 0 ? (
+							{pets && pets.length > 0 && login ? (
 								<div className={classes.pets}>
-									{pets.map((pet: any, index: number) => {
+									{pets.map((pet: Pet, index: number) => {
 										return (
 											<CardPets
 												pet={pet}
 												key={index}
 												guest={guest}
-												// editPet={handlerEditPet}
+												editPet={handlerEditPet}
 												// deletePet={handlerDeletePet}
 											/>
 										);
@@ -141,6 +162,34 @@ const UserPage = (props: any): JSX.Element => {
 							) : null}
 						</div>
 					</>
+					{editPet ? (
+						<div
+							className={classes.wrapperModalWindow}
+							onClick={(
+								e: React.MouseEvent<HTMLDivElement, MouseEvent>
+							): void => {
+								if (e.currentTarget === e.target) {
+									setEditPet(null);
+								}
+							}}
+						>
+							<div className={classes.editPetForm}>
+								<div
+									className={classes.cancelIcon}
+									onClick={(): void => {
+										setEditPet(null);
+									}}
+								>
+									<CancelIcon fontSize="large" />
+								</div>
+								<EditPetForm
+									pet={editPet}
+									onPetUpdated={updatePet}
+									deletePet={handlerDeletePet}
+								/>
+							</div>
+						</div>
+					) : null}
 				</div>
 			);
 	}

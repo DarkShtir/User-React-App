@@ -14,12 +14,12 @@ export default class RegistrationPage extends Component<{}, State> {
 	state = {
 		needAdd: false,
 	};
-	//!!! Спросить про редирект!!!!
+	//!!! Спросить про редирект, возможно нужен set login true!!!!
 	addUser = async (user: User): Promise<any> => {
 		await UserService.addUser(user);
 		// const id = await localStorage.getItem('id');
-		if (await localStorage.getItem('id')) {
-			history.push(`../${localStorage.getItem('id')}`, null);
+		if (localStorage.getItem('id')) {
+			history.push(`./${localStorage.getItem('id')}`);
 		}
 	};
 

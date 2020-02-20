@@ -16,3 +16,11 @@ export interface UserLogin {
 	login: string;
 	password: string;
 }
+
+export interface Pet {
+	_id?: string;
+	name: string;
+	species: string;
+	ownerId?: string;
+	__v?: number;
+}

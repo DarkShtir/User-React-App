@@ -9,7 +9,7 @@ interface TemplateForm {
 }
 
 interface Props {
-	user: { [value: string]: string | [] };
+	targetObject: { [value: string]: string | [] };
 	inputHandler: (value: string, fieldName: string) => void;
 	onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 	formType?: string;
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({
-	user,
+	targetObject,
 	inputHandler,
 	onSubmit,
 	formType = 'add',
@@ -27,7 +27,7 @@ const Form: React.FC<Props> = ({
 
 	const renderInputField = (
 		formType: string,
-		user: { [value: string]: any },
+		targetObject: { [value: string]: any },
 		templateForm: TemplateForm
 	): object => {
 		let cls: [string];
@@ -41,7 +41,7 @@ const Form: React.FC<Props> = ({
 					<React.Fragment key={fieldName + index}>
 						<Input
 							className={cls}
-							targetObject={user}
+							targetObject={targetObject}
 							label={templateForm[fieldName]}
 							type={
 								fieldName === 'password'
@@ -60,7 +60,8 @@ const Form: React.FC<Props> = ({
 			}
 		);
 	};
-	const renderButtonGroup = (formType: string) => {
+
+	const renderButtonGroup = (formType: string): JSX.Element => {
 		if (formType === 'edit') {
 			return (
 				<ButtonGroup>
@@ -72,15 +73,20 @@ const Form: React.FC<Props> = ({
 					>
 						Сохранить
 					</Button>
-					<Button
-						className={classes.button}
-						color="secondary"
-						onClick={(): void => {
-							history.goBack();
-						}}
-					>
-						Отменить
-					</Button>
+					{history.location.pathname.match('edit') ? (
+						<Button
+							className={classes.button}
+							color="secondary"
+							onClick={(): void => {
+								console.log(history.location);
+								// if (history.location.pathname.match('edit')) {
+								// } else {}
+								history.goBack();
+							}}
+						>
+							Отменить
+						</Button>
+					) : null}
 				</ButtonGroup>
 			);
 		} else if (formType === 'login') {
@@ -110,7 +116,7 @@ const Form: React.FC<Props> = ({
 
 	return (
 		<form className={classes.Form} onSubmit={onSubmit}>
-			{renderInputField(formType, user, templateForm)}
+			{renderInputField(formType, targetObject, templateForm)}
 			{renderButtonGroup(formType)}
 		</form>
 	);

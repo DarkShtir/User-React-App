@@ -46,7 +46,7 @@ export const LoginForm: React.FC<Props> = props => {
 				Login
 			</Typography>
 			<Form
-				user={user}
+				targetObject={user}
 				inputHandler={handleInputChanges}
 				onSubmit={submitHandler}
 				formType="login"
