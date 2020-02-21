@@ -17,8 +17,11 @@ import { userService, petService } from '../../services/services';
 import { Pet } from '../../interfaces';
 import { EditPetForm } from '../../components/EditPetForm/EditPetForm';
 import CancelIcon from '@material-ui/icons/Cancel';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import classes from './UserPage.module.scss';
+import { CreatePetForm } from '../../components/CreatePetForm/CreatePetForm';
+import { Typography } from '@material-ui/core';
 
 //!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ При получении PEts!!!!!
 const UserPage = (props: RouteComponentProps): JSX.Element => {
@@ -28,11 +31,13 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 		Error,
 	}
 	const { id, activeUser, setUser, login } = useContext<any>(isLoginContext);
+
 	const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [guestId, setGuestId] = useState('');
 	const [guest, setGuest] = useState(false);
 	const [pets, setPets] = useState();
 	const [editPet, setEditPet] = useState();
+	const [needAdd, setNeedAdd] = useState(false);
 
 	const setUserQuotes = async (quotes: string): Promise<void> => {
 		try {
@@ -102,13 +107,6 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 		setPets(newPets);
 		setEditPet(null);
 	};
-	//!!! Оюбязательно подправить переключение на экран пользователя  по приходу new Pet
-	// const updatePet = async (petId: string, pet: Pet): Promise<void> => {
-	// 	await petService.updatePet(petId, pet);
-	// 	const newPets = await userService.getUserPets(id);
-	// 	setPets(newPets);
-	// 	setEditPet(null);
-	// };
 
 	const updatePet = useCallback(
 		async (petId: string, pet: Pet): Promise<void> => {
@@ -128,6 +126,17 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 		setEditPet(pet);
 	};
 
+	const hadlerAddPet = (): void => {
+		setNeedAdd((prevState: boolean): any => !prevState);
+	};
+
+	const addPet = async (pet: Pet): Promise<void> => {
+		const newPet = { ...pet, ...{ ownerId: id } };
+		await petService.addPet(newPet);
+		const newPets = await userService.getUserPets(id);
+		setPets(newPets);
+	};
+
 	switch (loading) {
 		case loadingEnum.Error:
 			return <ErrorIndicator error={null} />;
@@ -145,8 +154,11 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 						/>
 						<div className={classes.infoWrapper}>
 							<CardUser user={activeUser} guest={guest} />
-							{pets && pets.length > 0 && login ? (
+							{(pets && pets.length > 0 && login) || !guest ? (
 								<div className={classes.pets}>
+									<Typography variant="h5" className={classes.typography}>
+										My pets
+									</Typography>
 									{pets.map((pet: Pet, index: number) => {
 										return (
 											<CardPets
@@ -154,10 +166,18 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 												key={index}
 												guest={guest}
 												editPet={handlerEditPet}
-												// deletePet={handlerDeletePet}
 											/>
 										);
 									})}
+									{!guest ? (
+										<AddBoxIcon
+											fontSize="large"
+											className={classes.addIcon}
+											onClick={(): void => {
+												setNeedAdd(true);
+											}}
+										></AddBoxIcon>
+									) : null}
 								</div>
 							) : null}
 						</div>
@@ -186,6 +206,34 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 									pet={editPet}
 									onPetUpdated={updatePet}
 									deletePet={handlerDeletePet}
+								/>
+							</div>
+						</div>
+					) : null}
+					{needAdd ? (
+						<div
+							className={classes.wrapperModalWindow}
+							onClick={(
+								e: React.MouseEvent<HTMLDivElement, MouseEvent>
+							): void => {
+								if (e.currentTarget === e.target) {
+									setNeedAdd(false);
+								}
+							}}
+						>
+							<div className={classes.editPetForm}>
+								<div
+									className={classes.cancelIcon}
+									onClick={(): void => {
+										setNeedAdd(false);
+									}}
+								>
+									<CancelIcon fontSize="large" />
+								</div>
+								Здесь должно быть чудо!
+								<CreatePetForm
+									onPetAdded={addPet}
+									petAddToggle={hadlerAddPet}
 								/>
 							</div>
 						</div>

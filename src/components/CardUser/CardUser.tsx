@@ -1,5 +1,11 @@
 import React, { useContext } from 'react';
-import { Card, CardContent, CardActions, Button } from '@material-ui/core';
+import {
+	Card,
+	CardContent,
+	CardActions,
+	Button,
+	Typography,
+} from '@material-ui/core';
 import classes from './CardUser.module.scss';
 import { User } from '../../interfaces';
 import { isLoginContext } from '../utils/state';
@@ -24,13 +30,15 @@ const CardUser: React.FC<Props> = ({ user, guest }): JSX.Element => {
 
 	return (
 		<Card className={classes.CardComponent}>
+			<Typography variant="h5" className={classes.typography}>
+				About Me
+			</Typography>
 			<CardContent className={classes.content}>
 				<RenderFields cardForm={userCardForm} user={user} />
 			</CardContent>
 			<CardActions className={classes.cardActions}>
 				{!guest ? (
 					<Button
-						// disabled={guest}
 						component={Link}
 						to={`/user/${id}/edit/`}
 						variant="contained"

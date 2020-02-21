@@ -5,7 +5,6 @@ import { Container, Typography } from '@material-ui/core';
 import classes from './EditUserForm.module.scss';
 
 interface Props {
-	// userToggle?(id: string): void;
 	editUser: object | undefined;
 	onUserUpdated(id: string, user: object): void;
 }
@@ -30,8 +29,6 @@ export class EditUserForm extends Component<Props, State> {
 	submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		this.props.onUserUpdated(this.state.user._id, this.state.user);
-
-		// this.props.userToggle(this.state.user._id);
 	};
 
 	handleInputChanges = (value: string, fieldName: string): void => {

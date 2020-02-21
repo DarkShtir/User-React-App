@@ -65,19 +65,17 @@ class PetService {
 	// 	}
 	// };
 
-	// addPet = async (user: object): Promise<object | undefined> => {
-	// 	try {
-	// 		const response = await axios.post('/', user);
-	// 		const newUser = response.data;
-	// 		const token = newUser.token;
-	// 		this.setToken(token);
-	// 		localStorage.setItem('id', newUser.user._id);
-	// 		// console.log(token);
-	// 		return newUser;
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
+	addPet = async (pet: object): Promise<object | undefined> => {
+		try {
+			console.log(pet);
+			const response = await axios.post('/', pet);
+			const newPet = response.data;
+			return newPet;
+		} catch (error) {
+			console.log('Error in pet-service in method Add (front)');
+			throw error;
+		}
+	};
 
 	deletePet = async (id: string): Promise<void | undefined> => {
 		try {
