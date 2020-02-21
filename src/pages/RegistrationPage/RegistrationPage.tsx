@@ -4,6 +4,7 @@ import UserService from '../../services/user-service';
 import { User } from '../../interfaces';
 import { Paper } from '@material-ui/core';
 import { createBrowserHistory } from 'history';
+import classes from './RegistrationPage.module.scss';
 
 interface State {
 	needAdd: boolean;
@@ -31,7 +32,7 @@ export default class RegistrationPage extends Component<{}, State> {
 	};
 	render(): JSX.Element {
 		return (
-			<Paper>
+			<Paper className={classes.RegistrationPage}>
 				<CreateUserForm
 					onUserAdded={this.addUser}
 					userAddToggle={this.addUserToggle}

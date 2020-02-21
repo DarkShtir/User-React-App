@@ -23,7 +23,6 @@ import classes from './UserPage.module.scss';
 import { CreatePetForm } from '../../components/CreatePetForm/CreatePetForm';
 import { Typography } from '@material-ui/core';
 
-//!!! ИСПРАВИТЬ ПОВЕДЕНИЕ СТРАНИЦЫ При получении PEts!!!!!
 const UserPage = (props: RouteComponentProps): JSX.Element => {
 	enum loadingEnum {
 		Loading,
@@ -79,13 +78,14 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 		[setUser, setPets, loadingEnum.Loaded, loadingEnum.Error]
 	);
 
-	useEffect(() => {
-		setLoading(loadingEnum.Loading);
-	}, [activeUser, loadingEnum.Loading]);
+	// useEffect(() => {
+	// 	setLoading(loadingEnum.Loading);
+	// }, [activeUser, loadingEnum.Loading]);
 
 	const setUserAvatar = async (avatar: object): Promise<void> => {
 		try {
 			if (avatar) {
+				console.log(avatar);
 				await userService.setAvatar(id, avatar);
 			}
 		} catch (error) {
@@ -94,7 +94,10 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 	};
 
 	useEffect(() => {
-		if (id && id !== undefined && id !== null && id !== '' && id === guestId) {
+		if (
+			id /*&& id !== undefined && id !== null && id !== ''*/ &&
+			id === guestId
+		) {
 			userWithCallback(id);
 		} else if (id !== guestId /*&& id*/) {
 			userWithCallback(guestId);
