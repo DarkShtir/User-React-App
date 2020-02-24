@@ -149,12 +149,13 @@ class UserService {
 	setAvatar = async (id: string, avatar: any): Promise<void | undefined> => {
 		try {
 			const fileData = new FormData();
+			fileData.append('ownerId', id);
 			fileData.append('avatar', avatar);
 			const response = await axios.post(`../upload/`, fileData);
-
 			const newUserAvatar = response.data;
+			const newPathAvatar = `http://localhost:8080/static/${id}/${newUserAvatar}`;
 			console.log(newUserAvatar);
-			this.updateUser(id, { avatarUrl: newUserAvatar });
+			this.updateUser(id, { avatarUrl: newPathAvatar });
 		} catch (error) {
 			console.log('Error in user-servicein method setAvatar (front)');
 			throw error;

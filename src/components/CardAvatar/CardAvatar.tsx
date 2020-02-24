@@ -26,18 +26,14 @@ const CardAvatar: React.FC<Props> = ({
 	setUserAvatar,
 	setUserQuotes,
 }): JSX.Element => {
-	const [avatar, setAvatar] = useState(
-		`http://localhost:8080/static/${user.avatarUrl}`
-	);
+	const [avatar, setAvatar] = useState(`${user.avatarUrl}`);
 	const [sendAvatar, setSendAvatar] = useState();
 	const [edit, setEdit] = useState(false);
 	const [newQuotes, setNewQuotes] = useState(user.quotes ? user.quotes : '');
-
 	const avatarHandler = (event: any): void => {
 		const file = event.target.files[0];
 		setAvatar(URL.createObjectURL(file));
 		setSendAvatar(file);
-		// console.log(URL.createObjectURL(file));
 	};
 
 	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
@@ -53,7 +49,6 @@ const CardAvatar: React.FC<Props> = ({
 		event: React.ChangeEvent<HTMLInputElement>
 	): void => {
 		event.preventDefault();
-		// console.log(event.target.value);
 		setNewQuotes(event.target.value);
 	};
 
@@ -76,7 +71,6 @@ const CardAvatar: React.FC<Props> = ({
 						component="img"
 						alt="Holop Avatar"
 						height="350"
-						// src={`http://localhost:8080/static/${user.avatarUrl}`}
 						src={avatar}
 						title="My Avatar"
 					/>
@@ -135,15 +129,6 @@ const CardAvatar: React.FC<Props> = ({
 						{!edit ? 'Edit цитатку и Аву ёпт' : 'Сохранить Епт!'}
 					</Button>
 				) : null}
-				{/* <Button
-					variant="contained"
-					color="primary"
-					className={classes.button}
-					size="small"
-					// disabled={guest}
-				>
-					Edit цитатку и Аву ёпт
-				</Button> */}
 			</CardActions>
 		</Card>
 	);

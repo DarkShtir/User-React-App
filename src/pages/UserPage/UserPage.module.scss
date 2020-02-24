@@ -56,5 +56,9 @@
   .addIcon {
     color: yellowgreen;
     margin: 1rem;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
