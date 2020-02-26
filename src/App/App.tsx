@@ -51,7 +51,13 @@ const App: React.FC = () => {
 						path={`/user/${id}`}
 						component={User}
 					/>
-					<Route path="/user/:id/" component={User} exact />
+					<PrivateRouter
+						{...defaultProtectedRouteProps}
+						exact={true}
+						path="/user/:id/"
+						component={User}
+					/>
+					{/* <Route path="/user/:id/" component={User} exact /> */}
 					<Route path="/user-list" component={UsersList} />
 					<Route path={`/user/${id}/edit/`} component={Edit} />
 					<Route path="/users-cards" component={UsersPage} />

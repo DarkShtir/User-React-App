@@ -14,16 +14,16 @@ interface State {
 export default class UsersListPage extends Component<{}, State> {
 	state = {
 		newUsers: [
-			{
-				_id: '1',
-				login: 'Vas',
-				password: '123456',
-				firstName: 'Vasya',
-				lastName: 'Petrov',
-				nat: 'RU',
-				gender: 'Male',
-				phone: '+375 29 1234567',
-			},
+			// {
+			// 	_id: '1',
+			// 	login: 'Vas',
+			// 	password: '123456',
+			// 	firstName: 'Vasya',
+			// 	lastName: 'Petrov',
+			// 	nat: 'RU',
+			// 	gender: 'Male',
+			// 	phone: '+375 29 1234567',
+			// },
 		],
 		needAdd: false,
 		needEdit: false,

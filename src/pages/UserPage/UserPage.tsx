@@ -22,6 +22,7 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import classes from './UserPage.module.scss';
 import { CreatePetForm } from '../../components/CreatePetForm/CreatePetForm';
 import { Typography } from '@material-ui/core';
+import CardAlbum from '../../components/CardAlbum/CardAlbum';
 
 const UserPage = (props: RouteComponentProps): JSX.Element => {
 	enum loadingEnum {
@@ -183,6 +184,7 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 									) : null}
 								</div>
 							) : null}
+							<CardAlbum />
 						</div>
 					</>
 					{editPet ? (
@@ -233,7 +235,6 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 								>
 									<CancelIcon fontSize="large" />
 								</div>
-								Здесь должно быть чудо!
 								<CreatePetForm
 									onPetAdded={addPet}
 									petAddToggle={hadlerAddPet}

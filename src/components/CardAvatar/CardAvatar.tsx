@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Card,
 	CardContent,
@@ -30,6 +30,11 @@ const CardAvatar: React.FC<Props> = ({
 	const [sendAvatar, setSendAvatar] = useState();
 	const [edit, setEdit] = useState(false);
 	const [newQuotes, setNewQuotes] = useState(user.quotes ? user.quotes : '');
+
+	useEffect(() => {
+		setAvatar(`${user.avatarUrl}`);
+	}, [user._id, user.avatarUrl]);
+
 	const avatarHandler = (event: any): void => {
 		const file = event.target.files[0];
 		setAvatar(URL.createObjectURL(file));
