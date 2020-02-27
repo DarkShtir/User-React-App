@@ -5,6 +5,8 @@ import RegistrationPage from './RegistrationPage/RegistrationPage';
 import UsersListPage from './UsersListPage/UsersListPage';
 import UserPage from './UserPage/UserPage';
 import UsersPage from './UsersPage/UsersPage';
+import AlbumPage from './AlbumPage/AlbumPage';
+import AlbumsPage from './AlbumsPage/AlbumsPage';
 
 export {
 	EditPage as Edit,
@@ -14,4 +16,6 @@ export {
 	UsersListPage as UsersList,
 	UserPage as User,
 	UsersPage,
+	AlbumPage as UserAlbum,
+	AlbumsPage as UserAlbums,
 };

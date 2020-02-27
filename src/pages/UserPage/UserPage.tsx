@@ -7,22 +7,20 @@ import React, {
 } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-import CardUser from '../../components/CardUser/CardUser';
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
-import CardPets from '../../components/CardPets/CardPets';
 import Loading from '../../components/shared/Loading/Loading';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 import { isLoginContext } from '../../components/utils/state';
 import { userService, petService } from '../../services/services';
 import { Pet } from '../../interfaces';
-import { EditPetForm } from '../../components/EditPetForm/EditPetForm';
-import CancelIcon from '@material-ui/icons/Cancel';
-import AddBoxIcon from '@material-ui/icons/AddBox';
 
 import classes from './UserPage.module.scss';
-import { CreatePetForm } from '../../components/CreatePetForm/CreatePetForm';
-import { Typography } from '@material-ui/core';
+
+import CreatePet from '../../components/CreatePet/CreatePet';
+import EditPet from '../../components/EditPet/EditPet';
+import InfoUser from '../../components/InfoUser/InfoUser';
 import CardAlbum from '../../components/CardAlbum/CardAlbum';
+import albumService from '../../services/album-service';
 
 const UserPage = (props: RouteComponentProps): JSX.Element => {
 	enum loadingEnum {
@@ -35,14 +33,26 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 	const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [guestId, setGuestId] = useState('');
 	const [guest, setGuest] = useState(false);
-	const [pets, setPets] = useState();
-	const [editPet, setEditPet] = useState();
+	const [pets, setPets] = React.useState<any>();
+	const [editPet, setEditPet] = React.useState<any>();
 	const [needAdd, setNeedAdd] = useState(false);
+	const [albums, setAlbums] = React.useState<any>([]);
 
 	const setUserQuotes = async (quotes: string): Promise<void> => {
 		try {
 			if (quotes) {
 				await userService.updateUser(id, { quotes: quotes });
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const setUserAvatar = async (avatar: object): Promise<void> => {
+		try {
+			if (avatar) {
+				console.log(avatar);
+				await userService.setAvatar(id, avatar);
 			}
 		} catch (error) {
 			console.log(error);
@@ -63,9 +73,11 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 			try {
 				const newUser = await userService.getUserById(id);
 				const newPets = await userService.getUserPets(id);
+				const newAlbums = await albumService.getAllAlbumByUserId(id);
 				if (newUser !== undefined && newUser !== null && newUser) {
 					setUser(newUser);
 					setPets(newPets);
+					setAlbums(newAlbums);
 					setLoading(loadingEnum.Loaded);
 				} else {
 					setLoading(loadingEnum.Error);
@@ -79,26 +91,8 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 		[setUser, setPets, loadingEnum.Loaded, loadingEnum.Error]
 	);
 
-	// useEffect(() => {
-	// 	setLoading(loadingEnum.Loading);
-	// }, [activeUser, loadingEnum.Loading]);
-
-	const setUserAvatar = async (avatar: object): Promise<void> => {
-		try {
-			if (avatar) {
-				console.log(avatar);
-				await userService.setAvatar(id, avatar);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	useEffect(() => {
-		if (
-			id /*&& id !== undefined && id !== null && id !== ''*/ &&
-			id === guestId
-		) {
+		if (id && id === guestId) {
 			userWithCallback(id);
 		} else if (id !== guestId /*&& id*/) {
 			userWithCallback(guestId);
@@ -156,91 +150,35 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 							setUserAvatar={setUserAvatar}
 							setUserQuotes={setUserQuotes}
 						/>
-						<div className={classes.infoWrapper}>
-							<CardUser user={activeUser} guest={guest} />
-							{(pets && pets.length > 0 && login) || !guest ? (
-								<div className={classes.pets}>
-									<Typography variant="h5" className={classes.typography}>
-										My pets
-									</Typography>
-									{pets.map((pet: Pet, index: number) => {
-										return (
-											<CardPets
-												pet={pet}
-												key={index}
-												guest={guest}
-												editPet={handlerEditPet}
-											/>
-										);
-									})}
-									{!guest ? (
-										<AddBoxIcon
-											fontSize="large"
-											className={classes.addIcon}
-											onClick={(): void => {
-												setNeedAdd(true);
-											}}
-										></AddBoxIcon>
-									) : null}
-								</div>
-							) : null}
-							<CardAlbum />
+
+						{/* !!! Временный ДИВ */}
+						<div style={{ display: 'flex', flexDirection: 'column' }}>
+							<InfoUser
+								activeUser={activeUser}
+								guest={guest}
+								pets={pets}
+								login={login}
+								handlerEditPet={handlerEditPet}
+								setNeedAdd={setNeedAdd}
+							/>
+
+							<CardAlbum albums={albums} />
 						</div>
 					</>
 					{editPet ? (
-						<div
-							className={classes.wrapperModalWindow}
-							onClick={(
-								e: React.MouseEvent<HTMLDivElement, MouseEvent>
-							): void => {
-								if (e.currentTarget === e.target) {
-									setEditPet(null);
-								}
-							}}
-						>
-							<div className={classes.editPetForm}>
-								<div
-									className={classes.cancelIcon}
-									onClick={(): void => {
-										setEditPet(null);
-									}}
-								>
-									<CancelIcon fontSize="large" />
-								</div>
-								<EditPetForm
-									pet={editPet}
-									onPetUpdated={updatePet}
-									deletePet={handlerDeletePet}
-								/>
-							</div>
-						</div>
+						<EditPet
+							setEditPet={setEditPet}
+							editPet={editPet}
+							updatePet={updatePet}
+							handlerDeletePet={handlerDeletePet}
+						/>
 					) : null}
 					{needAdd ? (
-						<div
-							className={classes.wrapperModalWindow}
-							onClick={(
-								e: React.MouseEvent<HTMLDivElement, MouseEvent>
-							): void => {
-								if (e.currentTarget === e.target) {
-									setNeedAdd(false);
-								}
-							}}
-						>
-							<div className={classes.editPetForm}>
-								<div
-									className={classes.cancelIcon}
-									onClick={(): void => {
-										setNeedAdd(false);
-									}}
-								>
-									<CancelIcon fontSize="large" />
-								</div>
-								<CreatePetForm
-									onPetAdded={addPet}
-									petAddToggle={hadlerAddPet}
-								/>
-							</div>
-						</div>
+						<CreatePet
+							setNeedAdd={setNeedAdd}
+							addPet={addPet}
+							hadlerAddPet={hadlerAddPet}
+						/>
 					) : null}
 				</div>
 			);

@@ -28,23 +28,6 @@ axios.interceptors.response.use(
 	}
 );
 class UserService {
-	// users: User[];
-
-	// constructor() {
-	// 	this.users = [
-	// 		{
-	// 			_id: '1',
-	// 			login: 'Vas',
-	// 			password: '123456',
-	// 			firstName: 'SuperVasya',
-	// 			lastName: 'MegaPetrov',
-	// 			nat: 'RU',
-	// 			gender: 'Male',
-	// 			phone: '+375 29 1234567',
-	// 		},
-	// 	];
-	// }
-
 	getAllUsers = async (): Promise<any> => {
 		try {
 			const response = await axios.get('/');
@@ -74,7 +57,6 @@ class UserService {
 			const token = newUser.token;
 			this.setToken(token);
 			localStorage.setItem('id', newUser.user._id);
-			// console.log(token);
 			return newUser;
 		} catch (error) {
 			console.log('Error in user-servicein method addUser (front)');
@@ -121,13 +103,7 @@ class UserService {
 
 	deleteUser = async (id: string): Promise<void | undefined> => {
 		try {
-			const token = localStorage.getItem('token');
-			const options = {
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			};
-			await axios.delete(`/${id}`, options);
+			await axios.delete(`/${id}`);
 			// localStorage.removeItem('token');
 		} catch (error) {
 			console.log('Error in user-servicein method deleteUser (front)');

@@ -27,7 +27,7 @@ const CardAvatar: React.FC<Props> = ({
 	setUserQuotes,
 }): JSX.Element => {
 	const [avatar, setAvatar] = useState(`${user.avatarUrl}`);
-	const [sendAvatar, setSendAvatar] = useState();
+	const [sendAvatar, setSendAvatar] = useState({});
 	const [edit, setEdit] = useState(false);
 	const [newQuotes, setNewQuotes] = useState(user.quotes ? user.quotes : '');
 

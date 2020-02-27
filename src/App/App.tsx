@@ -9,6 +9,8 @@ import {
 	User,
 	Edit,
 	UsersPage,
+	UserAlbum,
+	UserAlbums,
 } from '../pages/pages';
 import Header from '../components/shared/Header/Header';
 import Footer from '../components/shared/Footer/Footer';
@@ -45,12 +47,12 @@ const App: React.FC = () => {
 				<Switch>
 					<Route path="/login" component={Login} />
 					<Route path="/registration" component={Reg} />
-					<PrivateRouter
+					{/* <PrivateRouter
 						{...defaultProtectedRouteProps}
 						exact={true}
 						path={`/user/${id}`}
 						component={User}
-					/>
+					/> */}
 					<PrivateRouter
 						{...defaultProtectedRouteProps}
 						exact={true}
@@ -61,6 +63,8 @@ const App: React.FC = () => {
 					<Route path="/user-list" component={UsersList} />
 					<Route path={`/user/${id}/edit/`} component={Edit} />
 					<Route path="/users-cards" component={UsersPage} />
+					<Route path="/album" component={UserAlbum} />
+					<Route path="/albums" component={UserAlbums} />
 					<Route exact path="/" component={Main} />
 					<Route
 						render={(): JSX.Element => {

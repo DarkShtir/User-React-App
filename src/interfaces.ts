@@ -24,3 +24,26 @@ export interface Pet {
 	ownerId?: string;
 	__v?: number;
 }
+
+export interface Album {
+	_id?: string;
+	name: string;
+	ownerId: string;
+	description?: string;
+	privateAlbum?: boolean;
+	previewUrl?: string;
+	createdAt?: string;
+	updatedAt?: string;
+}
+
+export interface Photo {
+	_id?: string;
+	name?: string;
+	description?: string;
+	ownerId: string;
+	albumId: string;
+	width?: number;
+	height?: number;
+	createdAt?: string;
+	updatedAt?: string;
+}
