@@ -11,16 +11,14 @@ import CardAvatar from '../../components/CardAvatar/CardAvatar';
 import Loading from '../../components/shared/Loading/Loading';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 import { isLoginContext } from '../../components/utils/state';
-import { userService, petService } from '../../services/services';
-import { Pet } from '../../interfaces';
-
-import classes from './UserPage.module.scss';
-
 import CreatePet from '../../components/CreatePet/CreatePet';
 import EditPet from '../../components/EditPet/EditPet';
 import InfoUser from '../../components/InfoUser/InfoUser';
-import CardAlbum from '../../components/CardAlbum/CardAlbum';
-import albumService from '../../services/album-service';
+
+import { userService, petService, albumService } from '../../services/services';
+import { Pet } from '../../interfaces';
+
+import classes from './UserPage.module.scss';
 
 const UserPage = (props: RouteComponentProps): JSX.Element => {
 	enum loadingEnum {
@@ -152,18 +150,19 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 						/>
 
 						{/* !!! Временный ДИВ */}
-						<div style={{ display: 'flex', flexDirection: 'column' }}>
-							<InfoUser
-								activeUser={activeUser}
-								guest={guest}
-								pets={pets}
-								login={login}
-								handlerEditPet={handlerEditPet}
-								setNeedAdd={setNeedAdd}
-							/>
+						{/* <div style={{ display: 'flex', flexDirection: 'column' }}> */}
+						<InfoUser
+							activeUser={activeUser}
+							guest={guest}
+							pets={pets}
+							login={login}
+							handlerEditPet={handlerEditPet}
+							setNeedAdd={setNeedAdd}
+							albums={albums}
+						/>
 
-							<CardAlbum albums={albums} />
-						</div>
+						{/* <CardAlbum albums={albums} /> */}
+						{/* </div> */}
 					</>
 					{editPet ? (
 						<EditPet

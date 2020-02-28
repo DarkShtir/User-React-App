@@ -1,1 +1,13 @@
-.AlbumsPage {}
+.AlbumsPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  background-color: burlywood;
+
+  .albumWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

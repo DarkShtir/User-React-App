@@ -4,7 +4,7 @@ import albumService from '../../services/album-service';
 // import { Album } from '../../interfaces';
 
 import { isLoginContext } from '../../components/utils/state';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import AlbumFolder from '../../components/AlbumFolder/AlbumFolder';
 
 const AlbumsPage: React.FC = () => {
@@ -37,9 +37,13 @@ const AlbumsPage: React.FC = () => {
 			<Typography variant="h5" className={classes.typography}>
 				My albums
 			</Typography>
+			<h2>ADD input</h2>
+			<Button color="primary">ADD</Button>
+			<Button color="default">EDIT</Button>
+			<Button color="secondary">DELETE</Button>
 
 			{albums && albums.length > 0 ? (
-				<div>
+				<div className={classes.albumWrapper}>
 					{albums.map((album: any, index: number) => {
 						return <AlbumFolder album={album} key={index} />;
 					})}

@@ -1,4 +1,5 @@
 import petService from './pet-service';
 import userService from './user-service';
+import albumService from './album-service';
 
-export { petService, userService };
+export { petService, userService, albumService };

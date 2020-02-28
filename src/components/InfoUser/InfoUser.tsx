@@ -4,7 +4,8 @@ import CardUser from '../CardUser/CardUser';
 import CardPets from '../CardPets/CardPets';
 import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
-import { Pet, User } from '../../interfaces';
+import { Pet, User, Album } from '../../interfaces';
+import CardAlbum from '../CardAlbum/CardAlbum';
 
 interface Props {
 	activeUser: User;
@@ -13,6 +14,7 @@ interface Props {
 	login: boolean;
 	handlerEditPet: (pet: Pet) => void;
 	setNeedAdd: (trueOrFalse: boolean) => void;
+	albums: Album;
 }
 
 const InfoUser: React.FC<Props> = ({
@@ -22,6 +24,7 @@ const InfoUser: React.FC<Props> = ({
 	login,
 	handlerEditPet,
 	setNeedAdd,
+	albums,
 }) => {
 	return (
 		<div className={classes.InfoUser}>
@@ -52,6 +55,7 @@ const InfoUser: React.FC<Props> = ({
 					) : null}
 				</div>
 			) : null}
+			<CardAlbum albums={albums} />
 		</div>
 	);
 };
