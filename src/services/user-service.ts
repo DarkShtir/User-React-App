@@ -140,6 +140,7 @@ class UserService {
 
 	getUserPets = async (id: string): Promise<void | undefined> => {
 		try {
+			console.log(id);
 			const response = await axios.get(`/${id}/pets`);
 			const pets = response.data;
 			return pets;

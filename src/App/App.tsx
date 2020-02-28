@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Container } from '@material-ui/core';
+import Header from '../components/shared/Header/Header';
+import Footer from '../components/shared/Footer/Footer';
+import { isLoginContext } from '../components/utils/state';
+import { RootState } from '../store/interfaces/RootState';
+import classes from './App.module.scss';
+
+import {
+	ProtectedRouteProps,
+	PrivateRouter,
+} from '../components/HOC/PrivateRouter';
+
 import {
 	Main,
 	Login,
@@ -12,18 +24,13 @@ import {
 	UserAlbum,
 	UserAlbums,
 } from '../pages/pages';
-import Header from '../components/shared/Header/Header';
-import Footer from '../components/shared/Footer/Footer';
-import { isLoginContext, getId, checkLogin } from '../components/utils/state';
-import {
-	ProtectedRouteProps,
-	PrivateRouter,
-} from '../components/HOC/PrivateRouter';
-import classes from './App.module.scss';
 
-const App: React.FC = () => {
-	const [login, setLogin] = useState(checkLogin());
-	const [id, setUserId] = useState(getId());
+interface Props {
+	login: boolean;
+	id: string;
+}
+
+const App: React.FC<Props> = ({ login, id }) => {
 	const [activeUser, setUser] = useState({});
 
 	const defaultProtectedRouteProps: ProtectedRouteProps = {
@@ -35,10 +42,6 @@ const App: React.FC = () => {
 		<Container className={classes.App}>
 			<isLoginContext.Provider
 				value={{
-					login,
-					setLogin,
-					id,
-					setUserId,
 					activeUser,
 					setUser,
 				}}
@@ -78,4 +81,9 @@ const App: React.FC = () => {
 	);
 };
 
-export default App;
+const mapStateToProps = (state: RootState) => ({
+	login: state.users.login,
+	id: state.users.id,
+});
+
+export default connect(mapStateToProps)(App);

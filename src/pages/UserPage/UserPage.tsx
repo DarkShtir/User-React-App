@@ -1,10 +1,4 @@
-import React, {
-	useContext,
-	useEffect,
-	useState,
-	useCallback,
-	useMemo,
-} from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
@@ -19,18 +13,43 @@ import { userService, petService, albumService } from '../../services/services';
 import { Pet } from '../../interfaces';
 
 import classes from './UserPage.module.scss';
+import { connect } from 'react-redux';
+import { RootState } from '../../store/interfaces/RootState';
+import { Dispatch, Action } from 'redux';
+import {
+	setGuestIdAction,
+	setGuestAction,
+} from '../../store/users/users.actions';
 
-const UserPage = (props: RouteComponentProps): JSX.Element => {
+interface Props {
+	login: boolean;
+	id: string;
+	guestId: string;
+	setGuestId: (guestId: string) => void;
+	guest: boolean;
+	setGuest: (guest: boolean) => void;
+}
+
+const UserPage: React.FC<Props & RouteComponentProps> = ({
+	login,
+	id,
+	guestId,
+	setGuestId,
+	guest,
+	setGuest,
+	...props
+}): JSX.Element => {
 	enum loadingEnum {
 		Loading,
 		Loaded,
 		Error,
 	}
-	const { id, activeUser, setUser, login } = useContext<any>(isLoginContext);
+	const { activeUser, setUser } = useContext<any>(isLoginContext);
 
+	//TODO Перенести всё это в СТОР
 	const [loading, setLoading] = useState(loadingEnum.Loading);
-	const [guestId, setGuestId] = useState('');
-	const [guest, setGuest] = useState(false);
+	// const [guestId, setGuestId] = useState('');
+	// const [guest, setGuest] = useState(false);
 	const [pets, setPets] = React.useState<any>();
 	const [editPet, setEditPet] = React.useState<any>();
 	const [needAdd, setNeedAdd] = useState(false);
@@ -57,29 +76,47 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 		}
 	};
 
-	useMemo(() => {
-		setGuestId(props.match.url.slice(6));
-		if (guestId !== id) {
-			setGuest(true);
-		} else {
-			setGuest(false);
+	const checkGuest = useCallback(async () => {
+		try {
+			setGuestId(props.match.url.slice(6));
+			if (guestId !== id) {
+				setGuest(true);
+			} else {
+				setGuest(false);
+			}
+		} catch (error) {
+			console.log(error);
 		}
-	}, [props.match.url, setGuest, id, guestId]);
+	}, [guestId, props.match.url, setGuest, setGuestId, id]);
+
+	useEffect(() => {
+		checkGuest();
+	});
+	// useMemo(() => {
+	// 	setGuestId(props.match.url.slice(6));
+	// 	if (guestId !== id) {
+	// 		setGuest(true);
+	// 	} else {
+	// 		setGuest(false);
+	// 	}
+	// }, [props.match.url, setGuest, id, guestId, setGuestId]);
 
 	const userWithCallback = useCallback(
 		async id => {
 			try {
-				const newUser = await userService.getUserById(id);
-				const newPets = await userService.getUserPets(id);
-				const newAlbums = await albumService.getAllAlbumByUserId(id);
-				if (newUser !== undefined && newUser !== null && newUser) {
-					setUser(newUser);
-					setPets(newPets);
-					setAlbums(newAlbums);
-					setLoading(loadingEnum.Loaded);
-				} else {
-					setLoading(loadingEnum.Error);
-					throw new Error('Пользователя не найдено!');
+				if (id) {
+					const newUser = await userService.getUserById(id);
+					const newPets = await userService.getUserPets(id);
+					const newAlbums = await albumService.getAllAlbumByUserId(id);
+					if (newUser !== undefined && newUser !== null && newUser) {
+						setUser(newUser);
+						setPets(newPets);
+						setAlbums(newAlbums);
+						setLoading(loadingEnum.Loaded);
+					} else {
+						setLoading(loadingEnum.Error);
+						throw new Error('Пользователя не найдено!');
+					}
 				}
 			} catch (error) {
 				console.log(error);
@@ -149,8 +186,6 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 							setUserQuotes={setUserQuotes}
 						/>
 
-						{/* !!! Временный ДИВ */}
-						{/* <div style={{ display: 'flex', flexDirection: 'column' }}> */}
 						<InfoUser
 							activeUser={activeUser}
 							guest={guest}
@@ -160,9 +195,6 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 							setNeedAdd={setNeedAdd}
 							albums={albums}
 						/>
-
-						{/* <CardAlbum albums={albums} /> */}
-						{/* </div> */}
 					</>
 					{editPet ? (
 						<EditPet
@@ -184,4 +216,16 @@ const UserPage = (props: RouteComponentProps): JSX.Element => {
 	}
 };
 
-export default UserPage;
+const mapStateToProps = (state: RootState) => ({
+	login: state.users.login,
+	id: state.users.id,
+	guestId: state.users.guestId,
+	guest: state.users.guest,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	setGuestId: (guestId: string) => dispatch(setGuestIdAction(guestId)),
+	setGuest: (guest: boolean) => dispatch(setGuestAction(guest)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

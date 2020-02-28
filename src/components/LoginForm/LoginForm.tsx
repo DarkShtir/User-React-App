@@ -1,18 +1,19 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Typography, Container } from '@material-ui/core';
 import Form from '../shared/Form/Form';
 import { UserLogin } from '../../interfaces';
-import { isLoginContext } from '../utils/state';
 
 import classes from './LoginForm.module.scss';
+import { connect } from 'react-redux';
+import { Dispatch, Action } from 'redux';
+import { setLoginAction } from '../../store/users/users.actions';
 
 interface Props {
-	onUserLogin(user: UserLogin): void;
+	onUserLogin: (user: UserLogin) => void;
+	setLogin: (isLogin: boolean) => void;
 }
 
-export const LoginForm: React.FC<Props> = props => {
-	const { setLogin } = useContext<any>(isLoginContext);
-
+const LoginForm: React.FC<Props> = ({ onUserLogin, setLogin }) => {
 	const [user, setUser] = useState({
 		login: '',
 		password: '',
@@ -20,8 +21,8 @@ export const LoginForm: React.FC<Props> = props => {
 
 	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		props.onUserLogin(user);
-		console.log(user);
+		onUserLogin(user);
+		// console.log(user);
 		setUser({
 			login: '',
 			password: '',
@@ -55,3 +56,9 @@ export const LoginForm: React.FC<Props> = props => {
 		</Container>
 	);
 };
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
+});
+
+export default connect(null, mapDispatchToProps)(LoginForm);

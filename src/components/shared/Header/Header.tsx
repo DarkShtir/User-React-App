@@ -1,22 +1,43 @@
 import React, { useContext } from 'react';
-import classes from './Header.module.scss';
-import { Button, Paper, Container } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { Dispatch, Action } from 'redux';
 import { NavLink, useHistory } from 'react-router-dom';
+import { Button, Paper, Container } from '@material-ui/core';
 import UserService from '../../../services/user-service';
 import { isLoginContext } from '../../utils/state';
+import {
+	setLoginAction,
+	logoutUserAction,
+	setUserIdAction,
+} from '../../../store/users/users.actions';
+import { RootState } from '../../../store/interfaces/RootState';
+import classes from './Header.module.scss';
 
-const Header: React.FC = (): JSX.Element => {
-	const { login, setLogin, id, setUserId, setUser } = useContext<any>(
-		isLoginContext
-	);
+interface Props {
+	login: boolean;
+	id: string;
+	setLogin: (isLogin: boolean) => void;
+	logoutUser: () => void;
+	setUserId: (id: string) => void;
+}
+
+const Header: React.FC<Props> = ({
+	login,
+	id,
+	setLogin,
+	logoutUser,
+	setUserId,
+}): JSX.Element => {
+	const { setUser } = useContext<any>(isLoginContext);
 
 	const history = useHistory();
 
 	const logout = (): void => {
 		UserService.logout();
+		logoutUser();
 		setLogin(false);
-		setUser({});
 		setUserId('');
+		setUser({});
 		history.push('/');
 	};
 
@@ -39,8 +60,6 @@ const Header: React.FC = (): JSX.Element => {
 							className={classes.btn}
 							component={NavLink}
 							to={`/user/${id}`}
-							// activeStyle={{ color: 'yellowgreen' }}
-
 							activeClassName={classes.qwe}
 						>
 							Моя Хата
@@ -91,4 +110,14 @@ const Header: React.FC = (): JSX.Element => {
 	);
 };
 
-export default Header;
+const mapStateToProps = (state: RootState) => ({
+	login: state.users.login,
+	id: state.users.id,
+});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
+	logoutUser: () => dispatch(logoutUserAction()),
+	setUserId: (id: string) => dispatch(setUserIdAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,14 +1,26 @@
 import React, { useContext, useState } from 'react';
 import UserService from '../../services/user-service';
 import { UserLogin } from '../../interfaces';
-import { LoginForm } from '../../components/LoginForm/LoginForm';
+import LoginForm from '../../components/LoginForm/LoginForm';
 import { Paper, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { isLoginContext } from '../../components/utils/state';
 import classes from './LoginPage.module.scss';
+import { Dispatch, Action } from 'redux';
+import { RootState } from '../../store/interfaces/RootState';
+import {
+	setLoginAction,
+	setUserIdAction,
+} from '../../store/users/users.actions';
+import { connect } from 'react-redux';
 
-const LoginPage: React.FC = () => {
-	const { setUserId, setUser, setLogin } = useContext<any>(isLoginContext);
+interface Props {
+	setLogin: (isLogin: boolean) => void;
+	setUserId: (id: string) => void;
+}
+
+const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
+	const { setUser /*setLogin*/ } = useContext<any>(isLoginContext);
 	enum loadingEnum {
 		Loading,
 		Loaded,
@@ -26,8 +38,10 @@ const LoginPage: React.FC = () => {
 				setLogin(false);
 				throw new Error('Пользователь на найден!!');
 			}
-
-			setUserId(localStorage.getItem('id'));
+			const id = localStorage.getItem('id');
+			if (id) {
+				setUserId(id);
+			}
 			setUser(user);
 			setLogin(true);
 			setLoading(loadingEnum.Loaded);
@@ -65,4 +79,13 @@ const LoginPage: React.FC = () => {
 	// }
 };
 
-export default LoginPage;
+const mapStateToProps = (state: RootState) => ({
+	login: state.users.login,
+	id: state.users.id,
+});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
+	setUserId: (id: string) => dispatch(setUserIdAction(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

@@ -26,6 +26,7 @@ const InfoUser: React.FC<Props> = ({
 	setNeedAdd,
 	albums,
 }) => {
+	// console.log(login);
 	return (
 		<div className={classes.InfoUser}>
 			<CardUser user={activeUser} guest={guest} />
