@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
 import Loading from '../../components/shared/Loading/Loading';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
-import { isLoginContext } from '../../components/utils/state';
 import CreatePet from '../../components/CreatePet/CreatePet';
 import EditPet from '../../components/EditPet/EditPet';
 import InfoUser from '../../components/InfoUser/InfoUser';
 
-import { userService, petService, albumService } from '../../services/services';
-import { Pet } from '../../interfaces';
+import { userService } from '../../services/services';
+import { Pet, User, Album } from '../../interfaces';
 
 import classes from './UserPage.module.scss';
 import { connect } from 'react-redux';
@@ -19,24 +18,45 @@ import { Dispatch, Action } from 'redux';
 import {
 	setGuestIdAction,
 	setGuestAction,
+	getUser,
+	getUserAlbums,
 } from '../../store/users/users.actions';
+import {
+	deletePetAction,
+	addPetAction,
+	updatePetAction,
+	getUserPets,
+} from '../../store/pets/pets.actions';
 
 interface Props {
-	login: boolean;
+	activeUser: User | null;
 	id: string;
 	guestId: string;
+	albums: [Album] | null;
+	pets: [Pet] | null;
 	setGuestId: (guestId: string) => void;
-	guest: boolean;
 	setGuest: (guest: boolean) => void;
+	getUser: (id: string) => void;
+	getPets: (id: string) => void;
+	getAlbums: (id: string) => void;
+	deletePet: (petId: string) => void;
+	addPet: (pet: Pet) => void;
+	updatePet: (id: string, pet: Pet) => void;
 }
 
 const UserPage: React.FC<Props & RouteComponentProps> = ({
-	login,
+	activeUser,
 	id,
 	guestId,
+	albums,
+	pets,
 	setGuestId,
-	guest,
 	setGuest,
+	getUser,
+	getPets,
+	deletePet,
+	addPet,
+	updatePet,
 	...props
 }): JSX.Element => {
 	enum loadingEnum {
@@ -44,16 +64,11 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		Loaded,
 		Error,
 	}
-	const { activeUser, setUser } = useContext<any>(isLoginContext);
 
 	//TODO Перенести всё это в СТОР
 	const [loading, setLoading] = useState(loadingEnum.Loading);
-	// const [guestId, setGuestId] = useState('');
-	// const [guest, setGuest] = useState(false);
-	const [pets, setPets] = React.useState<any>();
 	const [editPet, setEditPet] = React.useState<any>();
 	const [needAdd, setNeedAdd] = useState(false);
-	const [albums, setAlbums] = React.useState<any>([]);
 
 	const setUserQuotes = async (quotes: string): Promise<void> => {
 		try {
@@ -76,83 +91,42 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		}
 	};
 
-	const checkGuest = useCallback(async () => {
-		try {
-			setGuestId(props.match.url.slice(6));
-			if (guestId !== id) {
-				setGuest(true);
-			} else {
-				setGuest(false);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	}, [guestId, props.match.url, setGuest, setGuestId, id]);
-
 	useEffect(() => {
-		checkGuest();
-	});
-	// useMemo(() => {
-	// 	setGuestId(props.match.url.slice(6));
-	// 	if (guestId !== id) {
-	// 		setGuest(true);
-	// 	} else {
-	// 		setGuest(false);
-	// 	}
-	// }, [props.match.url, setGuest, id, guestId, setGuestId]);
-
-	const userWithCallback = useCallback(
-		async id => {
-			try {
-				if (id) {
-					const newUser = await userService.getUserById(id);
-					const newPets = await userService.getUserPets(id);
-					const newAlbums = await albumService.getAllAlbumByUserId(id);
-					if (newUser !== undefined && newUser !== null && newUser) {
-						setUser(newUser);
-						setPets(newPets);
-						setAlbums(newAlbums);
-						setLoading(loadingEnum.Loaded);
-					} else {
-						setLoading(loadingEnum.Error);
-						throw new Error('Пользователя не найдено!');
-					}
-				}
-			} catch (error) {
-				console.log(error);
-				setLoading(loadingEnum.Error);
-			}
-		},
-		[setUser, setPets, loadingEnum.Loaded, loadingEnum.Error]
-	);
-
-	useEffect(() => {
-		if (id && id === guestId) {
-			userWithCallback(id);
-		} else if (id !== guestId /*&& id*/) {
-			userWithCallback(guestId);
+		setGuestId(props.match.url.slice(6));
+		getUser(guestId);
+		if (id && id !== guestId) {
+			setGuest(true);
+		} else {
+			setGuest(false);
 		}
-	}, [userWithCallback, id, guestId]);
+		setLoading(loadingEnum.Loaded);
+	}, [
+		getUser,
+		guestId,
+		id,
+		props.match.url,
+		setGuestId,
+		loadingEnum.Loaded,
+		setGuest,
+	]);
 
-	const handlerDeletePet = async (petId: string): Promise<void> => {
-		await petService.deletePet(petId);
-		const newPets = await userService.getUserPets(id);
-		setPets(newPets);
+	const handlerDeletePet = (petId: string): any => {
+		deletePet(petId);
 		setEditPet(null);
 	};
 
-	const updatePet = useCallback(
+	const updateOldPet = useCallback(
 		async (petId: string, pet: Pet): Promise<void> => {
 			try {
-				await petService.updatePet(petId, pet);
-				const newPets = await userService.getUserPets(id);
-				setPets(newPets);
+				updatePet(petId, pet);
+				getPets(id);
+
 				setEditPet(null);
 			} catch (error) {
 				console.log(error);
 			}
 		},
-		[id]
+		[id, getPets, updatePet]
 	);
 
 	const handlerEditPet = (pet: Pet): void => {
@@ -163,11 +137,10 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		setNeedAdd((prevState: boolean): any => !prevState);
 	};
 
-	const addPet = async (pet: Pet): Promise<void> => {
+	const addNewPet = (pet: Pet) => {
 		const newPet = { ...pet, ...{ ownerId: id } };
-		await petService.addPet(newPet);
-		const newPets = await userService.getUserPets(id);
-		setPets(newPets);
+		addPet(newPet);
+		getPets(id);
 	};
 
 	switch (loading) {
@@ -178,36 +151,32 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		case loadingEnum.Loaded:
 			return (
 				<div className={classes.UserPage}>
-					<>
-						<CardAvatar
-							user={activeUser}
-							guest={guest}
-							setUserAvatar={setUserAvatar}
-							setUserQuotes={setUserQuotes}
-						/>
+					{activeUser && pets && albums ? (
+						<>
+							<CardAvatar
+								setUserAvatar={setUserAvatar}
+								setUserQuotes={setUserQuotes}
+							/>
 
-						<InfoUser
-							activeUser={activeUser}
-							guest={guest}
-							pets={pets}
-							login={login}
-							handlerEditPet={handlerEditPet}
-							setNeedAdd={setNeedAdd}
-							albums={albums}
-						/>
-					</>
+							<InfoUser
+								handlerEditPet={handlerEditPet}
+								setNeedAdd={setNeedAdd}
+								albums={albums}
+							/>
+						</>
+					) : null}
 					{editPet ? (
 						<EditPet
 							setEditPet={setEditPet}
 							editPet={editPet}
-							updatePet={updatePet}
+							updatePet={updateOldPet}
 							handlerDeletePet={handlerDeletePet}
 						/>
 					) : null}
 					{needAdd ? (
 						<CreatePet
 							setNeedAdd={setNeedAdd}
-							addPet={addPet}
+							addPet={addNewPet}
 							hadlerAddPet={hadlerAddPet}
 						/>
 					) : null}
@@ -217,15 +186,22 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-	login: state.users.login,
 	id: state.users.id,
 	guestId: state.users.guestId,
-	guest: state.users.guest,
+	activeUser: state.users.activeUser,
+	albums: state.users.albums,
+	pets: state.pets.pets,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	setGuestId: (guestId: string) => dispatch(setGuestIdAction(guestId)),
 	setGuest: (guest: boolean) => dispatch(setGuestAction(guest)),
+	getUser: (id: string) => dispatch(getUser(id)),
+	getUserPets: (id: string) => dispatch(getUserPets(id)),
+	getUserAlbums: (id: string) => dispatch(getUserAlbums(id)),
+	deletePet: (petId: string) => dispatch(deletePetAction(petId)),
+	addPet: (pet: Pet) => dispatch(addPetAction(pet)),
+	updatePet: (id: string, pet: Pet) => dispatch(updatePetAction(id, pet)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

@@ -1,0 +1,47 @@
+import { Actions } from './pets.actions';
+import { Pet } from '../../interfaces';
+import { Action } from '../interfaces/action.interface';
+
+export interface State {
+	pets: [Pet] | null;
+	editPet: Pet | null;
+}
+
+const initialState: State = {
+	pets: null,
+	editPet: null,
+};
+
+export const reducer = (state: State = initialState, action: Action<any>) => {
+	switch (action.type) {
+		// case Actions.PUT_PET:
+		// 	return {
+		// 		...state,
+		// 		pets: action.payload,
+		// 	};
+		case Actions.LOGOUT_PET:
+			return {
+				...initialState,
+			};
+		case Actions.ADD_PET:
+			return {
+				...state,
+				pets: { ...state.pets, ...action.payload },
+			};
+		// case Actions.DELETE_PET:
+		// 	return {
+		// 		...state,
+		// 	};
+		// case Actions.UPDATE_PET:
+		// 	return {
+		// 		...state,
+		// 	};
+		case Actions.PUT_USER_PETS:
+			return {
+				...state,
+				pets: action.payload,
+			};
+		default:
+			return state;
+	}
+};

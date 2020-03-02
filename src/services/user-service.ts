@@ -1,4 +1,5 @@
 import { User } from '../interfaces';
+
 import axios from '../axios/axios-users';
 
 axios.interceptors.request.use(request => {
@@ -41,9 +42,11 @@ class UserService {
 
 	getUserById = async (id: string): Promise<[User] | undefined> => {
 		try {
-			const response = await axios.get(`/${id}`);
-			const user = response.data;
-			return user;
+			if (id) {
+				const response = await axios.get(`/${id}`);
+				const user = response.data;
+				return user;
+			}
 		} catch (error) {
 			console.log('Error in user-servicein method getUserById (front)');
 			throw error;
@@ -104,7 +107,6 @@ class UserService {
 	deleteUser = async (id: string): Promise<void | undefined> => {
 		try {
 			await axios.delete(`/${id}`);
-			// localStorage.removeItem('token');
 		} catch (error) {
 			console.log('Error in user-servicein method deleteUser (front)');
 			throw error;
@@ -146,7 +148,6 @@ class UserService {
 			return pets;
 		} catch (error) {
 			console.log('Error in user-servicein method getUserPets (front)');
-			// throw error;
 		}
 	};
 }

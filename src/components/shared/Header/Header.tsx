@@ -1,12 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Button, Paper, Container } from '@material-ui/core';
-import UserService from '../../../services/user-service';
-import { isLoginContext } from '../../utils/state';
+// import UserService from '../../../services/user-service';
 import {
-	setLoginAction,
 	logoutUserAction,
 	setUserIdAction,
 } from '../../../store/users/users.actions';
@@ -16,28 +14,15 @@ import classes from './Header.module.scss';
 interface Props {
 	login: boolean;
 	id: string;
-	setLogin: (isLogin: boolean) => void;
 	logoutUser: () => void;
 	setUserId: (id: string) => void;
 }
 
-const Header: React.FC<Props> = ({
-	login,
-	id,
-	setLogin,
-	logoutUser,
-	setUserId,
-}): JSX.Element => {
-	const { setUser } = useContext<any>(isLoginContext);
-
+const Header: React.FC<Props> = ({ login, id, logoutUser }): JSX.Element => {
 	const history = useHistory();
 
 	const logout = (): void => {
-		UserService.logout();
 		logoutUser();
-		setLogin(false);
-		setUserId('');
-		setUser({});
 		history.push('/');
 	};
 
@@ -115,7 +100,6 @@ const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
 	logoutUser: () => dispatch(logoutUserAction()),
 	setUserId: (id: string) => dispatch(setUserIdAction(id)),
 });

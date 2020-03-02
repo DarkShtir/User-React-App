@@ -11,6 +11,8 @@ import App from './App/App';
 import './index.module.scss';
 import rootReducer from './store/index';
 import ErrorBoundry from './components/ErrorBoundry/ErrorBoundry';
+import rootPetSaga from './store/pets/pets.saga';
+import rootUserSaga from './store/users/users.saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -21,7 +23,8 @@ const store = createStore(
 	)
 );
 
-// sagaMiddleware.run;
+sagaMiddleware.run(rootUserSaga);
+sagaMiddleware.run(rootPetSaga);
 
 ReactDOM.render(
 	<Provider store={store}>

@@ -27,7 +27,7 @@ const LoginForm: React.FC<Props> = ({ onUserLogin, setLogin }) => {
 			login: '',
 			password: '',
 		});
-		setLogin(true);
+		// setLogin(true);
 	};
 
 	const handleInputChanges = (value: string, fieldName: string): void => {

@@ -1,15 +1,19 @@
-import { User } from '../../interfaces';
+import { User, Album } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
 
 export const Actions = {
 	ADD_USER: '[user] Add user',
+	GET_USER: '[user] Get user',
+	PUT_USER: '[user] Put user in store',
 	UPDATE_USER: '[user] Update user',
 	DELETE_USER: '[user] Delete user',
-	SET_LOGIN: '[appState] Set Login State',
 	LOGOUT_USER: '[user] Logout user',
 	SET_USER_ID: '[user] Set user Id',
+	SET_LOGIN: '[appState] Set Login State',
 	SET_GUEST_ID: '[guest] Set guest Id',
 	SET_GUEST: '[guest] Set guest State',
+	GET_USER_ALBUMS: '[albums] Get users albums',
+	PUT_USER_ALBUMS: '[albums] Put users albums in store',
 };
 
 export const addUserAction = (user: User): Action<User> => ({
@@ -17,14 +21,14 @@ export const addUserAction = (user: User): Action<User> => ({
 	payload: user,
 });
 export const updateUserAction = (id: string, user: User): Action<{}> => ({
-	type: Actions.ADD_USER,
+	type: Actions.UPDATE_USER,
 	payload: {
 		id,
 		user,
 	},
 });
 export const deleteUserAction = (id: string): Action<string> => ({
-	type: Actions.ADD_USER,
+	type: Actions.DELETE_USER,
 	payload: id,
 });
 export const setLoginAction = (isLogin: boolean): Action<boolean> => ({
@@ -45,4 +49,20 @@ export const setGuestIdAction = (guestId: string): Action<string> => ({
 export const setGuestAction = (isGuest: boolean): Action<boolean> => ({
 	type: Actions.SET_GUEST,
 	payload: isGuest,
+});
+export const getUser = (id: string): Action<string> => ({
+	type: Actions.GET_USER,
+	payload: id,
+});
+export const putUser = (user: User): Action<User> => ({
+	type: Actions.PUT_USER,
+	payload: user,
+});
+export const getUserAlbums = (id: string): Action<string> => ({
+	type: Actions.GET_USER_ALBUMS,
+	payload: id,
+});
+export const putUserAlbums = (albums: Album[]): Action<Album[]> => ({
+	type: Actions.PUT_USER_ALBUMS,
+	payload: albums,
 });

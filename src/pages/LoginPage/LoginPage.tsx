@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import UserService from '../../services/user-service';
 import { UserLogin } from '../../interfaces';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import { Paper, Typography } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { isLoginContext } from '../../components/utils/state';
 import classes from './LoginPage.module.scss';
 import { Dispatch, Action } from 'redux';
 import { RootState } from '../../store/interfaces/RootState';
@@ -20,7 +19,6 @@ interface Props {
 }
 
 const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
-	const { setUser /*setLogin*/ } = useContext<any>(isLoginContext);
 	enum loadingEnum {
 		Loading,
 		Loaded,
@@ -28,7 +26,6 @@ const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
 	}
 	const [loadingState, setLoading] = useState(loadingEnum.Loaded);
 	const history = useHistory();
-	//!!! Возможно проблема что не щёлкает login true
 	const loginUser = async (loginData: UserLogin): Promise<void> => {
 		try {
 			const user = await UserService.login(loginData);
@@ -42,7 +39,6 @@ const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
 			if (id) {
 				setUserId(id);
 			}
-			setUser(user);
 			setLogin(true);
 			setLoading(loadingEnum.Loaded);
 			history.push(`user/${localStorage.getItem('id')}`);

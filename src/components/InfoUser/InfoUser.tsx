@@ -6,19 +6,21 @@ import { Typography } from '@material-ui/core';
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import { Pet, User, Album } from '../../interfaces';
 import CardAlbum from '../CardAlbum/CardAlbum';
+import { RootState } from '../../store/interfaces/RootState';
+import { connect } from 'react-redux';
 
 interface Props {
-	activeUser: User;
+	user: User | null;
 	guest: boolean;
-	pets: [Pet];
+	pets: [Pet] | null;
 	login: boolean;
 	handlerEditPet: (pet: Pet) => void;
 	setNeedAdd: (trueOrFalse: boolean) => void;
-	albums: Album;
+	albums: [Album];
 }
 
 const InfoUser: React.FC<Props> = ({
-	activeUser,
+	user,
 	guest,
 	pets,
 	login,
@@ -26,25 +28,33 @@ const InfoUser: React.FC<Props> = ({
 	setNeedAdd,
 	albums,
 }) => {
+	if (user === null) {
+		throw new Error();
+	}
 	// console.log(login);
 	return (
 		<div className={classes.InfoUser}>
-			<CardUser user={activeUser} guest={guest} />
+			<CardUser user={user} guest={guest} />
 			{(pets && pets.length > 0 && login) || !guest ? (
 				<div className={classes.pets}>
 					<Typography variant="h5" className={classes.typography}>
 						My pets
 					</Typography>
-					{pets.map((pet: Pet, index: number) => {
-						return (
-							<CardPets
-								pet={pet}
-								key={index}
-								guest={guest}
-								editPet={handlerEditPet}
-							/>
-						);
-					})}
+					{pets !== null ? (
+						<>
+							{pets.map((pet: Pet, index: number) => {
+								return (
+									<CardPets
+										pet={pet}
+										key={index}
+										guest={guest}
+										editPet={handlerEditPet}
+									/>
+								);
+							})}
+						</>
+					) : null}
+
 					{!guest ? (
 						<AddBoxIcon
 							fontSize="large"
@@ -61,4 +71,14 @@ const InfoUser: React.FC<Props> = ({
 	);
 };
 
-export default InfoUser;
+const mapStateToProps = (state: RootState) => ({
+	user: state.users.activeUser,
+	guest: state.users.guest,
+	pets: state.pets.pets,
+	login: state.users.login,
+});
+
+// const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
+
+export default connect(mapStateToProps)(InfoUser);
+// export default InfoUser;

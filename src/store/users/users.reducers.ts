@@ -1,5 +1,5 @@
 import { Actions } from './users.actions';
-import { User } from '../../interfaces';
+import { User, Album } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
 
 export interface State {
@@ -9,6 +9,7 @@ export interface State {
 	users: User[];
 	guestId: string;
 	guest: boolean;
+	albums: [Album] | null;
 }
 
 const checkLogin = (): boolean => {
@@ -35,6 +36,7 @@ const initialState: State = {
 	users: [],
 	guestId: '',
 	guest: false,
+	albums: null,
 };
 
 export const reducer = (state: State = initialState, action: Action<any>) => {
@@ -62,6 +64,16 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 			return {
 				...state,
 				guest: action.payload,
+			};
+		case Actions.PUT_USER:
+			return {
+				...state,
+				activeUser: action.payload,
+			};
+		case Actions.PUT_USER_ALBUMS:
+			return {
+				...state,
+				albums: action.payload,
 			};
 		default:
 			return state;
