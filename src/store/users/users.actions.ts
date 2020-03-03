@@ -15,7 +15,9 @@ export const Actions = {
 	SET_GUEST_ID: '[guest] Set guest Id',
 	SET_GUEST: '[guest] Set guest State',
 	GET_USER_ALBUMS: '[albums] Get users albums',
+	ADD_USER_ALBUMS: '[albums] Add users albums',
 	PUT_USER_ALBUMS: '[albums] Put users albums in store',
+	UPLOAD_PHOTOS: '[photo] Upload photo in user album',
 };
 
 export const addUserAction = (user: User): Action<User> => ({
@@ -60,6 +62,10 @@ export const putUser = (user: User): Action<User> => ({
 	type: Actions.PUT_USER,
 	payload: user,
 });
+export const addUserAlbums = (id: string): Action<string> => ({
+	type: Actions.ADD_USER_ALBUMS,
+	payload: id,
+});
 export const getUserAlbums = (id: string): Action<string> => ({
 	type: Actions.GET_USER_ALBUMS,
 	payload: id,
@@ -75,4 +81,8 @@ export const setUserAvatar = (avatar: object): Action<object> => ({
 export const setUserQuotes = (quote: string): Action<string> => ({
 	type: Actions.SET_USER_QUOTES,
 	payload: quote,
+});
+export const uploadPhotos = (photos: [{}]): Action<[{}]> => ({
+	type: Actions.UPLOAD_PHOTOS,
+	payload: photos,
 });

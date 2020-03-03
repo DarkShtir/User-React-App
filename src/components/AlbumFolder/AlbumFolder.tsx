@@ -8,7 +8,12 @@ interface Props {
 
 const AlbumFolder: React.FC<Props> = ({ album }) => {
 	return (
-		<div className={classes.AlbumFolder}>
+		<div
+			className={classes.AlbumFolder}
+			onClick={() => {
+				console.log(album._id);
+			}}
+		>
 			<img
 				src={
 					album.previewUrl ||

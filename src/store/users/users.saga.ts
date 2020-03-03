@@ -61,6 +61,10 @@ function* workerUpdateUser(actions: any) {
 	const newUser = yield userService.getUserById(actions.payload.id);
 	yield put(putUser(newUser));
 }
+function* workerAddUserAlbum(actions: any) {
+	yield albumService.addAlbum({ ownerId: actions.payload });
+	yield put(getUserAlbums(actions.payload));
+}
 
 //Watchers
 export function* watchSetGuestId() {
@@ -88,6 +92,9 @@ export function* watchSetQuotes() {
 export function* watchUpdateUser() {
 	yield takeEvery(UserActions.UPDATE_USER, workerUpdateUser);
 }
+export function* watchAddUserAlbum() {
+	yield takeEvery(UserActions.ADD_USER_ALBUMS, workerAddUserAlbum);
+}
 
 //Export
 export default function* rootUserSaga() {
@@ -100,5 +107,6 @@ export default function* rootUserSaga() {
 		watchSetAvatar(),
 		watchUpdateUser(),
 		watchSetQuotes(),
+		watchAddUserAlbum(),
 	]);
 }

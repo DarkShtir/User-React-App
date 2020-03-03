@@ -4,12 +4,14 @@ import AlbumFolder from '../AlbumFolder/AlbumFolder';
 // import { Album } from '../../interfaces';
 import { Typography } from '@material-ui/core';
 import { Album } from '../../interfaces';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
 	albums: [Album];
 }
 
 const CardAlbum: React.FC<Props> = ({ albums }) => {
+	const history = useHistory();
 	// const [renderAlbums, setAlbums] = useState(albums);
 
 	// useEffect(() => {});
@@ -21,7 +23,11 @@ const CardAlbum: React.FC<Props> = ({ albums }) => {
 			</Typography>
 
 			{albums && albums.length > 0 ? (
-				<div>
+				<div
+					onClick={() => {
+						history.push('/albums');
+					}}
+				>
 					{albums.map((album: Album, index: number) => {
 						return <AlbumFolder album={album} key={index} />;
 					})}

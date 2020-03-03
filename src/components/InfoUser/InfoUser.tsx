@@ -31,10 +31,7 @@ const InfoUser: React.FC<Props> = ({
 	}
 	return (
 		<div className={classes.InfoUser}>
-			<CardUser
-			// user={user}
-			// guest={guest}
-			/>
+			<CardUser />
 			{(pets && pets.length > 0 && login) || !guest ? (
 				<div className={classes.pets}>
 					<Typography variant="h5" className={classes.typography}>

@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Gallery from 'react-photo-gallery';
 import classes from './AlbumPage.module.scss';
 import Photo from '../../components/Photo/Photo';
+import Previews from '../../components/Previews/Previews';
 
 const photos = [
 	{
@@ -87,6 +88,8 @@ const AlbumPage: React.FC = () => {
 
 	return (
 		<div className={classes.AlbumPage}>
+			<Previews />
+
 			<Gallery photos={photos} onClick={openLightbox} />
 			{viewerIsOpen ? (
 				<div className={classes.wrapperModalWindow} onClick={closeLightbox}>
