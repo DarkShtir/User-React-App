@@ -24,10 +24,17 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 				...initialState,
 			};
 		case Actions.ADD_PET:
-			return {
-				...state,
-				pets: { ...state.pets, ...action.payload },
-			};
+			if (state.pets !== null) {
+				return {
+					...state,
+					pets: state.pets.concat(action.payload),
+				};
+				// pets: { ...state.pets, ...action.payload },
+			} else {
+				return {
+					...state,
+				};
+			}
 		// case Actions.DELETE_PET:
 		// 	return {
 		// 		...state,
@@ -40,6 +47,11 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 			return {
 				...state,
 				pets: action.payload,
+			};
+		case Actions.PUT_EDIT_PET:
+			return {
+				...state,
+				editPet: action.payload,
 			};
 		default:
 			return state;

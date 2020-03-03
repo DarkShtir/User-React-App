@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
@@ -19,14 +19,8 @@ import {
 	setGuestIdAction,
 	setGuestAction,
 	getUser,
-	getUserAlbums,
 } from '../../store/users/users.actions';
-import {
-	deletePetAction,
-	addPetAction,
-	updatePetAction,
-	getUserPets,
-} from '../../store/pets/pets.actions';
+import { addPetAction } from '../../store/pets/pets.actions';
 
 interface Props {
 	activeUser: User | null;
@@ -34,29 +28,24 @@ interface Props {
 	guestId: string;
 	albums: [Album] | null;
 	pets: [Pet] | null;
+	editPet: Pet | null;
 	setGuestId: (guestId: string) => void;
 	setGuest: (guest: boolean) => void;
 	getUser: (id: string) => void;
-	getPets: (id: string) => void;
-	getAlbums: (id: string) => void;
-	deletePet: (petId: string) => void;
 	addPet: (pet: Pet) => void;
-	updatePet: (id: string, pet: Pet) => void;
 }
 
 const UserPage: React.FC<Props & RouteComponentProps> = ({
-	activeUser,
 	id,
 	guestId,
+	activeUser,
 	albums,
 	pets,
+	editPet,
 	setGuestId,
 	setGuest,
 	getUser,
-	getPets,
-	deletePet,
 	addPet,
-	updatePet,
 	...props
 }): JSX.Element => {
 	enum loadingEnum {
@@ -67,7 +56,6 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 
 	//TODO Перенести всё это в СТОР
 	const [loading, setLoading] = useState(loadingEnum.Loading);
-	const [editPet, setEditPet] = React.useState<any>();
 	const [needAdd, setNeedAdd] = useState(false);
 
 	const setUserQuotes = async (quotes: string): Promise<void> => {
@@ -98,14 +86,6 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		) {
 			setGuestId(props.match.url.slice(6));
 		}
-		// if (guestId) {
-		// 	getUser(guestId);
-		// }
-		// if (id && id !== guestId && guestId) {
-		// 	setGuest(true);
-		// } else {
-		// 	setGuest(false);
-		// }
 		setLoading(loadingEnum.Loaded);
 	}, [
 		getUser,
@@ -117,29 +97,6 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		setGuest,
 	]);
 
-	const handlerDeletePet = (petId: string): any => {
-		deletePet(petId);
-		setEditPet(null);
-	};
-
-	const updateOldPet = useCallback(
-		async (petId: string, pet: Pet): Promise<void> => {
-			try {
-				updatePet(petId, pet);
-				getPets(id);
-
-				setEditPet(null);
-			} catch (error) {
-				console.log(error);
-			}
-		},
-		[id, getPets, updatePet]
-	);
-
-	const handlerEditPet = (pet: Pet): void => {
-		setEditPet(pet);
-	};
-
 	const hadlerAddPet = (): void => {
 		setNeedAdd((prevState: boolean): any => !prevState);
 	};
@@ -147,7 +104,6 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 	const addNewPet = (pet: Pet) => {
 		const newPet = { ...pet, ...{ ownerId: id } };
 		addPet(newPet);
-		getPets(id);
 	};
 
 	switch (loading) {
@@ -165,21 +121,10 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 								setUserQuotes={setUserQuotes}
 							/>
 
-							<InfoUser
-								handlerEditPet={handlerEditPet}
-								setNeedAdd={setNeedAdd}
-								albums={albums}
-							/>
+							<InfoUser setNeedAdd={setNeedAdd} albums={albums} />
 						</>
 					) : null}
-					{editPet ? (
-						<EditPet
-							setEditPet={setEditPet}
-							editPet={editPet}
-							updatePet={updateOldPet}
-							handlerDeletePet={handlerDeletePet}
-						/>
-					) : null}
+					{editPet ? <EditPet /> : null}
 					{needAdd ? (
 						<CreatePet
 							setNeedAdd={setNeedAdd}
@@ -198,17 +143,14 @@ const mapStateToProps = (state: RootState) => ({
 	activeUser: state.users.activeUser,
 	albums: state.users.albums,
 	pets: state.pets.pets,
+	editPet: state.pets.editPet,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	setGuestId: (guestId: string) => dispatch(setGuestIdAction(guestId)),
 	setGuest: (guest: boolean) => dispatch(setGuestAction(guest)),
 	getUser: (id: string) => dispatch(getUser(id)),
-	getUserPets: (id: string) => dispatch(getUserPets(id)),
-	getUserAlbums: (id: string) => dispatch(getUserAlbums(id)),
-	deletePet: (petId: string) => dispatch(deletePetAction(petId)),
 	addPet: (pet: Pet) => dispatch(addPetAction(pet)),
-	updatePet: (id: string, pet: Pet) => dispatch(updatePetAction(id, pet)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

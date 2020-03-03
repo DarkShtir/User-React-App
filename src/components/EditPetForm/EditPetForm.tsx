@@ -5,7 +5,7 @@ import { Container, Typography, Button } from '@material-ui/core';
 import classes from './EditPetForm.module.scss';
 
 interface Props {
-	pet: Pet | undefined;
+	pet: Pet | null;
 	onPetUpdated(id: string, pet: Pet): void;
 	deletePet(petId: string): void;
 }

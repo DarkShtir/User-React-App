@@ -10,6 +10,7 @@ export const Actions = {
 	GET_USER_PETS: '[pets] Get users pets',
 	PUT_USER_PETS: '[pets] Put users pets in store',
 	LOGOUT_PET: '[pet] Clear pet state',
+	PUT_EDIT_PET: '[pet] Put edit pet in state',
 };
 
 export const addPetAction = (pet: Pet): Action<Pet> => ({
@@ -45,4 +46,8 @@ export const putUserPets = (pets: Pet[]): Action<Pet[]> => ({
 });
 export const logoutPetAction = (): Action<void> => ({
 	type: Actions.LOGOUT_PET,
+});
+export const putEditPet = (pet: Pet | null): Action<Pet | null> => ({
+	type: Actions.PUT_EDIT_PET,
+	payload: pet,
 });

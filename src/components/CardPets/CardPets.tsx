@@ -3,11 +3,15 @@ import { Card, CardContent, CardActions, Button } from '@material-ui/core';
 import classes from './CardPets.module.scss';
 import RenderFields from '../shared/RenderFields/RenderFields';
 import { Pet } from '../../interfaces';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
+import { putEditPet } from '../../store/pets/pets.actions';
 
 interface Props {
 	pet: Pet;
 	guest: boolean;
-	editPet: (pet: Pet) => void;
+	putEditPet: (pet: Pet | null) => void;
+	// editPet: (pet: Pet) => void;
 	// deletePet: (petId: string, ownerId: string) => void;
 }
 
@@ -16,7 +20,7 @@ const petCardForm = {
 	species: 'Вид',
 };
 
-const CardPets: React.FC<Props> = ({ pet, guest, editPet }): JSX.Element => {
+const CardPets: React.FC<Props> = ({ pet, guest, putEditPet }): JSX.Element => {
 	return (
 		<Card className={classes.CardPetsComponent}>
 			<CardContent className={classes.content}>
@@ -32,7 +36,7 @@ const CardPets: React.FC<Props> = ({ pet, guest, editPet }): JSX.Element => {
 						className={classes.button}
 						size="small"
 						onClick={e => {
-							editPet(pet);
+							putEditPet(pet);
 						}}
 						// disabled={guest}
 					>
@@ -44,4 +48,8 @@ const CardPets: React.FC<Props> = ({ pet, guest, editPet }): JSX.Element => {
 	);
 };
 
-export default CardPets;
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	putEditPet: (pet: Pet | null) => dispatch(putEditPet(pet)),
+});
+
+export default connect(null, mapDispatchToProps)(CardPets);
