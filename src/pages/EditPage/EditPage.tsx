@@ -1,25 +1,41 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { EditUserForm } from '../../components/EditUserForm/EditUserForm';
 import { Paper } from '@material-ui/core';
-import { isLoginContext } from '../../components/utils/state';
-import userService from '../../services/user-service';
+import { connect } from 'react-redux';
+import { RootState } from '../../store/interfaces/RootState';
+import { User } from '../../interfaces';
+import { Action, Dispatch } from 'redux';
+import { updateUserAction } from '../../store/users/users.actions';
 
-export const EditPage: React.FC = () => {
-	const { activeUser, setUser } = useContext<any>(isLoginContext);
+interface Props {
+	user: User | null;
+	updateUser: (id: string, newUser: {}) => void;
+}
+
+const EditPage: React.FC<Props> = ({ user, updateUser }) => {
 	const history = useHistory();
 
-	const updateUser = (id: string, user: {}): void => {
-		const newUser = userService.updateUser(id, user);
-		setUser(newUser);
-
-		console.log(activeUser);
+	const updateUserHandler = (id: string, user: {}): void => {
+		updateUser(id, user);
+		console.log(user);
 		history.push(`/user/${id}`);
 	};
 
 	return (
 		<Paper>
-			<EditUserForm editUser={activeUser} onUserUpdated={updateUser} />
+			<EditUserForm editUser={user || {}} onUserUpdated={updateUserHandler} />
 		</Paper>
 	);
 };
+
+const mapStateToProps = (state: RootState) => ({
+	user: state.users.activeUser,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	updateUser: (id: string, newUser: {}) =>
+		dispatch(updateUserAction(id, newUser)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPage);

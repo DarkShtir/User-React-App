@@ -1,4 +1,4 @@
-import { EditPage } from './EditPage/EditPage';
+import EditPage from './EditPage/EditPage';
 import LoginPage from './LoginPage/LoginPage';
 import MainPage from './MainPage/MainPage';
 import RegistrationPage from './RegistrationPage/RegistrationPage';
