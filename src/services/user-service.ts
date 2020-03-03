@@ -116,7 +116,7 @@ class UserService {
 	updateUser = async (id: string, user: {}): Promise<void | undefined> => {
 		try {
 			const response = await axios.put(`/${id}`, user);
-			const updateUser = response.data.user;
+			const updateUser = response.data;
 			return updateUser;
 		} catch (error) {
 			console.log('Error in user-servicein method UpdateUser (front)');
@@ -124,7 +124,7 @@ class UserService {
 		}
 	};
 
-	setAvatar = async (id: string, avatar: any): Promise<void | undefined> => {
+	setAvatar = async (id: string, avatar: any): Promise<object | undefined> => {
 		try {
 			const fileData = new FormData();
 			fileData.append('ownerId', id);
@@ -132,8 +132,7 @@ class UserService {
 			const response = await axios.post(`../upload/`, fileData);
 			const newUserAvatar = response.data;
 			const newPathAvatar = `http://localhost:8080/static/${id}/${newUserAvatar}`;
-			console.log(newUserAvatar);
-			this.updateUser(id, { avatarUrl: newPathAvatar });
+			return { avatarUrl: newPathAvatar };
 		} catch (error) {
 			console.log('Error in user-servicein method setAvatar (front)');
 			throw error;
@@ -142,7 +141,6 @@ class UserService {
 
 	getUserPets = async (id: string): Promise<void | undefined> => {
 		try {
-			console.log(id);
 			const response = await axios.get(`/${id}/pets`);
 			const pets = response.data;
 			return pets;

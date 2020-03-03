@@ -9,6 +9,8 @@ export const Actions = {
 	DELETE_USER: '[user] Delete user',
 	LOGOUT_USER: '[user] Logout user',
 	SET_USER_ID: '[user] Set user Id',
+	SET_USER_AVATAR: '[user] Set user Avatar',
+	SET_USER_QUOTES: '[user] Set user Quotes',
 	SET_LOGIN: '[appState] Set Login State',
 	SET_GUEST_ID: '[guest] Set guest Id',
 	SET_GUEST: '[guest] Set guest State',
@@ -20,7 +22,7 @@ export const addUserAction = (user: User): Action<User> => ({
 	type: Actions.ADD_USER,
 	payload: user,
 });
-export const updateUserAction = (id: string, user: User): Action<{}> => ({
+export const updateUserAction = (id: string, user: {}): Action<{}> => ({
 	type: Actions.UPDATE_USER,
 	payload: {
 		id,
@@ -65,4 +67,12 @@ export const getUserAlbums = (id: string): Action<string> => ({
 export const putUserAlbums = (albums: Album[]): Action<Album[]> => ({
 	type: Actions.PUT_USER_ALBUMS,
 	payload: albums,
+});
+export const setUserAvatar = (avatar: object): Action<object> => ({
+	type: Actions.SET_USER_AVATAR,
+	payload: avatar,
+});
+export const setUserQuotes = (quote: string): Action<string> => ({
+	type: Actions.SET_USER_QUOTES,
+	payload: quote,
 });

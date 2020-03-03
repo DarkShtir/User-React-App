@@ -8,12 +8,13 @@ import {
 	getUserAlbums,
 	getUser,
 	setGuestAction,
+	updateUserAction,
 } from './users.actions';
 import { userService, albumService } from '../../services/services';
 import { getUserPets, logoutPetAction } from '../pets/pets.actions';
 
 //Workers
-function* workerGetUser(actions: any) {
+function* workerSetGuestId(actions: any) {
 	const newUser = yield userService.getUserById(actions.payload);
 	const id = yield select(state => state.users.id);
 	const guestId = yield select(state => state.users.guestId);
@@ -46,13 +47,24 @@ function* workerLogin() {
 	const id = yield localStorage.getItem('id');
 	yield put(getUser(id));
 }
+function* workerSetUserAvatar(actions: any) {
+	const id = yield select(state => state.users.id);
+	const newAvatar = yield userService.setAvatar(id, actions.payload);
+	yield put(updateUserAction(id, newAvatar));
+}
+function* workerSetUserQuotes(actions: any) {
+	const id = yield select(state => state.users.id);
+	yield put(updateUserAction(id, { quotes: actions.payload }));
+}
+function* workerUpdateUser(actions: any) {
+	yield userService.updateUser(actions.payload.id, actions.payload.user);
+	const newUser = yield userService.getUserById(actions.payload.id);
+	yield put(putUser(newUser));
+}
 
 //Watchers
-// export function* watchGetUser() {
-// 	yield takeEvery(UserActions.GET_USER, workerGetUser);
-// }
 export function* watchSetGuestId() {
-	yield takeEvery(UserActions.SET_GUEST_ID, workerGetUser);
+	yield takeEvery(UserActions.SET_GUEST_ID, workerSetGuestId);
 }
 export function* watchLogin() {
 	yield takeEvery(UserActions.SET_LOGIN, workerLogin);
@@ -66,6 +78,17 @@ export function* watchLogoutUser() {
 	yield takeEvery(UserActions.LOGOUT_USER, workerLogoutUser);
 }
 
+export function* watchSetAvatar() {
+	yield takeEvery(UserActions.SET_USER_AVATAR, workerSetUserAvatar);
+}
+export function* watchSetQuotes() {
+	yield takeEvery(UserActions.SET_USER_QUOTES, workerSetUserQuotes);
+}
+
+export function* watchUpdateUser() {
+	yield takeEvery(UserActions.UPDATE_USER, workerUpdateUser);
+}
+
 //Export
 export default function* rootUserSaga() {
 	yield all([
@@ -74,5 +97,8 @@ export default function* rootUserSaga() {
 		watchLogoutUser(),
 		watchGetAlbums(),
 		watchLogin(),
+		watchSetAvatar(),
+		watchUpdateUser(),
+		watchSetQuotes(),
 	]);
 }

@@ -14,12 +14,14 @@ import classes from './CardAvatar.module.scss';
 import { User } from '../../interfaces';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
+import { Action, Dispatch } from 'redux';
+import { setUserAvatar, setUserQuotes } from '../../store/users/users.actions';
 
 interface Props {
 	user: User | null;
 	guest: boolean;
 	setUserAvatar: (file: object) => void;
-	setUserQuotes: (quotes: string) => void;
+	setUserQuotes: (quote: string) => void;
 }
 
 const CardAvatar: React.FC<Props> = ({
@@ -48,10 +50,19 @@ const CardAvatar: React.FC<Props> = ({
 		setSendAvatar(file);
 	};
 
+	const checkVoidObject = (obj: object): boolean => {
+		for (const key in obj) {
+			return false;
+		}
+		return true;
+	};
+
 	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		setUserAvatar(sendAvatar);
-		if (newQuotes) {
+		if (!checkVoidObject(sendAvatar)) {
+			setUserAvatar(sendAvatar);
+		}
+		if (newQuotes && newQuotes !== user.quotes) {
 			setUserQuotes(newQuotes);
 		}
 		setEdit(false);
@@ -154,6 +165,9 @@ const mapStateToProps = (state: RootState) => ({
 	guest: state.users.guest,
 });
 
-// const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	setUserAvatar: (avatar: object) => dispatch(setUserAvatar(avatar)),
+	setUserQuotes: (quote: string) => dispatch(setUserQuotes(quote)),
+});
 
-export default connect(mapStateToProps)(CardAvatar);
+export default connect(mapStateToProps, mapDispatchToProps)(CardAvatar);

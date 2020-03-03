@@ -8,18 +8,14 @@ import { Pet, User, Album } from '../../interfaces';
 import CardAlbum from '../CardAlbum/CardAlbum';
 import { RootState } from '../../store/interfaces/RootState';
 import { connect } from 'react-redux';
-// import { Action, Dispatch } from 'redux';
-// import { putEditPet } from '../../store/pets/pets.actions';
 
 interface Props {
 	user: User | null;
 	guest: boolean;
 	pets: [Pet] | null;
 	login: boolean;
-	// putEditPet: (pet: Pet|null)=>void
-	// handlerEditPet: (pet: Pet) => void;
 	setNeedAdd: (trueOrFalse: boolean) => void;
-	albums: [Album];
+	albums: [Album] | null;
 }
 
 const InfoUser: React.FC<Props> = ({
@@ -27,15 +23,12 @@ const InfoUser: React.FC<Props> = ({
 	guest,
 	pets,
 	login,
-	// handlerEditPet,
-	// putEditPet,
 	setNeedAdd,
 	albums,
 }) => {
 	if (user === null) {
 		throw new Error();
 	}
-	// console.log(login);
 	return (
 		<div className={classes.InfoUser}>
 			<CardUser user={user} guest={guest} />
@@ -47,14 +40,7 @@ const InfoUser: React.FC<Props> = ({
 					{pets !== null && pets ? (
 						<>
 							{pets.map((pet: Pet, index: number) => {
-								return (
-									<CardPets
-										pet={pet}
-										key={index}
-										guest={guest}
-										// editPet={handlerEditPet}
-									/>
-								);
+								return <CardPets pet={pet} key={index} guest={guest} />;
 							})}
 						</>
 					) : null}
@@ -70,7 +56,7 @@ const InfoUser: React.FC<Props> = ({
 					) : null}
 				</div>
 			) : null}
-			<CardAlbum albums={albums} />
+			{albums ? <CardAlbum albums={albums} /> : null}
 		</div>
 	);
 };
@@ -80,11 +66,7 @@ const mapStateToProps = (state: RootState) => ({
 	guest: state.users.guest,
 	pets: state.pets.pets,
 	login: state.users.login,
+	albums: state.users.albums,
 });
 
-// const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-// 	putEditPet: (pet: Pet | null) => dispatch(putEditPet(pet)),
-// });
-
 export default connect(mapStateToProps)(InfoUser);
-// export default InfoUser;
