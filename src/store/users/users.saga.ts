@@ -7,6 +7,7 @@ import {
 	putUserAlbums,
 	getUserAlbums,
 	getUser,
+	setGuestAction,
 } from './users.actions';
 import { userService, albumService } from '../../services/services';
 import { getUserPets, logoutPetAction } from '../pets/pets.actions';
@@ -14,9 +15,15 @@ import { getUserPets, logoutPetAction } from '../pets/pets.actions';
 //Workers
 function* workerGetUser(actions: any) {
 	const newUser = yield userService.getUserById(actions.payload);
+	const id = yield select(state => state.users.id);
 	const guestId = yield select(state => state.users.guestId);
 	const login = yield select(state => state.users.login);
-	if (login) {
+	if (id !== guestId && id && guestId) {
+		yield put(setGuestAction(true));
+	} else {
+		yield put(setGuestAction(false));
+	}
+	if (login && newUser && newUser.id !== guestId) {
 		yield put(putUser(newUser));
 		yield put(getUserPets(guestId));
 		yield put(getUserAlbums(guestId));
@@ -41,8 +48,11 @@ function* workerLogin() {
 }
 
 //Watchers
-export function* watchGetUser() {
-	yield takeEvery(UserActions.GET_USER, workerGetUser);
+// export function* watchGetUser() {
+// 	yield takeEvery(UserActions.GET_USER, workerGetUser);
+// }
+export function* watchSetGuestId() {
+	yield takeEvery(UserActions.SET_GUEST_ID, workerGetUser);
 }
 export function* watchLogin() {
 	yield takeEvery(UserActions.SET_LOGIN, workerLogin);
@@ -59,7 +69,8 @@ export function* watchLogoutUser() {
 //Export
 export default function* rootUserSaga() {
 	yield all([
-		watchGetUser(),
+		// watchGetUser(),
+		watchSetGuestId(),
 		watchLogoutUser(),
 		watchGetAlbums(),
 		watchLogin(),

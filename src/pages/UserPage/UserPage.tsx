@@ -92,13 +92,20 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 	};
 
 	useEffect(() => {
-		setGuestId(props.match.url.slice(6));
-		getUser(guestId);
-		if (id && id !== guestId) {
-			setGuest(true);
-		} else {
-			setGuest(false);
+		if (
+			props.match.url.slice(6) !== undefined &&
+			guestId !== props.match.url.slice(6)
+		) {
+			setGuestId(props.match.url.slice(6));
 		}
+		// if (guestId) {
+		// 	getUser(guestId);
+		// }
+		// if (id && id !== guestId && guestId) {
+		// 	setGuest(true);
+		// } else {
+		// 	setGuest(false);
+		// }
 		setLoading(loadingEnum.Loaded);
 	}, [
 		getUser,

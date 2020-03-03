@@ -66,10 +66,14 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 				guest: action.payload,
 			};
 		case Actions.PUT_USER:
-			return {
-				...state,
-				activeUser: action.payload,
-			};
+			if (action.payload) {
+				return {
+					...state,
+					activeUser: action.payload,
+				};
+			} else {
+				return { ...state };
+			}
 		case Actions.PUT_USER_ALBUMS:
 			return {
 				...state,
