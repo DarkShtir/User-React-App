@@ -1,10 +1,15 @@
 .Previews {}
 
+.container {
+  display: flex;
+  flex-direction: column;
+
+}
+
 .thumbsContainer {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 16px;
 }
 
 .thumb {
@@ -41,5 +46,17 @@
   width: 100%;
   height: 5rem;
   background-color: rgba(149, 149, 233, 0.2);
+  border-radius: 1rem;
+}
+
+.dragAreaActive {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  width: 100%;
+  height: 5rem;
+  background-color: rgba(149, 233, 163, 0.568);
+  border-radius: 1rem;
 
 }

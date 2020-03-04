@@ -1,4 +1,4 @@
-import { User, Album } from '../../interfaces';
+import { User, Album, Photo } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
 
 export const Actions = {
@@ -17,7 +17,10 @@ export const Actions = {
 	GET_USER_ALBUMS: '[albums] Get users albums',
 	ADD_USER_ALBUMS: '[albums] Add users albums',
 	PUT_USER_ALBUMS: '[albums] Put users albums in store',
+	PUT_ACTIVE_ALBUM: '[albums] Put active album in store',
 	UPLOAD_PHOTOS: '[photo] Upload photo in user album',
+	GET_ALBUM_PHOTOS: '[photo] Get photo by album id',
+	PUT_ALBUM_PHOTOS: '[photo] Upload photo in user album',
 };
 
 export const addUserAction = (user: User): Action<User> => ({
@@ -82,7 +85,27 @@ export const setUserQuotes = (quote: string): Action<string> => ({
 	type: Actions.SET_USER_QUOTES,
 	payload: quote,
 });
-export const uploadPhotos = (photos: [{}]): Action<[{}]> => ({
+export const putActiveAlbum = (albumId: string): Action<string> => ({
+	type: Actions.PUT_ACTIVE_ALBUM,
+	payload: albumId,
+});
+export const uploadPhotos = (
+	ownerId: string,
+	albumId: string,
+	photos: [File]
+): Action<{}> => ({
 	type: Actions.UPLOAD_PHOTOS,
+	payload: {
+		ownerId: ownerId,
+		albumId: albumId,
+		photos: photos,
+	},
+});
+export const getAlbumPhotos = (albumId: string): Action<string> => ({
+	type: Actions.GET_ALBUM_PHOTOS,
+	payload: albumId,
+});
+export const PutAlbumPhotos = (photos: [Photo]): Action<[Photo]> => ({
+	type: Actions.PUT_ALBUM_PHOTOS,
 	payload: photos,
 });

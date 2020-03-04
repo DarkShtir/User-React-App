@@ -2,10 +2,25 @@ import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import classes from './Previews.module.scss';
 import { Button } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { RootState } from '../../store/interfaces/RootState';
+import { Action, Dispatch } from 'redux';
+import { uploadPhotos } from '../../store/users/users.actions';
 
-const Previews: React.FC = props => {
+interface Props {
+	id: string;
+	activeAlbum: string;
+	uploadPhotos: (ownerId: string, albumId: string, photos: any) => void;
+}
+
+const Previews: React.FC<Props> = ({
+	id,
+	activeAlbum,
+	uploadPhotos,
+	...props
+}) => {
 	const [files, setFiles] = useState([]);
-	const { getRootProps, getInputProps } = useDropzone({
+	const { getRootProps, getInputProps, isDragActive } = useDropzone({
 		accept: 'image/*',
 		onDrop: (acceptedFiles: any) => {
 			setFiles(
@@ -20,7 +35,10 @@ const Previews: React.FC = props => {
 
 	const submitHandler = (event: any) => {
 		event.preventDefault();
-		console.log(files);
+		if (files) {
+			uploadPhotos(id, activeAlbum, files);
+		}
+		setFiles([]);
 	};
 
 	const thumbs = files.map((file: any) => (
@@ -40,12 +58,14 @@ const Previews: React.FC = props => {
 	);
 
 	return (
-		<section className="container">
+		<section className={classes.container}>
 			<div {...getRootProps({ className: 'dropzone' })}>
 				<input {...getInputProps()} />
-				<p className={classes.dragArea}>
-					Drag n drop some files here, or click to select files
-				</p>
+				{isDragActive ? (
+					<p className={classes.dragAreaActive}>{`Drop it like it's hot!`}</p>
+				) : (
+					<p className={classes.dragArea}>Click me or drag a file to upload!</p>
+				)}
 			</div>
 
 			<aside className={classes.thumbsContainer}>{thumbs}</aside>
@@ -56,4 +76,12 @@ const Previews: React.FC = props => {
 	);
 };
 
-export default Previews;
+const mapStateToProps = (state: RootState) => ({
+	id: state.users.id,
+	activeAlbum: state.users.activeAlbum,
+});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	uploadPhotos: (ownerId: string, albumId: string, photos: any) =>
+		dispatch(uploadPhotos(ownerId, albumId, photos)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Previews);

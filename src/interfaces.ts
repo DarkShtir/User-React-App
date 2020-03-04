@@ -42,8 +42,9 @@ export interface Photo {
 	description?: string;
 	ownerId: string;
 	albumId: string;
-	width?: number;
-	height?: number;
+	width: number;
+	height: number;
 	createdAt?: string;
 	updatedAt?: string;
+	src: string;
 }

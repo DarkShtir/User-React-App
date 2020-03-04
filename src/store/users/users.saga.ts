@@ -1,4 +1,4 @@
-import { takeEvery, put, all, select } from 'redux-saga/effects';
+import { takeEvery, put, select } from 'redux-saga/effects';
 import {
 	Actions as UserActions,
 	putUser,
@@ -9,9 +9,16 @@ import {
 	getUser,
 	setGuestAction,
 	updateUserAction,
+	PutAlbumPhotos,
+	getAlbumPhotos,
 } from './users.actions';
-import { userService, albumService } from '../../services/services';
+import {
+	userService,
+	albumService,
+	photoService,
+} from '../../services/services';
 import { getUserPets, logoutPetAction } from '../pets/pets.actions';
+import { Photo } from '../../interfaces';
 
 //Workers
 function* workerSetGuestId(actions: any) {
@@ -65,48 +72,49 @@ function* workerAddUserAlbum(actions: any) {
 	yield albumService.addAlbum({ ownerId: actions.payload });
 	yield put(getUserAlbums(actions.payload));
 }
+function* workerUploadPhotosInAlbum(actions: any) {
+	if (
+		actions.payload.ownerId &&
+		actions.payload.albumId &&
+		actions.payload.photos
+	) {
+		yield photoService.addManyPhotos(
+			actions.payload.ownerId,
+			actions.payload.albumId,
+			actions.payload.photos
+		);
+		yield put(getAlbumPhotos(actions.payload.albumId));
+	}
+}
+function* workerGetAlbumPhotos(actions: any) {
+	if (actions.payload) {
+		const newPhotos = yield photoService.getAllPhotosByAlbumId(actions.payload);
+		yield put(PutAlbumPhotos(newPhotos));
+	}
+}
+function* workerPutActiveAlbum(actions: any) {
+	if (actions.payload === '') {
+		yield put(PutAlbumPhotos([{} as Photo]));
+	}
+
+}
 
 //Watchers
-export function* watchSetGuestId() {
+export function* usersWatcher() {
 	yield takeEvery(UserActions.SET_GUEST_ID, workerSetGuestId);
-}
-export function* watchLogin() {
 	yield takeEvery(UserActions.SET_LOGIN, workerLogin);
-}
-
-export function* watchGetAlbums() {
 	yield takeEvery(UserActions.GET_USER_ALBUMS, workerGetUserAlbums);
-}
-
-export function* watchLogoutUser() {
 	yield takeEvery(UserActions.LOGOUT_USER, workerLogoutUser);
-}
-
-export function* watchSetAvatar() {
 	yield takeEvery(UserActions.SET_USER_AVATAR, workerSetUserAvatar);
-}
-export function* watchSetQuotes() {
 	yield takeEvery(UserActions.SET_USER_QUOTES, workerSetUserQuotes);
-}
-
-export function* watchUpdateUser() {
 	yield takeEvery(UserActions.UPDATE_USER, workerUpdateUser);
-}
-export function* watchAddUserAlbum() {
 	yield takeEvery(UserActions.ADD_USER_ALBUMS, workerAddUserAlbum);
+	yield takeEvery(UserActions.UPLOAD_PHOTOS, workerUploadPhotosInAlbum);
+	yield takeEvery(UserActions.GET_ALBUM_PHOTOS, workerGetAlbumPhotos);
+	yield takeEvery(UserActions.PUT_ACTIVE_ALBUM, workerPutActiveAlbum);
 }
 
 //Export
 export default function* rootUserSaga() {
-	yield all([
-		// watchGetUser(),
-		watchSetGuestId(),
-		watchLogoutUser(),
-		watchGetAlbums(),
-		watchLogin(),
-		watchSetAvatar(),
-		watchUpdateUser(),
-		watchSetQuotes(),
-		watchAddUserAlbum(),
-	]);
+	yield usersWatcher();
 }

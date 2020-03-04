@@ -12,7 +12,7 @@ const Photo: React.FC<Props> = ({ src, name = 'My Photo', alt }) => {
 	return (
 		<div className={classes.Photo}>
 			<img src={src} alt={alt} />
-			<h5> {name}</h5>
+			{/* <h5> {name}</h5> */}
 		</div>
 	);
 };

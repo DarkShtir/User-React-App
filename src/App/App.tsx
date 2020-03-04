@@ -53,7 +53,7 @@ const App: React.FC<Props> = ({ login, id }) => {
 				<Route path="/user-list" component={UsersList} />
 				<Route path={`/user/${id}/edit/`} component={Edit} />
 				<Route path="/users-cards" component={UsersPage} />
-				<Route path="/album" component={UserAlbum} />
+				<Route path="/album/:id/" component={UserAlbum} />
 				<Route path="/albums" component={UserAlbums} />
 				<Route exact path="/" component={Main} />
 				<Route

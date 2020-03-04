@@ -1,65 +1,76 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Gallery from 'react-photo-gallery';
 import classes from './AlbumPage.module.scss';
 import Photo from '../../components/Photo/Photo';
 import Previews from '../../components/Previews/Previews';
+import { connect } from 'react-redux';
+import { RootState } from '../../store/interfaces/RootState';
+import { Action, Dispatch } from 'redux';
+import {
+	getAlbumPhotos,
+	putActiveAlbum,
+} from '../../store/users/users.actions';
+import { Photo as PhotoInterface } from '../../interfaces';
+// import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
+// import Loading from '../../components/shared/Loading/Loading';
+import { RouteComponentProps } from 'react-router-dom';
 
-const photos = [
-	{
-		src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599',
-		width: 4,
-		height: 3,
-	},
-	{
-		src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799',
-		width: 1,
-		height: 1,
-	},
-	{
-		src: 'https://source.unsplash.com/qDkso9nvCg0/600x799',
-		width: 3,
-		height: 4,
-	},
-	{
-		src: 'https://source.unsplash.com/iecJiKe_RNg/600x799',
-		width: 3,
-		height: 4,
-	},
-	{
-		src: 'https://source.unsplash.com/epcsn8Ed8kY/600x799',
-		width: 3,
-		height: 4,
-	},
-	{
-		src: 'https://source.unsplash.com/NQSWvyVRIJk/800x599',
-		width: 4,
-		height: 3,
-	},
-	{
-		src: 'https://source.unsplash.com/zh7GEuORbUw/600x799',
-		width: 3,
-		height: 4,
-	},
-	{
-		src: 'https://source.unsplash.com/PpOHJezOalU/800x599',
-		width: 4,
-		height: 3,
-	},
-	{
-		src: 'https://source.unsplash.com/I1ASdgphUH4/800x599',
-		width: 4,
-		height: 3,
-	},
-	{
-		src: 'https://source.unsplash.com/XiDA78wAZVw/600x799',
-		width: 3,
-		height: 4,
-	},
-];
+interface Props {
+	photos: [PhotoInterface];
+	activeAlbum: string;
+	guest: boolean;
+	getAlbumPhotos: (albumId: string) => void;
+	putActiveAlbum: (albumId: string) => void;
+}
 
-const AlbumPage: React.FC = () => {
+const AlbumPage: React.FC<Props & RouteComponentProps> = ({
+	photos,
+	activeAlbum,
+	getAlbumPhotos,
+	putActiveAlbum,
+	guest,
+	...props
+}) => {
+	enum loadingEnum {
+		Loading,
+		Loaded,
+		Error,
+	}
 	const [currentImage, setCurrentImage] = useState(0);
 	const [viewerIsOpen, setViewerIsOpen] = useState(false);
+	const [loading, setLoading] = useState(loadingEnum.Loading);
+	const [currentPhoto, setCurrentPhoto] = useState<any>();
+
+	useEffect(() => {
+		if (activeAlbum) {
+			getAlbumPhotos(activeAlbum);
+		} else {
+			putActiveAlbum(props.match.url.slice(7));
+		}
+	}, [getAlbumPhotos, activeAlbum, props.match.url, putActiveAlbum]);
+
+	const checkVoidObject = (obj: object): boolean => {
+		for (const key in obj) {
+			return false;
+		}
+		return true;
+	};
+
+	useEffect(() => {
+		if (!checkVoidObject(photos[0])) {
+			const newPhotos = photos.map(photo => {
+				return {
+					src: photo.src,
+					width: photo.width,
+					height: photo.height,
+				};
+			});
+			if (newPhotos && newPhotos.length > 0) {
+				setCurrentPhoto(newPhotos);
+				setLoading(loadingEnum.Loaded);
+			}
+		}
+	}, [photos, loadingEnum.Loaded]);
 
 	const openLightbox = useCallback((event, { photo, index }) => {
 		setCurrentImage(index);
@@ -76,9 +87,7 @@ const AlbumPage: React.FC = () => {
 	};
 
 	const nextImage = (): void => {
-		if (currentImage < photos.length - 1) {
-			console.log(currentImage);
-			console.log(photos.length);
+		if (photos !== null && currentImage < photos.length - 1) {
 			const newCurrentImage = currentImage + 1;
 			setCurrentImage(newCurrentImage);
 		} else {
@@ -88,12 +97,13 @@ const AlbumPage: React.FC = () => {
 
 	return (
 		<div className={classes.AlbumPage}>
-			<Previews />
-
-			<Gallery photos={photos} onClick={openLightbox} />
+			{guest ? null : <Previews />}
+			{loading === loadingEnum.Loaded ? (
+				<Gallery photos={currentPhoto} onClick={openLightbox} />
+			) : null}
 			{viewerIsOpen ? (
 				<div className={classes.wrapperModalWindow} onClick={closeLightbox}>
-					<div onClick={nextImage}>
+					<div onClick={nextImage} className={classes.wrapperPhoto}>
 						<Photo src={photos[currentImage].src} alt="Album photograhpy" />
 					</div>
 				</div>
@@ -102,4 +112,14 @@ const AlbumPage: React.FC = () => {
 	);
 };
 
-export default AlbumPage;
+const mapStateToProps = (state: RootState) => ({
+	photos: state.users.photos,
+	activeAlbum: state.users.activeAlbum,
+	guest: state.users.guest,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	getAlbumPhotos: (albumId: string) => dispatch(getAlbumPhotos(albumId)),
+	putActiveAlbum: (albumId: string) => dispatch(putActiveAlbum(albumId)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumPage);

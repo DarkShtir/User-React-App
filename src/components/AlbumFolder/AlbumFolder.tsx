@@ -1,17 +1,35 @@
 import React from 'react';
 import classes from './AlbumFolder.module.scss';
 import { Album } from '../../interfaces';
+import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { RootState } from '../../store/interfaces/RootState';
+import { Action, Dispatch } from 'redux';
+import { putActiveAlbum } from '../../store/users/users.actions';
 
 interface Props {
 	album: Album;
+	activeAlbum: string;
+	putActiveAlbum: (albumId: string) => void;
 }
 
-const AlbumFolder: React.FC<Props> = ({ album }) => {
+const AlbumFolder: React.FC<Props> = ({
+	album,
+	activeAlbum,
+	putActiveAlbum,
+}) => {
+	const history = useHistory();
+
 	return (
 		<div
 			className={classes.AlbumFolder}
 			onClick={() => {
-				console.log(album._id);
+				if (album._id && album._id !== activeAlbum) {
+					putActiveAlbum(album._id);
+					history.push(`/album/${album._id}`);
+				} else if (album._id === activeAlbum) {
+					history.push(`/album/${album._id}`);
+				}
 			}}
 		>
 			<img
@@ -25,4 +43,11 @@ const AlbumFolder: React.FC<Props> = ({ album }) => {
 	);
 };
 
-export default AlbumFolder;
+const mapStateToProps = (state: RootState) => ({
+	activeAlbum: state.users.activeAlbum,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	putActiveAlbum: (albumId: string) => dispatch(putActiveAlbum(albumId)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumFolder);
