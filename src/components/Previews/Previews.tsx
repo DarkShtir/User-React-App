@@ -41,6 +41,10 @@ const Previews: React.FC<Props> = ({
 		setFiles([]);
 	};
 
+	const cancelHandler = (event: any) => {
+		setFiles([]);
+	};
+
 	const thumbs = files.map((file: any) => (
 		<div className={classes.thumb} key={file.name}>
 			<div className={classes.thumbInner}>
@@ -58,20 +62,39 @@ const Previews: React.FC<Props> = ({
 	);
 
 	return (
-		<section className={classes.container}>
-			<div {...getRootProps({ className: 'dropzone' })}>
-				<input {...getInputProps()} />
-				{isDragActive ? (
-					<p className={classes.dragAreaActive}>{`Drop it like it's hot!`}</p>
-				) : (
-					<p className={classes.dragArea}>Click me or drag a file to upload!</p>
-				)}
+		<section className={classes.Previews}>
+			<div className={classes.controlWrapper}>
+				<div {...getRootProps({ className: 'dropzone' })}>
+					<input {...getInputProps()} />
+					{isDragActive ? (
+						<p
+							className={classes.dragAreaActive}
+						>{`О, файлики! Отпускай клавишу мыши`}</p>
+					) : (
+						<p className={classes.dragArea}>
+							Жмякни тута, или кинь файлы сюды!
+						</p>
+					)}
+				</div>
+				<Button
+					variant="contained"
+					type="submit"
+					onClick={submitHandler}
+					className={(classes.button, classes.submit)}
+				>
+					Send
+				</Button>
+				<Button
+					variant="contained"
+					type="submit"
+					onClick={cancelHandler}
+					className={(classes.button, classes.cancel)}
+				>
+					Cancel
+				</Button>
 			</div>
 
 			<aside className={classes.thumbsContainer}>{thumbs}</aside>
-			<Button variant="contained" type="submit" onClick={submitHandler}>
-				Send
-			</Button>
 		</section>
 	);
 };

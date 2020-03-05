@@ -88,7 +88,7 @@ function* workerUploadPhotosInAlbum(actions: any) {
 }
 function* workerGetAlbumPhotos(actions: any) {
 	if (actions.payload) {
-		const newPhotos = yield photoService.getAllPhotosByAlbumId(actions.payload);
+		const newPhotos = yield photoService.getAllPhotosByAlbumId(actions.payload.albumId, actions.payload.page,actions.payload.elemPerPage, actions.payload.filter);
 		yield put(PutAlbumPhotos(newPhotos));
 	}
 }

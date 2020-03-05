@@ -101,9 +101,19 @@ export const uploadPhotos = (
 		photos: photos,
 	},
 });
-export const getAlbumPhotos = (albumId: string): Action<string> => ({
+export const getAlbumPhotos = (
+	albumId: string,
+	page?: number,
+	elemPerPage?: number,
+	filter?: boolean
+): Action<{}> => ({
 	type: Actions.GET_ALBUM_PHOTOS,
-	payload: albumId,
+	payload: {
+		albumId: albumId,
+		page: page || 1,
+		elemPerPage: elemPerPage || 0,
+		filter: filter || false,
+	},
 });
 export const PutAlbumPhotos = (photos: [Photo]): Action<[Photo]> => ({
 	type: Actions.PUT_ALBUM_PHOTOS,

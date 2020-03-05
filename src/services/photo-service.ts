@@ -34,10 +34,15 @@ class AlbumService {
 	};
 
 	getAllPhotosByAlbumId = async (
-		albumId: object
+		albumId: object,
+		pageNum = 1,
+		photosPerPage = 0,
+		filter = false
 	): Promise<void | undefined> => {
 		try {
-			const response = await axios.get(`/album/${albumId}`);
+			const response = await axios.get(
+				`/album/${albumId}?page=${pageNum}&photosPerPage=${photosPerPage}&filter=${filter}`
+			);
 			const photos = response.data;
 			return photos;
 		} catch (error) {

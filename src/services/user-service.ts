@@ -29,9 +29,11 @@ axios.interceptors.response.use(
 	}
 );
 class UserService {
-	getAllUsers = async (): Promise<any> => {
+	getAllUsers = async (pageNum = 1, usersPerPage = 0): Promise<any> => {
 		try {
-			const response = await axios.get('/');
+			const response = await axios.get(
+				`/?page=${pageNum}&usersPerPage=${usersPerPage}`
+			);
 			const users = response.data;
 			return users;
 		} catch (error) {

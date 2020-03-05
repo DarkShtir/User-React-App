@@ -78,7 +78,6 @@ const Form: React.FC<Props> = ({
 							className={classes.button}
 							color="secondary"
 							onClick={(): void => {
-								console.log(history.location);
 								// if (history.location.pathname.match('edit')) {
 								// } else {}
 								history.goBack();

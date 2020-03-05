@@ -11,15 +11,26 @@ import {
 	putActiveAlbum,
 } from '../../store/users/users.actions';
 import { Photo as PhotoInterface } from '../../interfaces';
-// import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
-// import Loading from '../../components/shared/Loading/Loading';
 import { RouteComponentProps } from 'react-router-dom';
+import {
+	Checkbox,
+	Button,
+	FormControl,
+	InputLabel,
+	Select,
+	FormControlLabel,
+} from '@material-ui/core';
 
 interface Props {
 	photos: [PhotoInterface];
 	activeAlbum: string;
 	guest: boolean;
-	getAlbumPhotos: (albumId: string) => void;
+	getAlbumPhotos: (
+		albumId: string,
+		page: number,
+		elemPerPage: number,
+		filter: boolean
+	) => void;
 	putActiveAlbum: (albumId: string) => void;
 }
 
@@ -40,14 +51,28 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	const [viewerIsOpen, setViewerIsOpen] = useState(false);
 	const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [currentPhoto, setCurrentPhoto] = useState<any>();
+	const [elemPerPage, setElemPerPage] = useState(5);
+	const [page, setPage] = useState(1);
+	const [filter, setFilter] = useState(false);
+	const [lastPage, setLastPage] = useState(false);
+	const [firstPage, setFirstPage] = useState(true);
+	const [needAdd, setNeedAdd] = useState(false);
 
 	useEffect(() => {
 		if (activeAlbum) {
-			getAlbumPhotos(activeAlbum);
+			getAlbumPhotos(activeAlbum, page, elemPerPage, filter);
 		} else {
 			putActiveAlbum(props.match.url.slice(7));
 		}
-	}, [getAlbumPhotos, activeAlbum, props.match.url, putActiveAlbum]);
+	}, [
+		getAlbumPhotos,
+		activeAlbum,
+		props.match.url,
+		putActiveAlbum,
+		page,
+		elemPerPage,
+		filter,
+	]);
 
 	const checkVoidObject = (obj: object): boolean => {
 		for (const key in obj) {
@@ -95,11 +120,123 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 		}
 	};
 
+	const handleSelect = (event: React.ChangeEvent<{ value: number }>) => {
+		setElemPerPage(event.target.value);
+		setPage(1);
+	};
+
+	useEffect(() => {
+		if (page > 1) {
+			setFirstPage(false);
+		} else if (page === 1) {
+			setFirstPage(true);
+		}
+	}, [page]);
+
+	useEffect(() => {
+		if (loading === loadingEnum.Loaded) {
+			if (currentPhoto.length === +elemPerPage && photos.length > 0) {
+				setLastPage(false);
+			} else {
+				setLastPage(true);
+			}
+		}
+	}, [currentPhoto, elemPerPage, photos.length, loading, loadingEnum.Loaded]);
+
 	return (
 		<div className={classes.AlbumPage}>
-			{guest ? null : <Previews />}
+			{needAdd ? <Previews /> : null}
 			{loading === loadingEnum.Loaded ? (
-				<Gallery photos={currentPhoto} onClick={openLightbox} />
+				<>
+					<div className={classes.paginationPanel}>
+						<FormControl variant="filled" className={classes.formControl}>
+							<InputLabel htmlFor="select-elements-per-page">
+								К-во элементов
+							</InputLabel>
+							<Select
+								className={classes.select}
+								native
+								value={elemPerPage}
+								onChange={(event: any) => {
+									handleSelect(event);
+								}}
+								inputProps={{
+									name: 'elementsPerPage',
+								}}
+							>
+								<option value={5}>5</option>
+								<option value={10}>10</option>
+								<option value={20}>20</option>
+							</Select>
+						</FormControl>
+
+						<Button
+							disabled={firstPage}
+							className={classes.pageButton}
+							variant="contained"
+							onClick={
+								!firstPage
+									? () => {
+											setPage(page - 1);
+									  }
+									: () => {
+											setPage(page);
+									  }
+							}
+						>
+							Prev
+						</Button>
+						<Button
+							disabled={lastPage}
+							className={classes.pageButton}
+							variant="contained"
+							onClick={
+								!lastPage
+									? () => {
+											setPage(page + 1);
+									  }
+									: () => {
+											setPage(page);
+									  }
+							}
+						>
+							Next
+						</Button>
+						<FormControlLabel
+							className={classes.checkbox}
+							control={
+								<Checkbox
+									checked={filter}
+									onChange={() => {
+										setFilter(!filter);
+										setPage(1);
+									}}
+									color="primary"
+								/>
+							}
+							label="Показать только квадратные фото"
+						/>
+						{guest ? null : (
+							<Button
+								className={classes.pageButton}
+								variant="contained"
+								onClick={() => {
+									setNeedAdd(!needAdd);
+								}}
+							>
+								{!needAdd ? 'Добавить фото' : 'Скрыть панель'}
+							</Button>
+						)}
+					</div>
+					<div className={classes.gallery}>
+						<Gallery
+							photos={currentPhoto}
+							onClick={openLightbox}
+							targetRowHeight={50}
+							limitNodeSearch={3}
+						/>
+					</div>
+				</>
 			) : null}
 			{viewerIsOpen ? (
 				<div className={classes.wrapperModalWindow} onClick={closeLightbox}>
@@ -119,7 +256,12 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	getAlbumPhotos: (albumId: string) => dispatch(getAlbumPhotos(albumId)),
+	getAlbumPhotos: (
+		albumId: string,
+		page: number,
+		elemPerPage: number,
+		filter: boolean
+	) => dispatch(getAlbumPhotos(albumId, page, elemPerPage, filter)),
 	putActiveAlbum: (albumId: string) => dispatch(putActiveAlbum(albumId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumPage);
