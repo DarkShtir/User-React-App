@@ -21,33 +21,6 @@
     }
   }
 
-  .paginationPanel {
-    display: flex;
-    justify-content: space-between;
-    background-color: #FAD961;
-    background-image: linear-gradient(90deg, #FAD961 0%, #F76B1C 100%);
-
-    border-radius: 1rem;
-  }
-
-  .formControl {
-    width: 10rem;
-  }
-
-  .pageButton {
-    margin: 1rem 0.5rem;
-    width: 20%;
-  }
-
-  .select {
-    margin: 1rem;
-  }
-
-  .checkbox {
-    width: 12rem;
-    margin: 1rem;
-  }
-
   .gallery {
     div {
       justify-content: center;

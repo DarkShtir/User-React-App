@@ -1,12 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { EditUserForm } from '../../components/EditUserForm/EditUserForm';
-import { Paper } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { RootState } from '../../store/interfaces/RootState';
-import { User } from '../../interfaces';
 import { Action, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { Paper } from '@material-ui/core';
+
+import { EditUserForm } from '../../components/EditUserForm/EditUserForm';
+import { RootState } from '../../store/interfaces/RootState';
 import { updateUserAction } from '../../store/users/users.actions';
+import { User } from '../../interfaces';
 
 interface Props {
 	user: User | null;

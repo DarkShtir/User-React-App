@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import UserService from '../../services/user-service';
-import { UserLogin } from '../../interfaces';
-import LoginForm from '../../components/LoginForm/LoginForm';
-import { Paper, Typography } from '@material-ui/core';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import classes from './LoginPage.module.scss';
 import { Dispatch, Action } from 'redux';
+import { Paper, Typography } from '@material-ui/core';
+
+import { UserLogin } from '../../interfaces';
+import UserService from '../../services/user-service';
+import LoginForm from '../../components/LoginForm/LoginForm';
 import { RootState } from '../../store/interfaces/RootState';
 import {
 	setLoginAction,
 	setUserIdAction,
 } from '../../store/users/users.actions';
-import { connect } from 'react-redux';
+import classes from './LoginPage.module.scss';
 
 interface Props {
 	setLogin: (isLogin: boolean) => void;
@@ -61,18 +62,6 @@ const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
 			) : null}
 		</Paper>
 	);
-	// switch (loadingState) {
-	// 	case loadingEnum.Error:
-	// 		return <ErrorIndicator />;
-	// 	case loadingEnum.Loading:
-	// 		return <Loading />;
-	// 	default:
-	// 		return (
-	// 			<Paper>
-	// 				<LoginForm onUserLogin={loginUser} />
-	// 			</Paper>
-	// 		);
-	// }
 };
 
 const mapStateToProps = (state: RootState) => ({

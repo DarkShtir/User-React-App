@@ -1,13 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Typography, Button } from '@material-ui/core';
+import { Action, Dispatch } from 'redux';
 import classes from './AlbumsPage.module.scss';
 
-import { Typography, Button } from '@material-ui/core';
 import AlbumFolder from '../../components/AlbumFolder/AlbumFolder';
-import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { Album } from '../../interfaces';
 import { addUserAlbums } from '../../store/users/users.actions';
-import { Action, Dispatch } from 'redux';
 
 interface Props {
 	id: string;

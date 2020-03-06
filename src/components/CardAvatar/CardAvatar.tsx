@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
 import { setUserAvatar, setUserQuotes } from '../../store/users/users.actions';
+import checkVoidObject from '../utils/checkVoidObject';
 
 interface Props {
 	user: User | null;
@@ -48,13 +49,6 @@ const CardAvatar: React.FC<Props> = ({
 		const file = event.target.files[0];
 		setAvatar(URL.createObjectURL(file));
 		setSendAvatar(file);
-	};
-
-	const checkVoidObject = (obj: object): boolean => {
-		for (const key in obj) {
-			return false;
-		}
-		return true;
 	};
 
 	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {

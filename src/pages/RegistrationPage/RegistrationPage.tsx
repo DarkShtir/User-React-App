@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
-import UserService from '../../services/user-service';
-import { User } from '../../interfaces';
 import { Paper } from '@material-ui/core';
 import { createBrowserHistory } from 'history';
-import classes from './RegistrationPage.module.scss';
 import { connect } from 'react-redux';
-import { RootState } from '../../store/interfaces/RootState';
 import { Dispatch, Action } from 'redux';
+
+import { RootState } from '../../store/interfaces/RootState';
+import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
+import UserService from '../../services/user-service';
+import classes from './RegistrationPage.module.scss';
+import { User } from '../../interfaces';
 import {
 	setLoginAction,
 	setUserIdAction,

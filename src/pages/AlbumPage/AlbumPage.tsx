@@ -1,25 +1,20 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import Gallery from 'react-photo-gallery';
+import { RouteComponentProps } from 'react-router-dom';
+
 import classes from './AlbumPage.module.scss';
 import Photo from '../../components/Photo/Photo';
 import Previews from '../../components/Previews/Previews';
-import { connect } from 'react-redux';
+import Pagination from '../../components/Pagination/Pagination';
 import { RootState } from '../../store/interfaces/RootState';
-import { Action, Dispatch } from 'redux';
 import {
 	getAlbumPhotos,
 	putActiveAlbum,
 } from '../../store/users/users.actions';
 import { Photo as PhotoInterface } from '../../interfaces';
-import { RouteComponentProps } from 'react-router-dom';
-import {
-	Checkbox,
-	Button,
-	FormControl,
-	InputLabel,
-	Select,
-	FormControlLabel,
-} from '@material-ui/core';
+import checkVoidObject from '../../components/utils/checkVoidObject';
 
 interface Props {
 	photos: [PhotoInterface];
@@ -73,13 +68,6 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 		elemPerPage,
 		filter,
 	]);
-
-	const checkVoidObject = (obj: object): boolean => {
-		for (const key in obj) {
-			return false;
-		}
-		return true;
-	};
 
 	useEffect(() => {
 		if (!checkVoidObject(photos[0])) {
@@ -148,86 +136,20 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 			{needAdd ? <Previews /> : null}
 			{loading === loadingEnum.Loaded ? (
 				<>
-					<div className={classes.paginationPanel}>
-						<FormControl variant="filled" className={classes.formControl}>
-							<InputLabel htmlFor="select-elements-per-page">
-								К-во элементов
-							</InputLabel>
-							<Select
-								className={classes.select}
-								native
-								value={elemPerPage}
-								onChange={(event: any) => {
-									handleSelect(event);
-								}}
-								inputProps={{
-									name: 'elementsPerPage',
-								}}
-							>
-								<option value={5}>5</option>
-								<option value={10}>10</option>
-								<option value={20}>20</option>
-							</Select>
-						</FormControl>
+					<Pagination
+						elemPerPage={elemPerPage}
+						page={page}
+						firstPage={firstPage}
+						lastPage={lastPage}
+						guest={guest}
+						needAdd={needAdd}
+						filter={filter}
+						handleSelect={handleSelect}
+						setPage={setPage}
+						setFilter={setFilter}
+						setNeedAdd={setNeedAdd}
+					/>
 
-						<Button
-							disabled={firstPage}
-							className={classes.pageButton}
-							variant="contained"
-							onClick={
-								!firstPage
-									? () => {
-											setPage(page - 1);
-									  }
-									: () => {
-											setPage(page);
-									  }
-							}
-						>
-							Prev
-						</Button>
-						<Button
-							disabled={lastPage}
-							className={classes.pageButton}
-							variant="contained"
-							onClick={
-								!lastPage
-									? () => {
-											setPage(page + 1);
-									  }
-									: () => {
-											setPage(page);
-									  }
-							}
-						>
-							Next
-						</Button>
-						<FormControlLabel
-							className={classes.checkbox}
-							control={
-								<Checkbox
-									checked={filter}
-									onChange={() => {
-										setFilter(!filter);
-										setPage(1);
-									}}
-									color="primary"
-								/>
-							}
-							label="Показать только квадратные фото"
-						/>
-						{guest ? null : (
-							<Button
-								className={classes.pageButton}
-								variant="contained"
-								onClick={() => {
-									setNeedAdd(!needAdd);
-								}}
-							>
-								{!needAdd ? 'Добавить фото' : 'Скрыть панель'}
-							</Button>
-						)}
-					</div>
 					<div className={classes.gallery}>
 						<Gallery
 							photos={currentPhoto}
