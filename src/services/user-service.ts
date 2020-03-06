@@ -150,6 +150,16 @@ class UserService {
 			console.log('Error in user-servicein method getUserPets (front)');
 		}
 	};
+
+	getAllUsersByName = async (name: string): Promise<void | undefined> => {
+		try {
+			const response = await axios.get(`/search/?name=${name}`);
+			const users = response.data;
+			return users;
+		} catch (error) {
+			console.log('Error in user-servicein method getAllUsersByName (front)');
+		}
+	};
 }
 
 const userService = new UserService();

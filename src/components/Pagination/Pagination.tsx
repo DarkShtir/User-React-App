@@ -8,34 +8,31 @@ import {
 	Button,
 	FormControlLabel,
 } from '@material-ui/core';
+import { PageInfo } from '../../interfaces';
 
 interface Props {
-	elemPerPage: number;
-	page: number;
-	firstPage: boolean;
-	lastPage: boolean;
+	pageInfo: PageInfo;
 	guest: boolean;
 	needAdd: boolean;
-	filter: boolean;
 	handleSelect: (event: React.ChangeEvent<{ value: number }>) => void;
-	setPage: (page: number) => void;
-	setFilter: (setFilter: boolean) => void;
 	setNeedAdd: (needAdd: boolean) => void;
 }
 
 const Pagination: React.FC<Props> = ({
-	elemPerPage,
-	page,
-	firstPage,
-	lastPage,
+	pageInfo,
 	guest,
 	needAdd,
-	filter,
 	handleSelect,
-	setPage,
-	setFilter,
 	setNeedAdd,
 }) => {
+	const elemPerPage = pageInfo.elemPerPage;
+	const page = pageInfo.page;
+	const firstPage = pageInfo.firstPage;
+	const lastPage = pageInfo.lastPage;
+	const filter = pageInfo.filter;
+	const setPage = pageInfo.setPage;
+	const setFilter = pageInfo.setFilter;
+
 	return (
 		<div className={classes.Pagination}>
 			<FormControl variant="filled" className={classes.formControl}>

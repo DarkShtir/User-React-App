@@ -3,6 +3,7 @@ import { UserList } from '../../components/UserList/UserList';
 import { User } from '../../interfaces';
 import UserService from '../../services/user-service';
 import { Paper } from '@material-ui/core';
+import classes from './UsersListPage.module.scss';
 
 interface State {
 	newUsers: User[] | [];
@@ -59,7 +60,7 @@ export default class UsersListPage extends Component<{}, State> {
 
 	render(): JSX.Element {
 		return (
-			<Paper>
+			<Paper className={classes.UsersListPage}>
 				<UserList
 					users={this.state.newUsers}
 					userAddToggle={this.addUserToggle}

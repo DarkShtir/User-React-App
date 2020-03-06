@@ -11,7 +11,12 @@ export const Actions = {
 	SET_USER_ID: '[user] Set user Id',
 	SET_USER_AVATAR: '[user] Set user Avatar',
 	SET_USER_QUOTES: '[user] Set user Quotes',
+	GET_USERS_BY_NAME: '[user] Get users by name',
+	PUT_USERS_IN_STATE: '[user] Put users in State',
 	SET_LOGIN: '[appState] Set Login State',
+	LOADING_SUCCESSFUL_STATE: '[appState] Successful loading',
+	LOADING_ERROR_STATE: '[appState] Loading Error',
+	LOADING_STATE: '[appState] Loading data',
 	SET_GUEST_ID: '[guest] Set guest Id',
 	SET_GUEST: '[guest] Set guest State',
 	GET_USER_ALBUMS: '[albums] Get users albums',
@@ -118,4 +123,22 @@ export const getAlbumPhotos = (
 export const PutAlbumPhotos = (photos: [Photo]): Action<[Photo]> => ({
 	type: Actions.PUT_ALBUM_PHOTOS,
 	payload: photos,
+});
+
+export const getUsersByName = (name: string): Action<string> => ({
+	type: Actions.GET_USERS_BY_NAME,
+	payload: name,
+});
+export const putUsersInState = (users: [{}]): Action<[{}]> => ({
+	type: Actions.PUT_USERS_IN_STATE,
+	payload: users,
+});
+export const loadingSuccessful = (): Action<void> => ({
+	type: Actions.LOADING_SUCCESSFUL_STATE,
+});
+export const loadingError = (): Action<void> => ({
+	type: Actions.LOADING_ERROR_STATE,
+});
+export const loading = (): Action<void> => ({
+	type: Actions.LOADING_STATE,
 });

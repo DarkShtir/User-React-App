@@ -48,3 +48,13 @@ export interface Photo {
 	updatedAt?: string;
 	src: string;
 }
+
+export interface PageInfo {
+	elemPerPage: number;
+	page: number;
+	firstPage: boolean;
+	lastPage: boolean;
+	setPage: (page: number) => void;
+	filter: boolean;
+	setFilter: (setFilter: boolean) => void;
+}

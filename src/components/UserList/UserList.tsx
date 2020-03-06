@@ -73,7 +73,7 @@ export class UserList extends React.Component<Props, State> {
 					className={classes.button}
 					onClick={this.props.getUsersFromDB}
 				>
-					GET User
+					GET User in console
 				</Button>
 			</Grid>
 		);

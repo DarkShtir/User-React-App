@@ -1,26 +1,31 @@
 @import url(https://fonts.googleapis.com/css?family=VT323);
 
 .MainPage {
-  background-image: radial-gradient(circle 926px at 2.7% 11%, rgba(17, 29, 94, 1) 0%, rgba(178, 31, 102, 1) 90%);
-  height: 80vh;
 
-  h2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "VT323";
-    font-size: 3rem;
-    text-align: center;
-    color: #f7f443;
-  }
+  .paperWrapper {
+    background-image: radial-gradient(circle 926px at 2.7% 11%, rgba(17, 29, 94, 1) 0%, rgba(178, 31, 102, 1) 90%);
+    min-height: 80vh;
+    margin: 1rem 0;
 
-  h3 {
-    text-align: center;
-    color: yellow;
-  }
+    h2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "VT323";
+      font-size: 3rem;
+      text-align: center;
+      color: #f7f443;
+      margin: 0;
+    }
 
-  p {
-    font-family: 'Roboto';
-    margin: 0.5rem;
+    h3 {
+      text-align: center;
+      color: yellow;
+    }
+
+    p {
+      font-family: 'Roboto';
+      margin: 0.5rem;
+    }
   }
 }

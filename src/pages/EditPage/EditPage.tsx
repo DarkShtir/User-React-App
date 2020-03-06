@@ -19,7 +19,6 @@ const EditPage: React.FC<Props> = ({ user, updateUser }) => {
 
 	const updateUserHandler = (id: string, user: {}): void => {
 		updateUser(id, user);
-		console.log(user);
 		history.push(`/user/${id}`);
 	};
 

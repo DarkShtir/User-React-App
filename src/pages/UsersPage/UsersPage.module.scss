@@ -1,6 +1,18 @@
 .UsersPage {
+  min-height: 85vh;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
 
+  .usersCards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .notFoundMessage {
+    color: yellowgreen;
+    text-align: center;
+    margin: 2rem;
+  }
 }

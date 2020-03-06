@@ -16,6 +16,8 @@ axios.interceptors.response.use(
 		console.log(error);
 
 		if (error.response.status === 400) {
+			//*CONNECT REDUX TRY
+
 			throw new Error('Упс, запрос не прошёл, проверьте введенную информацию!');
 		} else if (error.response.status === 401) {
 			throw new Error(

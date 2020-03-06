@@ -4,16 +4,12 @@ import Form from '../shared/Form/Form';
 import { UserLogin } from '../../interfaces';
 
 import classes from './LoginForm.module.scss';
-import { connect } from 'react-redux';
-import { Dispatch, Action } from 'redux';
-import { setLoginAction } from '../../store/users/users.actions';
 
 interface Props {
 	onUserLogin: (user: UserLogin) => void;
-	setLogin: (isLogin: boolean) => void;
 }
 
-const LoginForm: React.FC<Props> = ({ onUserLogin, setLogin }) => {
+const LoginForm: React.FC<Props> = ({ onUserLogin }) => {
 	const [user, setUser] = useState({
 		login: '',
 		password: '',
@@ -22,12 +18,10 @@ const LoginForm: React.FC<Props> = ({ onUserLogin, setLogin }) => {
 	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		onUserLogin(user);
-		// console.log(user);
 		setUser({
 			login: '',
 			password: '',
 		});
-		// setLogin(true);
 	};
 
 	const handleInputChanges = (value: string, fieldName: string): void => {
@@ -57,8 +51,4 @@ const LoginForm: React.FC<Props> = ({ onUserLogin, setLogin }) => {
 	);
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
-});
-
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default LoginForm;

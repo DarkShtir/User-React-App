@@ -17,14 +17,14 @@ const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 		onRemove(id);
 	};
 
-	const editHandler = (
-		event: React.MouseEvent,
-		id: string | undefined
-	): void => {
-		event.preventDefault();
-		console.log(user._id);
-		onEdit(id);
-	};
+	// const editHandler = (
+	// 	event: React.MouseEvent,
+	// 	id: string | undefined
+	// ): void => {
+	// 	event.preventDefault();
+	// 	console.log(user._id);
+	// 	onEdit(id);
+	// };
 
 	return (
 		<>
@@ -36,14 +36,14 @@ const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 				<TableCell align="center">{user.phone}</TableCell>
 				<TableCell align="center">
 					<ButtonGroup>
-						<Button
+						{/* <Button
 							color="primary"
 							onClick={(event): void => {
 								editHandler(event, user._id);
 							}}
 						>
 							Edit
-						</Button>
+						</Button> */}
 						<Button
 							color="secondary"
 							onClick={(event): void => {

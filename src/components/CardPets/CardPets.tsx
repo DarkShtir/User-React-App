@@ -11,8 +11,6 @@ interface Props {
 	pet: Pet;
 	guest: boolean;
 	putEditPet: (pet: Pet | null) => void;
-	// editPet: (pet: Pet) => void;
-	// deletePet: (petId: string, ownerId: string) => void;
 }
 
 const petCardForm = {
@@ -26,11 +24,9 @@ const CardPets: React.FC<Props> = ({ pet, guest, putEditPet }): JSX.Element => {
 			<CardContent className={classes.content}>
 				<RenderFields cardForm={petCardForm} user={pet} />
 			</CardContent>
-			<CardActions>
-				{!guest ? (
+			{!guest ? (
+				<CardActions>
 					<Button
-						// component={Link}
-						// to={`/user/${id}/edit/`}
 						variant="contained"
 						color="primary"
 						className={classes.button}
@@ -38,12 +34,11 @@ const CardPets: React.FC<Props> = ({ pet, guest, putEditPet }): JSX.Element => {
 						onClick={e => {
 							putEditPet(pet);
 						}}
-						// disabled={guest}
 					>
 						Edit животину епт
 					</Button>
-				) : null}
-			</CardActions>
+				</CardActions>
+			) : null}
 		</Card>
 	);
 };

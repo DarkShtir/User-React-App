@@ -1,17 +1,19 @@
 import { Actions } from './users.actions';
 import { User, Album, Photo } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
+import loadingEnum from '../../components/utils/loadingStateEnum';
 
 export interface State {
 	login: boolean;
 	id: string;
 	activeUser: User | null;
-	users: User[];
+	users: [User] | null;
 	guestId: string;
 	guest: boolean;
 	albums: [Album] | null;
 	activeAlbum: string;
 	photos: [Photo];
+	statusApp: loadingEnum;
 }
 
 const checkLogin = (): boolean => {
@@ -35,12 +37,13 @@ const initialState: State = {
 	login: checkLogin(),
 	id: getId(),
 	activeUser: {} as User,
-	users: [],
+	users: [{} as User],
 	guestId: '',
 	guest: false,
 	albums: [{} as Album],
 	activeAlbum: '',
 	photos: [{} as Photo],
+	statusApp: loadingEnum.Loading,
 };
 
 export const reducer = (state: State = initialState, action: Action<any>) => {
@@ -92,6 +95,26 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 			return {
 				...state,
 				photos: action.payload,
+			};
+		case Actions.PUT_USERS_IN_STATE:
+			return {
+				...state,
+				users: action.payload,
+			};
+		case Actions.LOADING_SUCCESSFUL_STATE:
+			return {
+				...state,
+				statusApp: loadingEnum.Loaded,
+			};
+		case Actions.LOADING_ERROR_STATE:
+			return {
+				...state,
+				statusApp: loadingEnum.Error,
+			};
+		case Actions.LOADING_STATE:
+			return {
+				...state,
+				statusApp: loadingEnum.Loading,
 			};
 		default:
 			return state;

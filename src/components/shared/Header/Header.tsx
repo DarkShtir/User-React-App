@@ -95,14 +95,16 @@ const Header: React.FC<Props> = ({
 				>
 					Местные
 				</Button>
-				<Button
-					className={classes.btn}
-					component={NavLink}
-					to="/user-list"
-					activeClassName={classes.qwe}
-				>
-					Не суйся, для бацьки!
-				</Button>
+				{login ? (
+					<Button
+						className={classes.btn}
+						component={NavLink}
+						to="/user-list"
+						activeClassName={classes.qwe}
+					>
+						Не суйся, для бацьки!
+					</Button>
+				) : null}
 			</Container>
 		</Paper>
 	);

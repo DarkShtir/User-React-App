@@ -15,8 +15,12 @@ import {
 } from '../../store/users/users.actions';
 import { Photo as PhotoInterface } from '../../interfaces';
 import checkVoidObject from '../../components/utils/checkVoidObject';
+import loadingEnum from '../../components/utils/loadingStateEnum';
+import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
+import Loading from '../../components/shared/Loading/Loading';
 
 interface Props {
+	statusApp: loadingEnum;
 	photos: [PhotoInterface];
 	activeAlbum: string;
 	guest: boolean;
@@ -30,6 +34,7 @@ interface Props {
 }
 
 const AlbumPage: React.FC<Props & RouteComponentProps> = ({
+	statusApp,
 	photos,
 	activeAlbum,
 	getAlbumPhotos,
@@ -37,14 +42,14 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	guest,
 	...props
 }) => {
-	enum loadingEnum {
-		Loading,
-		Loaded,
-		Error,
-	}
+	// enum loadingEnum {
+	// 	Loading,
+	// 	Loaded,
+	// 	Error,
+	// }
 	const [currentImage, setCurrentImage] = useState(0);
 	const [viewerIsOpen, setViewerIsOpen] = useState(false);
-	const [loading, setLoading] = useState(loadingEnum.Loading);
+	// const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [currentPhoto, setCurrentPhoto] = useState<any>();
 	const [elemPerPage, setElemPerPage] = useState(5);
 	const [page, setPage] = useState(1);
@@ -80,10 +85,9 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 			});
 			if (newPhotos && newPhotos.length > 0) {
 				setCurrentPhoto(newPhotos);
-				setLoading(loadingEnum.Loaded);
 			}
 		}
-	}, [photos, loadingEnum.Loaded]);
+	}, [photos]);
 
 	const openLightbox = useCallback((event, { photo, index }) => {
 		setCurrentImage(index);
@@ -122,43 +126,49 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	}, [page]);
 
 	useEffect(() => {
-		if (loading === loadingEnum.Loaded) {
-			if (currentPhoto.length === +elemPerPage && photos.length > 0) {
-				setLastPage(false);
-			} else {
-				setLastPage(true);
-			}
+		if (
+			currentPhoto &&
+			currentPhoto.length === +elemPerPage &&
+			photos.length > 0
+		) {
+			setLastPage(false);
+		} else {
+			setLastPage(true);
 		}
-	}, [currentPhoto, elemPerPage, photos.length, loading, loadingEnum.Loaded]);
+	}, [currentPhoto, elemPerPage, photos.length]);
+
+	const pageInfo = {
+		elemPerPage: elemPerPage,
+		page: page,
+		firstPage: firstPage,
+		lastPage: lastPage,
+		setPage: setPage,
+		filter: filter,
+		setFilter: setFilter,
+	};
 
 	return (
 		<div className={classes.AlbumPage}>
 			{needAdd ? <Previews /> : null}
-			{loading === loadingEnum.Loaded ? (
-				<>
-					<Pagination
-						elemPerPage={elemPerPage}
-						page={page}
-						firstPage={firstPage}
-						lastPage={lastPage}
-						guest={guest}
-						needAdd={needAdd}
-						filter={filter}
-						handleSelect={handleSelect}
-						setPage={setPage}
-						setFilter={setFilter}
-						setNeedAdd={setNeedAdd}
-					/>
 
-					<div className={classes.gallery}>
-						<Gallery
-							photos={currentPhoto}
-							onClick={openLightbox}
-							targetRowHeight={50}
-							limitNodeSearch={3}
-						/>
-					</div>
-				</>
+			<Pagination
+				pageInfo={pageInfo}
+				guest={guest}
+				needAdd={needAdd}
+				handleSelect={handleSelect}
+				setNeedAdd={setNeedAdd}
+			/>
+			{statusApp === loadingEnum.Error ? <ErrorIndicator error={null} /> : null}
+			{statusApp === loadingEnum.Loading ? <Loading /> : null}
+			{statusApp === loadingEnum.Loaded ? (
+				<div className={classes.gallery}>
+					<Gallery
+						photos={currentPhoto}
+						onClick={openLightbox}
+						targetRowHeight={50}
+						limitNodeSearch={3}
+					/>
+				</div>
 			) : null}
 			{viewerIsOpen ? (
 				<div className={classes.wrapperModalWindow} onClick={closeLightbox}>
@@ -175,6 +185,7 @@ const mapStateToProps = (state: RootState) => ({
 	photos: state.users.photos,
 	activeAlbum: state.users.activeAlbum,
 	guest: state.users.guest,
+	statusApp: state.users.statusApp,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
@@ -186,4 +197,5 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	) => dispatch(getAlbumPhotos(albumId, page, elemPerPage, filter)),
 	putActiveAlbum: (albumId: string) => dispatch(putActiveAlbum(albumId)),
 });
+
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumPage);

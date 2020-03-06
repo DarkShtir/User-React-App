@@ -1,0 +1,15 @@
+.SearchPanel {
+  padding: 1rem;
+  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+  border-radius: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30vw;
+
+  div {
+    // min-width: 30vh;
+    width: 100%;
+  }
+}
