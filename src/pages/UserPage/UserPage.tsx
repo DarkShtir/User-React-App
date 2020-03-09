@@ -14,8 +14,9 @@ import { Pet, User, Album } from '../../interfaces';
 
 import classes from './UserPage.module.scss';
 import { RootState } from '../../store/interfaces/RootState';
-import { setGuestIdAction } from '../../store/users/users.actions';
+import { setGuestIdAction, loading } from '../../store/users/users.actions';
 import { addPetAction } from '../../store/pets/pets.actions';
+import loadingEnum from '../../components/utils/loadingStateEnum';
 
 interface Props {
 	activeUser: User | null;
@@ -26,6 +27,8 @@ interface Props {
 	editPet: Pet | null;
 	setGuestId: (guestId: string) => void;
 	addPet: (pet: Pet) => void;
+	statusApp: loadingEnum;
+	loading: () => void;
 }
 
 const UserPage: React.FC<Props & RouteComponentProps> = ({
@@ -37,16 +40,18 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 	editPet,
 	setGuestId,
 	addPet,
+	statusApp,
+	loading,
 	...props
 }): JSX.Element => {
-	enum loadingEnum {
-		Loading,
-		Loaded,
-		Error,
-	}
+	// enum loadingEnum {
+	// 	Loading,
+	// 	Loaded,
+	// 	Error,
+	// }
 
 	//TODO Перенести всё это в СТОР
-	const [loading, setLoading] = useState(loadingEnum.Loading);
+	// const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [needAdd, setNeedAdd] = useState(false);
 
 	useEffect(() => {
@@ -58,20 +63,20 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		}
 	}, [guestId, props.match.url, setGuestId]);
 
-	useEffect(() => {
-		if (activeUser && pets && albums) {
-			setLoading(loadingEnum.Loaded);
-		} else if (activeUser === undefined) {
-			setLoading(loadingEnum.Error);
-		}
-	}, [
-		setLoading,
-		activeUser,
-		loadingEnum.Loaded,
-		loadingEnum.Error,
-		pets,
-		albums,
-	]);
+	// useEffect(() => {
+	// 	if (activeUser && pets && albums) {
+	// 		setLoading(loadingEnum.Loaded);
+	// 	} else if (activeUser === undefined) {
+	// 		setLoading(loadingEnum.Error);
+	// 	}
+	// }, [
+	// 	setLoading,
+	// 	activeUser,
+	// 	loadingEnum.Loaded,
+	// 	loadingEnum.Error,
+	// 	pets,
+	// 	albums,
+	// ]);
 
 	const hadlerAddPet = (): void => {
 		setNeedAdd((prevState: boolean): any => !prevState);
@@ -82,7 +87,7 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 		addPet(newPet);
 	};
 
-	switch (loading) {
+	switch (statusApp) {
 		case loadingEnum.Error:
 			return <ErrorIndicator error={null} />;
 		case loadingEnum.Loading:
@@ -114,11 +119,13 @@ const mapStateToProps = (state: RootState) => ({
 	albums: state.users.albums,
 	pets: state.pets.pets,
 	editPet: state.pets.editPet,
+	statusApp: state.users.statusApp,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	setGuestId: (guestId: string) => dispatch(setGuestIdAction(guestId)),
 	addPet: (pet: Pet) => dispatch(addPetAction(pet)),
+	loading: () => dispatch(loading()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

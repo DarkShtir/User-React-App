@@ -42,14 +42,8 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	guest,
 	...props
 }) => {
-	// enum loadingEnum {
-	// 	Loading,
-	// 	Loaded,
-	// 	Error,
-	// }
 	const [currentImage, setCurrentImage] = useState(0);
 	const [viewerIsOpen, setViewerIsOpen] = useState(false);
-	// const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [currentPhoto, setCurrentPhoto] = useState<any>();
 	const [elemPerPage, setElemPerPage] = useState(5);
 	const [page, setPage] = useState(1);
@@ -57,6 +51,7 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	const [lastPage, setLastPage] = useState(false);
 	const [firstPage, setFirstPage] = useState(true);
 	const [needAdd, setNeedAdd] = useState(false);
+	const [countOfPhotos, setCountOfPhotos] = useState(0);
 
 	useEffect(() => {
 		if (activeAlbum) {
@@ -83,6 +78,9 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 					height: photo.height,
 				};
 			});
+			if (photos[0].totalCount) {
+				setCountOfPhotos(photos[0].totalCount[0]);
+			}
 			if (newPhotos && newPhotos.length > 0) {
 				setCurrentPhoto(newPhotos);
 			}
@@ -113,8 +111,18 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	};
 
 	const handleSelect = (event: React.ChangeEvent<{ value: number }>) => {
+		const newPage = (elemPerPage * page - elemPerPage) / event.target.value;
 		setElemPerPage(event.target.value);
-		setPage(1);
+		if (newPage < 1) {
+			setPage(1);
+		} else if (
+			Math.ceil(newPage) * event.target.value >= countOfPhotos ||
+			newPage < Math.ceil(newPage)
+		) {
+			setPage(Math.round(newPage));
+		} else {
+			setPage(Math.ceil(newPage) + 1);
+		}
 	};
 
 	useEffect(() => {
@@ -126,22 +134,19 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 	}, [page]);
 
 	useEffect(() => {
-		if (
-			currentPhoto &&
-			currentPhoto.length === +elemPerPage &&
-			photos.length > 0
-		) {
+		if (elemPerPage * page < countOfPhotos) {
 			setLastPage(false);
 		} else {
 			setLastPage(true);
 		}
-	}, [currentPhoto, elemPerPage, photos.length]);
+	}, [countOfPhotos, elemPerPage, page]);
 
 	const pageInfo = {
 		elemPerPage: elemPerPage,
 		page: page,
 		firstPage: firstPage,
 		lastPage: lastPage,
+		countOfPhotos: countOfPhotos,
 		setPage: setPage,
 		filter: filter,
 		setFilter: setFilter,
@@ -160,7 +165,7 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 			/>
 			{statusApp === loadingEnum.Error ? <ErrorIndicator error={null} /> : null}
 			{statusApp === loadingEnum.Loading ? <Loading /> : null}
-			{statusApp === loadingEnum.Loaded ? (
+			{statusApp === loadingEnum.Loaded && photos.length ? (
 				<div className={classes.gallery}>
 					<Gallery
 						photos={currentPhoto}
@@ -169,7 +174,11 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 						limitNodeSearch={3}
 					/>
 				</div>
-			) : null}
+			) : (
+				<div className={classes.galleryMessage}>
+					<h3>Фотографий пока нету!</h3>
+				</div>
+			)}
 			{viewerIsOpen ? (
 				<div className={classes.wrapperModalWindow} onClick={closeLightbox}>
 					<div onClick={nextImage} className={classes.wrapperPhoto}>

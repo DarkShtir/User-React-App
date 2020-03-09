@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { CardOtherUser } from '../../components/CardOtherUser/CardOtherUser';
 import SearchPanel from '../../components/SearchPanel/SearchPanel';
@@ -8,14 +8,24 @@ import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndi
 import { RootState } from '../../store/interfaces/RootState';
 import { User } from '../../interfaces';
 import classes from './UsersPage.module.scss';
+import { Action, Dispatch } from 'redux';
+import { loading } from '../../store/users/users.actions';
 
 interface Props {
 	users: [User] | null;
 	statusApp: loadingEnum;
+	loading: () => void;
 }
 
-const UsersPage: React.FC<Props> = ({ users, statusApp }): JSX.Element => {
+const UsersPage: React.FC<Props> = ({
+	users,
+	statusApp,
+	loading,
+}): JSX.Element => {
 	//!!Спросить про такую конструкуцию рендера, норм ли?
+	useEffect(() => {
+		loading();
+	}, [loading]);
 	const renderUsersCards = () => {
 		if (users !== null && users.length > 0) {
 			return (
@@ -57,4 +67,8 @@ const mapStateToProps = (state: RootState) => ({
 	statusApp: state.users.statusApp,
 });
 
-export default connect(mapStateToProps)(UsersPage);
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	loading: () => dispatch(loading()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersPage);

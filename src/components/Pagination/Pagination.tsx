@@ -7,6 +7,7 @@ import {
 	Select,
 	Button,
 	FormControlLabel,
+	Typography,
 } from '@material-ui/core';
 import { PageInfo } from '../../interfaces';
 
@@ -29,9 +30,11 @@ const Pagination: React.FC<Props> = ({
 	const page = pageInfo.page;
 	const firstPage = pageInfo.firstPage;
 	const lastPage = pageInfo.lastPage;
+	const countOfPhotos = pageInfo.countOfPhotos;
 	const filter = pageInfo.filter;
 	const setPage = pageInfo.setPage;
 	const setFilter = pageInfo.setFilter;
+	const countOfPages = Math.ceil(countOfPhotos / elemPerPage);
 
 	return (
 		<div className={classes.Pagination}>
@@ -55,6 +58,11 @@ const Pagination: React.FC<Props> = ({
 					<option value={20}>20</option>
 				</Select>
 			</FormControl>
+			<Typography className={classes.pagesMessage}>
+				Cтраница: {page}
+				<br />
+				из: {countOfPages}
+			</Typography>
 
 			<Button
 				disabled={firstPage}

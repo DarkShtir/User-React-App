@@ -91,17 +91,23 @@ function* workerAddUserAlbum(actions: any) {
 	yield put(getUserAlbums(actions.payload));
 }
 function* workerUploadPhotosInAlbum(actions: any) {
-	if (
-		actions.payload.ownerId &&
-		actions.payload.albumId &&
-		actions.payload.photos
-	) {
-		yield photoService.addManyPhotos(
-			actions.payload.ownerId,
-			actions.payload.albumId,
+	try {
+		yield put(loading());
+		if (
+			actions.payload.ownerId &&
+			actions.payload.albumId &&
 			actions.payload.photos
-		);
-		yield put(getAlbumPhotos(actions.payload.albumId));
+		) {
+			yield photoService.addManyPhotos(
+				actions.payload.ownerId,
+				actions.payload.albumId,
+				actions.payload.photos
+			);
+			yield put(getAlbumPhotos(actions.payload.albumId));
+			yield put(loadingSuccessful());
+		}
+	} catch (error) {
+		yield put(loadingError());
 	}
 }
 function* workerGetAlbumPhotos(actions: any) {

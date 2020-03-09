@@ -47,6 +47,7 @@ export interface Photo {
 	createdAt?: string;
 	updatedAt?: string;
 	src: string;
+	totalCount?: [number];
 }
 
 export interface PageInfo {
@@ -54,6 +55,7 @@ export interface PageInfo {
 	page: number;
 	firstPage: boolean;
 	lastPage: boolean;
+	countOfPhotos: number;
 	setPage: (page: number) => void;
 	filter: boolean;
 	setFilter: (setFilter: boolean) => void;

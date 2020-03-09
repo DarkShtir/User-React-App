@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
-import { uploadPhotos } from '../../store/users/users.actions';
+import { uploadPhotos, loading } from '../../store/users/users.actions';
 
 interface Props {
 	id: string;
@@ -36,6 +36,7 @@ const Previews: React.FC<Props> = ({
 	const submitHandler = (event: any) => {
 		event.preventDefault();
 		if (files) {
+			loading();
 			uploadPhotos(id, activeAlbum, files);
 		}
 		setFiles([]);
@@ -106,5 +107,8 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	uploadPhotos: (ownerId: string, albumId: string, photos: any) =>
 		dispatch(uploadPhotos(ownerId, albumId, photos)),
+	loading: () => {
+		dispatch(loading());
+	},
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Previews);
