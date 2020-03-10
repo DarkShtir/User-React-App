@@ -6,6 +6,7 @@ import loadingEnum from '../../components/utils/loadingStateEnum';
 export interface State {
 	login: boolean;
 	id: string;
+	loginUser: User;
 	activeUser: User | null;
 	users: [User] | null;
 	guestId: string;
@@ -36,6 +37,7 @@ const getId = (): string => {
 const initialState: State = {
 	login: checkLogin(),
 	id: getId(),
+	loginUser: {} as User,
 	activeUser: {} as User,
 	users: [{} as User],
 	guestId: '',
@@ -77,6 +79,15 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 				return {
 					...state,
 					activeUser: action.payload,
+				};
+			} else {
+				return { ...state };
+			}
+		case Actions.PUT_LOGIN_USER_IN_STATE:
+			if (action.payload) {
+				return {
+					...state,
+					loginUser: action.payload,
 				};
 			} else {
 				return { ...state };

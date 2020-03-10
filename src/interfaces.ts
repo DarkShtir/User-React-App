@@ -60,3 +60,9 @@ export interface PageInfo {
 	filter: boolean;
 	setFilter: (setFilter: boolean) => void;
 }
+
+export interface Message {
+	message: string;
+	name: string;
+	ownerId: string;
+}

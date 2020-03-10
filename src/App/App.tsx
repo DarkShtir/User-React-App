@@ -22,6 +22,7 @@ import {
 	UsersPage,
 	UserAlbum,
 	UserAlbums,
+	Chat,
 } from '../pages/pages';
 import { getUser } from '../store/users/users.actions';
 import { Action, Dispatch } from 'redux';
@@ -49,6 +50,12 @@ const App: React.FC<Props> = ({ login, id }) => {
 					exact={true}
 					path="/user/:id/"
 					component={User}
+				/>
+				<PrivateRouter
+					{...defaultProtectedRouteProps}
+					exact={true}
+					path="/chat-room/"
+					component={Chat}
 				/>
 				<Route path="/user-list" component={UsersList} />
 				<Route path={`/user/${id}/edit/`} component={Edit} />

@@ -7,6 +7,7 @@ import {
 	logoutUserAction,
 	setUserIdAction,
 	putActiveAlbum,
+	getLoginUser,
 } from '../../../store/users/users.actions';
 import { RootState } from '../../../store/interfaces/RootState';
 import classes from './Header.module.scss';
@@ -17,6 +18,7 @@ interface Props {
 	logoutUser: () => void;
 	setUserId: (id: string) => void;
 	putActiveAlbum: (albumId: string) => void;
+	getLoginUser: () => void;
 }
 
 const Header: React.FC<Props> = ({
@@ -24,6 +26,7 @@ const Header: React.FC<Props> = ({
 	id,
 	logoutUser,
 	putActiveAlbum,
+	getLoginUser,
 }): JSX.Element => {
 	const history = useHistory();
 
@@ -96,14 +99,27 @@ const Header: React.FC<Props> = ({
 					Местные
 				</Button>
 				{login ? (
-					<Button
-						className={classes.btn}
-						component={NavLink}
-						to="/user-list"
-						activeClassName={classes.qwe}
-					>
-						Не суйся, для бацьки!
-					</Button>
+					<>
+						<Button
+							className={classes.btn}
+							component={NavLink}
+							to="/user-list"
+							activeClassName={classes.qwe}
+						>
+							Не суйся, для бацьки!
+						</Button>
+						<Button
+							className={classes.btn}
+							component={NavLink}
+							to="/chat-room"
+							activeClassName={classes.qwe}
+							// onClick={() => {
+							// 	getLoginUser();
+							// }}
+						>
+							Сельсовет
+						</Button>
+					</>
 				) : null}
 			</Container>
 		</Paper>
@@ -118,6 +134,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	logoutUser: () => dispatch(logoutUserAction()),
 	setUserId: (id: string) => dispatch(setUserIdAction(id)),
 	putActiveAlbum: (albumId: string) => dispatch(putActiveAlbum(albumId)),
+	getLoginUser: () => dispatch(getLoginUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

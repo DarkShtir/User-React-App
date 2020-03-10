@@ -1,0 +1,30 @@
+.ChatPage {
+  height: 82vh;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
+
+  .messagesForm {
+    height: 100%;
+    margin: 1rem;
+    box-shadow: inset 2px 2px 5px rgba(154, 147, 140, 0.5), 1px 1px 5px rgba(255, 255, 255, 1);
+  }
+
+  .sendForm {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+
+    .sendButton {
+      height: 100%;
+      margin: 0 1rem 0 1rem;
+      background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+    }
+
+    .messageInput {
+      width: 50%;
+    }
+  }
+}

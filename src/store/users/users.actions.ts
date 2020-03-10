@@ -13,6 +13,8 @@ export const Actions = {
 	SET_USER_QUOTES: '[user] Set user Quotes',
 	GET_USERS_BY_NAME: '[user] Get users by name',
 	PUT_USERS_IN_STATE: '[user] Put users in State',
+	PUT_LOGIN_USER_IN_STATE: '[user] Put login user in State',
+	GET_LOGIN_USER: '[user] Get login user',
 	SET_LOGIN: '[appState] Set Login State',
 	LOADING_SUCCESSFUL_STATE: '[appState] Successful loading',
 	LOADING_ERROR_STATE: '[appState] Loading Error',
@@ -30,6 +32,13 @@ export const Actions = {
 
 export const addUserAction = (user: User): Action<User> => ({
 	type: Actions.ADD_USER,
+	payload: user,
+});
+export const getLoginUser = (): Action<void> => ({
+	type: Actions.GET_LOGIN_USER,
+});
+export const putLoginUserInState = (user: User): Action<User> => ({
+	type: Actions.PUT_LOGIN_USER_IN_STATE,
 	payload: user,
 });
 export const updateUserAction = (id: string, user: {}): Action<{}> => ({

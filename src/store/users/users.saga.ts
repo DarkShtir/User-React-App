@@ -15,6 +15,7 @@ import {
 	loading,
 	loadingSuccessful,
 	loadingError,
+	putLoginUserInState,
 } from './users.actions';
 import {
 	userService,
@@ -59,6 +60,8 @@ function* workerLogoutUser() {
 }
 function* workerLogin() {
 	const id = yield localStorage.getItem('id');
+	const loginUser = yield userService.getUserById(id);
+	yield put(putLoginUserInState(loginUser));
 	yield put(getUser(id));
 }
 function* workerSetUserAvatar(actions: any) {
@@ -151,6 +154,17 @@ function* workerGetUsersByName(actions: any) {
 		yield put(loadingError());
 	}
 }
+function* workerGetLoginUser() {
+	yield put(loading());
+	try {
+		const id = yield localStorage.getItem('id');
+		const loginUser = yield userService.getUserById(id);
+		yield put(putLoginUserInState(loginUser));
+		yield put(loadingSuccessful());
+	} catch (error) {
+		yield put(loadingError());
+	}
+}
 
 //Watchers
 export function* usersWatcher() {
@@ -166,6 +180,7 @@ export function* usersWatcher() {
 	yield takeEvery(UserActions.GET_ALBUM_PHOTOS, workerGetAlbumPhotos);
 	yield takeEvery(UserActions.PUT_ACTIVE_ALBUM, workerPutActiveAlbum);
 	yield takeEvery(UserActions.GET_USERS_BY_NAME, workerGetUsersByName);
+	yield takeEvery(UserActions.GET_LOGIN_USER, workerGetLoginUser);
 }
 
 //Export

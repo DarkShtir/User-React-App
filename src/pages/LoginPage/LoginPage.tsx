@@ -27,6 +27,7 @@ const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
 	}
 	const [loadingState, setLoading] = useState(loadingEnum.Loaded);
 	const history = useHistory();
+
 	const loginUser = async (loginData: UserLogin): Promise<void> => {
 		try {
 			const user = await UserService.login(loginData);
