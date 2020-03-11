@@ -103,21 +103,18 @@ const Header: React.FC<Props> = ({
 						<Button
 							className={classes.btn}
 							component={NavLink}
-							to="/user-list"
+							to="/chat-room"
 							activeClassName={classes.qwe}
 						>
-							Не суйся, для бацьки!
+							Сельсовет
 						</Button>
 						<Button
 							className={classes.btn}
 							component={NavLink}
-							to="/chat-room"
+							to="/user-list"
 							activeClassName={classes.qwe}
-							// onClick={() => {
-							// 	getLoginUser();
-							// }}
 						>
-							Сельсовет
+							Не суйся, для бацьки!
 						</Button>
 					</>
 				) : null}

@@ -47,8 +47,14 @@ export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
 				>
 					Enter
 				</Button>
-				<Button size="medium" color="primary">
-					Add to friends
+				<Button
+					size="medium"
+					color="primary"
+					onClick={() => {
+						console.log(user._id);
+					}}
+				>
+					Chatting
 				</Button>
 			</CardActions>
 		</Card>

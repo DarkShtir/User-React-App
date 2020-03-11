@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import openSocket from 'socket.io-client';
 import { TextField, Button, Paper } from '@material-ui/core';
 import classes from './ChatPage.module.scss';
@@ -21,6 +21,8 @@ const ChatPage: React.FC<Props> = ({ id, loginUser, getLoginUser }) => {
 	const [value, setValue] = useState('');
 	const [messages, setMessages] = useState<any>([]);
 
+	const targetElement: any = useRef<(HTMLDivElement | null)[]>([]);
+
 	useEffect(() => {
 		getLoginUser();
 	}, [getLoginUser]);
@@ -34,12 +36,14 @@ const ChatPage: React.FC<Props> = ({ id, loginUser, getLoginUser }) => {
 	const submitHandler = useCallback(
 		(event: React.FormEvent<HTMLButtonElement>): void => {
 			event.preventDefault();
-			socket.emit('send message', {
-				message: value,
-				name: name,
-				ownerId: id,
-			});
-			setValue('');
+			if (value !== '') {
+				socket.emit('send message', {
+					message: value,
+					name: name,
+					ownerId: id,
+				});
+				setValue('');
+			}
 		},
 		[value, id, name]
 	);
@@ -51,6 +55,10 @@ const ChatPage: React.FC<Props> = ({ id, loginUser, getLoginUser }) => {
 	}, []);
 
 	useEffect(() => {
+		targetElement.current.scrollTo({ top: 9999, behavior: 'smooth' });
+	}, [messages]);
+
+	useEffect(() => {
 		socket.on('add message', (data: any) => {
 			getMessage(data);
 		});
@@ -58,7 +66,7 @@ const ChatPage: React.FC<Props> = ({ id, loginUser, getLoginUser }) => {
 
 	return (
 		<Paper className={classes.ChatPage}>
-			<Paper className={classes.messagesForm}>
+			<Paper className={classes.messagesForm} ref={targetElement}>
 				<>
 					{messages.map((message: Message, index: any) => {
 						return (
