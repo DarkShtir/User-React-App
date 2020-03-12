@@ -9,15 +9,39 @@ import {
 	Typography,
 } from '@material-ui/core/';
 
+// import openSocket from 'socket.io-client';
+
 import classes from './CardOtherUser.module.scss';
 import { User } from '../../interfaces';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
+import { getDialogByMembersAction } from '../../store/dialogs/dialogs.actions';
 
 interface Props {
 	user: User;
+	getDialogByMembersAction: (secondId: string) => void;
 }
 
-export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
+const CardOtherUser: React.FC<Props> = ({
+	user,
+	getDialogByMembersAction,
+}): JSX.Element => {
+	//!
+	// const [openChat, setOpenChat] = useState(false);
+	// const socket = openSocket(`http://localhost:8000`);
+	// const chatHandlter = (id: string | undefined) => {
+	// 	if (id !== undefined) {
+	// 		if (!openChat) {
+	// 			socket.emit('create', id);
+	// 			setOpenChat(true);
+	// 		} else {
+	// 			socket.emit('leave', id);
+	// 			setOpenChat(false);
+	// 		}
+	// 	}
+	// };
+	//!
 	return (
 		<Card className={classes.CardOtherUser}>
 			<CardActionArea>
@@ -52,6 +76,10 @@ export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
 					color="primary"
 					onClick={() => {
 						console.log(user._id);
+						if (user._id) {
+							getDialogByMembersAction(user._id);
+						}
+						// chatHandlter(user._id);
 					}}
 				>
 					Chatting
@@ -60,3 +88,11 @@ export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
 		</Card>
 	);
 };
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	getDialogByMembersAction: (secondId: string) =>
+		dispatch(getDialogByMembersAction(secondId)),
+});
+export default connect(null, mapDispatchToProps)(CardOtherUser);
+
+// export default CardOtherUser;

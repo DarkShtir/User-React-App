@@ -13,6 +13,7 @@ import rootReducer from './store/index';
 import ErrorBoundry from './components/ErrorBoundry/ErrorBoundry';
 import rootPetSaga from './store/pets/pets.saga';
 import rootUserSaga from './store/users/users.saga';
+import rootAlbumSaga from './store/dialogs/dialogs.saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -25,6 +26,7 @@ const store = createStore(
 
 sagaMiddleware.run(rootUserSaga);
 sagaMiddleware.run(rootPetSaga);
+sagaMiddleware.run(rootAlbumSaga);
 
 ReactDOM.render(
 	<Provider store={store}>

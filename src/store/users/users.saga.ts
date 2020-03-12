@@ -25,6 +25,7 @@ import {
 import { getUserPets, logoutPetAction } from '../pets/pets.actions';
 import { Photo } from '../../interfaces';
 import checkVoidObject from '../../components/utils/checkVoidObject';
+import { logoutDialogAction } from '../dialogs/dialogs.actions';
 
 //Workers
 function* workerSetGuestId(actions: any) {
@@ -55,6 +56,7 @@ function* workerLogoutUser() {
 	yield userService.logout();
 	yield UserActions.LOGOUT_USER;
 	yield put(logoutPetAction());
+	yield put(logoutDialogAction());
 	yield put(setLoginAction(false));
 	yield put(setUserIdAction(''));
 }

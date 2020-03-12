@@ -1,5 +1,5 @@
 export interface User {
-	_id?: string | undefined;
+	_id?: string;
 	login: string;
 	password: string;
 	gender: string;
@@ -65,4 +65,10 @@ export interface Message {
 	message: string;
 	name: string;
 	ownerId: string;
+}
+export interface Dialog {
+	_id?: string;
+	members: string[];
+	createdAt?: string;
+	updatedAt?: string;
 }

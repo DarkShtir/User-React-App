@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { CardOtherUser } from '../../components/CardOtherUser/CardOtherUser';
+import CardOtherUser from '../../components/CardOtherUser/CardOtherUser';
 import SearchPanel from '../../components/SearchPanel/SearchPanel';
 import loadingEnum from '../../components/utils/loadingStateEnum';
 import Loading from '../../components/shared/Loading/Loading';
