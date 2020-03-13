@@ -1,36 +1,43 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import openSocket from 'socket.io-client';
-import { TextField, Button, Paper } from '@material-ui/core';
-import classes from './ChatPage.module.scss';
-import MessageBubble from '../../components/MessageBubble/MessageBubble';
-import { connect } from 'react-redux';
-import { RootState } from '../../store/interfaces/RootState';
-import { Message, User, Dialog } from '../../interfaces';
-import { getLoginUser } from '../../store/users/users.actions';
 import { Action, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { TextField, Button, Paper } from '@material-ui/core';
+import MessageBubble from '../../components/MessageBubble/MessageBubble';
 import ChatList from '../../components/ChatList/ChatList';
-import { getAllUserDialogAction } from '../../store/dialogs/dialogs.actions';
-
+import { RootState } from '../../store/interfaces/RootState';
+import { getLoginUser } from '../../store/users/users.actions';
+import {
+	getAllUserDialogAction,
+	getMessagesFromActiveDialogAction,
+} from '../../store/dialogs/dialogs.actions';
+import { Message, User, Dialog } from '../../interfaces';
+import classes from './ChatPage.module.scss';
+import socketService from '../../services/socket-service';
+//!!! ПОЛУЧЕНИЕ СООБЩЕНИЙ ИЗ МОНГИ
+//!! Вывод сообщений на экран
 interface Props {
 	id: string;
 	loginUser: User;
 	dialogList: [Dialog] | null;
 	activeDialogId: string;
+	messagesActiveDialog: [Message] | null;
 	getLoginUser: () => void;
 	getAllUserDialogAction: (id: string) => void;
+	getMessagesFromActiveDialogAction: () => void;
 }
-
-const socket = openSocket(`http://localhost:8000`);
 
 const ChatPage: React.FC<Props> = ({
 	id,
 	loginUser,
 	dialogList,
+	// activeDialogId,
+	messagesActiveDialog,
 	getLoginUser,
 	getAllUserDialogAction,
+	// getMessagesFromActiveDialogAction,
 }) => {
 	const [value, setValue] = useState('');
-	const [messages, setMessages] = useState<any>([]);
+	// const [messages, setMessages] = useState<any>([]);
 
 	const targetElement: any = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -42,42 +49,45 @@ const ChatPage: React.FC<Props> = ({
 		getAllUserDialogAction(id);
 	}, [getAllUserDialogAction, id]);
 
-	const name = loginUser.firstName;
+	// useEffect(() => {
+	// 	getMessagesFromActiveDialogAction();
+	// }, [getMessagesFromActiveDialogAction]);
+
+	// const name = loginUser.firstName;
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);
 	};
 
-	const submitHandler = useCallback(
-		(event: React.FormEvent<HTMLButtonElement>): void => {
-			event.preventDefault();
-			if (value !== '') {
-				socket.emit('send message', {
-					message: value,
-					name: name,
-					ownerId: id,
-				});
-				setValue('');
-			}
-		},
-		[value, id, name]
-	);
+	// const submitHandler = useCallback(
+	// 	(event: React.FormEvent<HTMLButtonElement>): void => {
+	// 		event.preventDefault();
+	// 		if (value !== '') {
+	// 			if (activeDialogId) {
+	// 				socketService.sendMessageInRoom(value, name, id, activeDialogId);
+	// 			} else {
+	// 				socketService.sendMessageAll(value, name, id);
+	// 			}
+	// 			setValue('');
+	// 		}
+	// 	},
+	// 	[value, id, name, activeDialogId]
+	// );
 
-	const getMessage = useCallback((data: any) => {
-		setMessages((prevState: any) => {
-			return [...prevState, data];
-		});
-	}, []);
+	// const getMessage = useCallback((data: any) => {
+	// 	putActivDialogInStateAction(data);
+	// 	// setMessages((prevState: any) => {
+	// 	// 	return [...prevState, data];
+	// 	// });
+	// }, []);
 
 	useEffect(() => {
 		targetElement.current.scrollTo({ top: 9999, behavior: 'smooth' });
-	}, [messages]);
+	}, []);
 
-	useEffect(() => {
-		socket.on('add message', (data: any) => {
-			getMessage(data);
-		});
-	}, [getMessage]);
+	// useEffect(() => {
+	// 	socketService.getAllMessage(getMessage);
+	// }, [getMessage]);
 
 	return (
 		<Paper className={classes.ChatPage}>
@@ -94,18 +104,18 @@ const ChatPage: React.FC<Props> = ({
 						: null}
 				</div>
 				<Paper className={classes.messagesForm} ref={targetElement}>
-					<>
-						{messages.map((message: Message, index: any) => {
-							return (
-								<MessageBubble
-									value={message.message}
-									yourMessage={message.ownerId === id}
-									owner={message.name}
-									key={index}
-								/>
-							);
-						})}
-					</>
+					{messagesActiveDialog
+						? messagesActiveDialog.map((message: Message, index: any) => {
+								return (
+									<MessageBubble
+										value={message.message}
+										yourMessage={message.ownerId === id}
+										owner={message.name}
+										key={index}
+									/>
+								);
+						  })
+						: null}
 				</Paper>
 			</div>
 			<form action="" className={classes.sendForm}>
@@ -121,7 +131,7 @@ const ChatPage: React.FC<Props> = ({
 				<Button
 					variant="outlined"
 					className={classes.sendButton}
-					onClick={submitHandler}
+					// onClick={submitHandler}
 				>
 					Отправить весточку
 				</Button>
@@ -133,11 +143,15 @@ const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
 	loginUser: state.users.loginUser,
 	dialogList: state.dialogs.dialogsList,
+	activeDialogId: state.dialogs.activeDialogId,
+	messagesActivDialog: state.dialogs.messagesActiveDialog,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	getLoginUser: () => dispatch(getLoginUser()),
 	getAllUserDialogAction: (id: string) => dispatch(getAllUserDialogAction(id)),
+	getMessagesFromActiveDialogAction: () =>
+		dispatch(getMessagesFromActiveDialogAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatPage);

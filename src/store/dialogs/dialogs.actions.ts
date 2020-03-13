@@ -1,4 +1,4 @@
-import { Dialog } from '../../interfaces';
+import { Dialog, Message } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
 
 export const Actions = {
@@ -9,6 +9,9 @@ export const Actions = {
 	PUT_ID_ACTIVE_DIALOG_IN_STATE: '[dialog] Put ID active dialog in state',
 	PUT_DIALOGLIST_IN_STATE: '[dialog] Put dialog list in state',
 	LOGOUT_DIALOG: '[dialog] Clear dialog state during logout action',
+	PUT_MESSAGES_ACTIVE_DIALOG_IN_STATE:
+		'[messages] Put messages activ dialog in state',
+	GET_MESSAGES_FROM_ACTIVE_DIALOG: '[messages] Get messages from activ dialog',
 };
 
 export const createDialogAction = (dialog: Dialog): Action<Dialog> => ({
@@ -24,8 +27,8 @@ export const getDialogByMembersAction = (secondId: string): Action<string> => ({
 	payload: secondId,
 });
 export const putActiveDialogInStateAction = (
-	dialog: Dialog
-): Action<Dialog> => ({
+	dialog: Dialog | null
+): Action<Dialog | null> => ({
 	type: Actions.PUT_ACTIVE_DIALOG_IN_STATE,
 	payload: dialog,
 });
@@ -40,6 +43,15 @@ export const putDialogListInStateAction = (
 ): Action<Dialog[]> => ({
 	type: Actions.PUT_DIALOGLIST_IN_STATE,
 	payload: dialogList,
+});
+export const putMessagesActiveDialogInStateAction = (
+	messages: Message[]
+): Action<Message[]> => ({
+	type: Actions.PUT_MESSAGES_ACTIVE_DIALOG_IN_STATE,
+	payload: messages,
+});
+export const getMessagesFromActiveDialogAction = (): Action<void> => ({
+	type: Actions.GET_MESSAGES_FROM_ACTIVE_DIALOG,
 });
 export const logoutDialogAction = (): Action<void> => ({
 	type: Actions.LOGOUT_DIALOG,

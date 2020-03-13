@@ -6,12 +6,13 @@ import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { putActiveDialogInStateAction } from '../../store/dialogs/dialogs.actions';
+import socketService from '../../services/socket-service';
 
 interface Props {
 	id: string;
 	dialog: Dialog;
 	activeDialogId: string;
-	putActiveDialogInStateAction: (dialog: Dialog) => void;
+	putActiveDialogInStateAction: (dialog: Dialog | null) => void;
 }
 
 const ChatList: React.FC<Props> = ({
@@ -37,7 +38,13 @@ const ChatList: React.FC<Props> = ({
 					: classes.ChatList
 			}
 			onClick={() => {
-				putActiveDialogInStateAction(dialog);
+				if (activeDialogId !== dialog._id && dialog._id !== undefined) {
+					putActiveDialogInStateAction(dialog);
+					socketService.enterInRoom(dialog._id);
+				} else if (dialog._id !== undefined && activeDialogId === dialog._id) {
+					putActiveDialogInStateAction(null);
+					socketService.leaveFromRoom(dialog._id);
+				}
 			}}
 		>
 			<Avatar
@@ -58,7 +65,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	putActiveDialogInStateAction: (dialog: Dialog) =>
+	putActiveDialogInStateAction: (dialog: Dialog | null) =>
 		dispatch(putActiveDialogInStateAction(dialog)),
 });
 

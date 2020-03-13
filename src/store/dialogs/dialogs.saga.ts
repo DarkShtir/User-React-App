@@ -5,6 +5,7 @@ import {
 	putActiveDialogInStateAction,
 	putDialogListInStateAction,
 	putIdActiveDialogInStateAction,
+	putMessagesActiveDialogInStateAction,
 } from './dialogs.actions';
 import dialogService from '../../services/dialog-service';
 
@@ -49,7 +50,21 @@ function* workerCreateDialog(actions: any) {
 }
 function* workerPutActiveDialogInState(actions: any) {
 	try {
-		yield put(putIdActiveDialogInStateAction(actions.payload._id));
+		if (actions.payload !== null) {
+			yield put(putIdActiveDialogInStateAction(actions.payload._id));
+		} else if (actions.payload === null) {
+			yield put(putIdActiveDialogInStateAction(''));
+		}
+	} catch (error) {
+		console.log(error);
+	}
+}
+function* workerGetMesasagesFromActiveDialog() {
+	try {
+		const dialogId = yield select(state => state.dialogs.activeDialogId);
+		console.log(dialogId);
+		const messages = yield dialogService.getMessagesByDialogId(dialogId);
+		yield put(putMessagesActiveDialogInStateAction(messages));
 	} catch (error) {
 		console.log(error);
 	}
@@ -58,11 +73,15 @@ function* workerPutActiveDialogInState(actions: any) {
 //Watchers
 export function* dialogsWatcher() {
 	yield takeEvery(Actions.GET_ALL_USER_DIALOG, workerGetAllUserDialog);
-	yield takeEvery(Actions.GET_DIALOG_BY_MEMBERS, workerGetDialogByMembers);
-	yield takeEvery(Actions.CREATE_DIALOG, workerCreateDialog);
 	yield takeEvery(
 		Actions.PUT_ACTIVE_DIALOG_IN_STATE,
 		workerPutActiveDialogInState
+	);
+	yield takeEvery(Actions.GET_DIALOG_BY_MEMBERS, workerGetDialogByMembers);
+	yield takeEvery(Actions.CREATE_DIALOG, workerCreateDialog);
+	yield takeEvery(
+		Actions.GET_MESSAGES_FROM_ACTIVE_DIALOG,
+		workerGetMesasagesFromActiveDialog
 	);
 }
 

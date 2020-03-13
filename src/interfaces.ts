@@ -65,6 +65,7 @@ export interface Message {
 	message: string;
 	name: string;
 	ownerId: string;
+	dialogId?: string;
 }
 export interface Dialog {
 	_id?: string;

@@ -49,6 +49,18 @@ class DialogService {
 			throw error;
 		}
 	};
+	getMessagesByDialogId = async (dialogId: string) => {
+		try {
+			const response = await axios.get(`/messages?dialogId=${dialogId}`);
+			const messages = response.data;
+			return messages;
+		} catch (error) {
+			console.log(
+				'Error in dialogs-service in method getMessagesByDialogId (front)'
+			);
+			throw error;
+		}
+	};
 }
 
 const dialogService = new DialogService();
