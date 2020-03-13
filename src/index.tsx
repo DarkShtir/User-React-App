@@ -11,10 +11,11 @@ import App from './App/App';
 import './index.module.scss';
 import rootReducer from './store/index';
 import ErrorBoundry from './components/ErrorBoundry/ErrorBoundry';
-import rootPetSaga from './store/pets/pets.saga';
-import rootUserSaga from './store/users/users.saga';
-import rootAlbumSaga from './store/dialogs/dialogs.saga';
 import rootAppStateSaga from './store/appState/appState.saga';
+import rootUserSaga from './store/users/users.saga';
+import rootPetSaga from './store/pets/pets.saga';
+import rootDialogSaga from './store/dialogs/dialogs.saga';
+import rootAlbumSaga from './store/albums/albums.saga';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -28,6 +29,7 @@ const store = createStore(
 sagaMiddleware.run(rootAppStateSaga);
 sagaMiddleware.run(rootUserSaga);
 sagaMiddleware.run(rootPetSaga);
+sagaMiddleware.run(rootDialogSaga);
 sagaMiddleware.run(rootAlbumSaga);
 
 ReactDOM.render(

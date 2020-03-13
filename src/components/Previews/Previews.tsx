@@ -5,8 +5,8 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
-import { uploadPhotos } from '../../store/users/users.actions';
 import { loading } from '../../store/appState/appState.actions';
+import { uploadPhotos } from '../../store/albums/albums.actions';
 
 interface Props {
 	id: string;
@@ -103,7 +103,7 @@ const Previews: React.FC<Props> = ({
 
 const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
-	activeAlbum: state.users.activeAlbum,
+	activeAlbum: state.albums.activeAlbum,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	uploadPhotos: (ownerId: string, albumId: string, photos: any) =>

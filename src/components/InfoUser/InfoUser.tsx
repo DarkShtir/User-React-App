@@ -66,7 +66,7 @@ const mapStateToProps = (state: RootState) => ({
 	guest: state.users.guest,
 	pets: state.pets.pets,
 	login: state.appState.login,
-	albums: state.users.albums,
+	albums: state.albums.albumsList,
 });
 
 export default connect(mapStateToProps)(InfoUser);

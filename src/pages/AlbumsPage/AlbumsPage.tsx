@@ -7,7 +7,7 @@ import classes from './AlbumsPage.module.scss';
 import AlbumFolder from '../../components/AlbumFolder/AlbumFolder';
 import { RootState } from '../../store/interfaces/RootState';
 import { Album } from '../../interfaces';
-import { addUserAlbums } from '../../store/users/users.actions';
+import { addUserAlbums } from '../../store/albums/albums.actions';
 
 interface Props {
 	id: string;
@@ -51,7 +51,7 @@ const AlbumsPage: React.FC<Props> = ({ id, albums, guest, addUserAlbums }) => {
 };
 const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
-	albums: state.users.albums,
+	albums: state.albums.albumsList,
 	guest: state.users.guest,
 });
 

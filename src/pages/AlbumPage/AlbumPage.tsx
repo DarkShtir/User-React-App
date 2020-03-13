@@ -9,15 +9,16 @@ import Photo from '../../components/Photo/Photo';
 import Previews from '../../components/Previews/Previews';
 import Pagination from '../../components/Pagination/Pagination';
 import { RootState } from '../../store/interfaces/RootState';
-import {
-	getAlbumPhotos,
-	putActiveAlbum,
-} from '../../store/users/users.actions';
+
 import { Photo as PhotoInterface } from '../../interfaces';
 import checkVoidObject from '../../components/utils/checkVoidObject';
 import loadingEnum from '../../components/utils/loadingStateEnum';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 import Loading from '../../components/shared/Loading/Loading';
+import {
+	getAlbumPhotos,
+	putActiveAlbum,
+} from '../../store/albums/albums.actions';
 
 interface Props {
 	statusApp: loadingEnum;
@@ -191,8 +192,8 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-	photos: state.users.photos,
-	activeAlbum: state.users.activeAlbum,
+	photos: state.albums.photos,
+	activeAlbum: state.albums.activeAlbum,
 	guest: state.users.guest,
 	statusApp: state.appState.statusApp,
 });

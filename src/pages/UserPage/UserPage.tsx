@@ -35,14 +35,10 @@ interface Props {
 const UserPage: React.FC<Props & RouteComponentProps> = ({
 	id,
 	guestId,
-	activeUser,
-	albums,
-	pets,
 	editPet,
 	setGuestId,
 	addPet,
 	statusApp,
-	loading,
 	...props
 }): JSX.Element => {
 	//TODO Перенести всё это в СТОР
@@ -95,7 +91,7 @@ const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
 	guestId: state.users.guestId,
 	activeUser: state.users.activeUser,
-	albums: state.users.albums,
+	albums: state.albums.albumsList,
 	pets: state.pets.pets,
 	editPet: state.pets.editPet,
 	statusApp: state.appState.statusApp,

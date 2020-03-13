@@ -67,6 +67,6 @@ export function* dialogsWatcher() {
 }
 
 // Export
-export default function* rootAlbumSaga() {
+export default function* rootDialogSaga() {
 	yield dialogsWatcher();
 }

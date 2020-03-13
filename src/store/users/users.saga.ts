@@ -3,22 +3,13 @@ import {
 	Actions as UserActions,
 	putUser,
 	setUserIdAction,
-	putUserAlbums,
-	getUserAlbums,
 	setGuestAction,
 	updateUserAction,
-	PutAlbumPhotos,
-	getAlbumPhotos,
 	putUsersInState,
 	putLoginUserInState,
 } from './users.actions';
-import {
-	userService,
-	albumService,
-	photoService,
-} from '../../services/services';
+import { userService } from '../../services/services';
 import { getUserPets, logoutPetAction } from '../pets/pets.actions';
-import { Photo } from '../../interfaces';
 import checkVoidObject from '../../components/utils/checkVoidObject';
 import { logoutDialogAction } from '../dialogs/dialogs.actions';
 import {
@@ -27,6 +18,7 @@ import {
 	loadingError,
 	setLoginAction,
 } from '../appState/appState.actions';
+import { getUserAlbums } from '../albums/albums.actions';
 
 //Workers
 function* workerSetGuestId(actions: any) {
@@ -76,68 +68,6 @@ function* workerUpdateUser(actions: any) {
 	yield put(putUser(newUser));
 }
 
-function* workerGetUserAlbums(actions: any) {
-	try {
-		yield put(loading());
-		const newAlbums = yield albumService.getAllAlbumByUserId(actions.payload);
-		yield put(putUserAlbums(newAlbums));
-		yield put(loadingSuccessful());
-	} catch (error) {
-		yield put(loadingError());
-	}
-}
-function* workerAddUserAlbum(actions: any) {
-	yield albumService.addAlbum({ ownerId: actions.payload });
-	yield put(getUserAlbums(actions.payload));
-}
-function* workerUploadPhotosInAlbum(actions: any) {
-	try {
-		yield put(loading());
-		if (
-			actions.payload.ownerId &&
-			actions.payload.albumId &&
-			actions.payload.photos
-		) {
-			yield photoService.addManyPhotos(
-				actions.payload.ownerId,
-				actions.payload.albumId,
-				actions.payload.photos
-			);
-			yield put(getAlbumPhotos(actions.payload.albumId));
-			yield put(loadingSuccessful());
-		}
-	} catch (error) {
-		yield put(loadingError());
-	}
-}
-function* workerGetAlbumPhotos(actions: any) {
-	try {
-		yield put(loading());
-		if (actions.payload) {
-			const newPhotos = yield photoService.getAllPhotosByAlbumId(
-				actions.payload.albumId,
-				actions.payload.page,
-				actions.payload.elemPerPage,
-				actions.payload.filter
-			);
-			yield put(PutAlbumPhotos(newPhotos));
-			yield put(loadingSuccessful());
-		}
-	} catch (error) {
-		yield put(loadingError());
-	}
-}
-function* workerPutActiveAlbum(actions: any) {
-	try {
-		yield put(loading());
-		if (actions.payload === '') {
-			yield put(PutAlbumPhotos([{} as Photo]));
-			yield put(loadingSuccessful());
-		}
-	} catch (error) {
-		yield put(loadingError());
-	}
-}
 function* workerGetUsersByName(actions: any) {
 	try {
 		yield put(loading());
@@ -166,15 +96,10 @@ function* workerGetLoginUser() {
 //Watchers
 export function* usersWatcher() {
 	yield takeEvery(UserActions.SET_GUEST_ID, workerSetGuestId);
-	yield takeEvery(UserActions.GET_USER_ALBUMS, workerGetUserAlbums);
 	yield takeEvery(UserActions.LOGOUT_USER, workerLogoutUser);
 	yield takeEvery(UserActions.SET_USER_AVATAR, workerSetUserAvatar);
 	yield takeEvery(UserActions.SET_USER_QUOTES, workerSetUserQuotes);
 	yield takeEvery(UserActions.UPDATE_USER, workerUpdateUser);
-	yield takeEvery(UserActions.ADD_USER_ALBUMS, workerAddUserAlbum);
-	yield takeEvery(UserActions.UPLOAD_PHOTOS, workerUploadPhotosInAlbum);
-	yield takeEvery(UserActions.GET_ALBUM_PHOTOS, workerGetAlbumPhotos);
-	yield takeEvery(UserActions.PUT_ACTIVE_ALBUM, workerPutActiveAlbum);
 	yield takeEvery(UserActions.GET_USERS_BY_NAME, workerGetUsersByName);
 	yield takeEvery(UserActions.GET_LOGIN_USER, workerGetLoginUser);
 }

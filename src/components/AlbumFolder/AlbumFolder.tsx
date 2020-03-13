@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
-import { putActiveAlbum } from '../../store/users/users.actions';
+import { putActiveAlbum } from '../../store/albums/albums.actions';
 
 interface Props {
 	album: Album;
@@ -44,7 +44,7 @@ const AlbumFolder: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-	activeAlbum: state.users.activeAlbum,
+	activeAlbum: state.albums.activeAlbum,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

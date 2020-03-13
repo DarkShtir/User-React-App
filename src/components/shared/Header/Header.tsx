@@ -6,10 +6,10 @@ import { Button, Paper, Container } from '@material-ui/core';
 import {
 	logoutUserAction,
 	setUserIdAction,
-	putActiveAlbum,
 	getLoginUser,
 } from '../../../store/users/users.actions';
 import { RootState } from '../../../store/interfaces/RootState';
+import { putActiveAlbum } from '../../../store/albums/albums.actions';
 import classes from './Header.module.scss';
 
 interface Props {
@@ -26,7 +26,6 @@ const Header: React.FC<Props> = ({
 	id,
 	logoutUser,
 	putActiveAlbum,
-	getLoginUser,
 }): JSX.Element => {
 	const history = useHistory();
 
