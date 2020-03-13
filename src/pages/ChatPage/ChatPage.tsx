@@ -26,7 +26,6 @@ const ChatPage: React.FC<Props> = ({
 	id,
 	loginUser,
 	dialogList,
-	activeDialogId,
 	getLoginUser,
 	getAllUserDialogAction,
 }) => {
@@ -88,7 +87,7 @@ const ChatPage: React.FC<Props> = ({
 						? dialogList.map((dialog, index) => {
 								return (
 									<React.Fragment key={index}>
-										<ChatList dialog={dialog} activeDialogId={activeDialogId} />
+										<ChatList dialog={dialog} />
 									</React.Fragment>
 								);
 						  })
@@ -134,7 +133,6 @@ const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
 	loginUser: state.users.loginUser,
 	dialogList: state.dialogs.dialogsList,
-	activeDialogId: state.dialogs.activeDialogId,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

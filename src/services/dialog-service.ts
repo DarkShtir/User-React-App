@@ -22,7 +22,6 @@ class DialogService {
 		try {
 			const response = await axios.get(`/dialogs/${id}`);
 			const dialogs = response.data;
-			console.log(dialogs);
 			return dialogs;
 		} catch (error) {
 			console.log(

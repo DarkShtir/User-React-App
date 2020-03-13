@@ -29,7 +29,7 @@ function* workerGetDialogByMembers(actions: any) {
 				firstId,
 				secondId
 			);
-			if (!newDialog) {
+			if (!newDialog || newDialog.length === 0) {
 				yield put(createDialogAction({ members: [firstId, secondId] }));
 			} else {
 				yield put(putActiveDialogInStateAction(newDialog));
@@ -48,12 +48,23 @@ function* workerCreateDialog(actions: any) {
 		console.log(error);
 	}
 }
+function* workerPutActiveDialogInState(actions: any) {
+	try {
+		yield put(putIdActiveDialogInStateAction(actions.payload._id));
+	} catch (error) {
+		console.log(error);
+	}
+}
 
 //Watchers
 export function* dialogsWatcher() {
 	yield takeEvery(Actions.GET_ALL_USER_DIALOG, workerGetAllUserDialog);
 	yield takeEvery(Actions.GET_DIALOG_BY_MEMBERS, workerGetDialogByMembers);
 	yield takeEvery(Actions.CREATE_DIALOG, workerCreateDialog);
+	yield takeEvery(
+		Actions.PUT_ACTIVE_DIALOG_IN_STATE,
+		workerPutActiveDialogInState
+	);
 }
 
 // Export

@@ -68,7 +68,7 @@ export interface Message {
 }
 export interface Dialog {
 	_id?: string;
-	members: string[];
+	members: User[];
 	createdAt?: string;
 	updatedAt?: string;
 }
