@@ -14,11 +14,6 @@ const initialState: State = {
 
 export const reducer = (state: State = initialState, action: Action<any>) => {
 	switch (action.type) {
-		// case Actions.PUT_PET:
-		// 	return {
-		// 		...state,
-		// 		pets: action.payload,
-		// 	};
 		case Actions.LOGOUT_PET:
 			return {
 				...initialState,
@@ -29,20 +24,11 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 					...state,
 					pets: state.pets.concat(action.payload),
 				};
-				// pets: { ...state.pets, ...action.payload },
 			} else {
 				return {
 					...state,
 				};
 			}
-		// case Actions.DELETE_PET:
-		// 	return {
-		// 		...state,
-		// 	};
-		// case Actions.UPDATE_PET:
-		// 	return {
-		// 		...state,
-		// 	};
 		case Actions.PUT_USER_PETS:
 			return {
 				...state,

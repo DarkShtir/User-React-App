@@ -194,7 +194,7 @@ const mapStateToProps = (state: RootState) => ({
 	photos: state.users.photos,
 	activeAlbum: state.users.activeAlbum,
 	guest: state.users.guest,
-	statusApp: state.users.statusApp,
+	statusApp: state.appState.statusApp,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

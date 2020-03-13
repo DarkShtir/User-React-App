@@ -1,5 +1,4 @@
 import axios from '../axios/axios-photos';
-// import { Photo } from '../interfaces';
 
 axios.interceptors.request.use(request => {
 	const token = localStorage.getItem('token');
@@ -52,37 +51,6 @@ class AlbumService {
 			throw error;
 		}
 	};
-	// getAllAlbumByUserId = async (id: string): Promise<void | undefined> => {
-	// 	try {
-	// 		const response = await axios.get(`/user/${id}`);
-	// 		const albums = response.data;
-	// 		return albums;
-	// 	} catch (error) {
-	// 		console.log(
-	// 			'Error in album-service in method getAllAlbumByUserId (front)'
-	// 		);
-	// 		throw error;
-	// 	}
-	// };
-	// deleteAlbum = async (id: string): Promise<void | undefined> => {
-	// 	try {
-	// 		await axios.delete(`/${id}`);
-	// 	} catch (error) {
-	// 		console.log('Error in album-service in method delete (front)');
-	// 		throw error;
-	// 	}
-	// };
-
-	// updateAlbum = async (id: string, album: Album): Promise<void | undefined> => {
-	// 	try {
-	// 		const response = await axios.put(`/${id}`, album);
-	// 		const updateAlbum = response.data.album;
-	// 		return updateAlbum;
-	// 	} catch (error) {
-	// 		console.log('Error in album-service in method update (front)');
-	// 		throw error;
-	// 	}
-	// };
 }
 
 const albumService = new AlbumService();

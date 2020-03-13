@@ -94,5 +94,3 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 		dispatch(getDialogByMembersAction(secondId)),
 });
 export default connect(null, mapDispatchToProps)(CardOtherUser);
-
-// export default CardOtherUser;

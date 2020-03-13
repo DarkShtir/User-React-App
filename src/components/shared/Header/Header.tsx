@@ -124,7 +124,7 @@ const Header: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state: RootState) => ({
-	login: state.users.login,
+	login: state.appState.login,
 	id: state.users.id,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

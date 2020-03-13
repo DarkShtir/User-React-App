@@ -17,15 +17,6 @@ const UserListItem: React.FC<Props> = ({ user, onRemove, onEdit }) => {
 		onRemove(id);
 	};
 
-	// const editHandler = (
-	// 	event: React.MouseEvent,
-	// 	id: string | undefined
-	// ): void => {
-	// 	event.preventDefault();
-	// 	console.log(user._id);
-	// 	onEdit(id);
-	// };
-
 	return (
 		<>
 			<TableRow>

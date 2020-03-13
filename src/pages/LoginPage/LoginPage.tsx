@@ -8,11 +8,9 @@ import { UserLogin } from '../../interfaces';
 import UserService from '../../services/user-service';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import { RootState } from '../../store/interfaces/RootState';
-import {
-	setLoginAction,
-	setUserIdAction,
-} from '../../store/users/users.actions';
+import { setUserIdAction } from '../../store/users/users.actions';
 import classes from './LoginPage.module.scss';
+import { setLoginAction } from '../../store/appState/appState.actions';
 
 interface Props {
 	setLogin: (isLogin: boolean) => void;
@@ -66,7 +64,7 @@ const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-	login: state.users.login,
+	login: state.appState.login,
 	id: state.users.id,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

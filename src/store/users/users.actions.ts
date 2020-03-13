@@ -15,10 +15,6 @@ export const Actions = {
 	PUT_USERS_IN_STATE: '[user] Put users in State',
 	PUT_LOGIN_USER_IN_STATE: '[user] Put login user in State',
 	GET_LOGIN_USER: '[user] Get login user',
-	SET_LOGIN: '[appState] Set Login State',
-	LOADING_SUCCESSFUL_STATE: '[appState] Successful loading',
-	LOADING_ERROR_STATE: '[appState] Loading Error',
-	LOADING_STATE: '[appState] Loading data',
 	SET_GUEST_ID: '[guest] Set guest Id',
 	SET_GUEST: '[guest] Set guest State',
 	GET_USER_ALBUMS: '[albums] Get users albums',
@@ -51,10 +47,6 @@ export const updateUserAction = (id: string, user: {}): Action<{}> => ({
 export const deleteUserAction = (id: string): Action<string> => ({
 	type: Actions.DELETE_USER,
 	payload: id,
-});
-export const setLoginAction = (isLogin: boolean): Action<boolean> => ({
-	type: Actions.SET_LOGIN,
-	payload: isLogin,
 });
 export const logoutUserAction = (): Action<void> => ({
 	type: Actions.LOGOUT_USER,
@@ -141,13 +133,4 @@ export const getUsersByName = (name: string): Action<string> => ({
 export const putUsersInState = (users: [{}]): Action<[{}]> => ({
 	type: Actions.PUT_USERS_IN_STATE,
 	payload: users,
-});
-export const loadingSuccessful = (): Action<void> => ({
-	type: Actions.LOADING_SUCCESSFUL_STATE,
-});
-export const loadingError = (): Action<void> => ({
-	type: Actions.LOADING_ERROR_STATE,
-});
-export const loading = (): Action<void> => ({
-	type: Actions.LOADING_STATE,
 });

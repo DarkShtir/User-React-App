@@ -14,9 +14,10 @@ import { Pet, User, Album } from '../../interfaces';
 
 import classes from './UserPage.module.scss';
 import { RootState } from '../../store/interfaces/RootState';
-import { setGuestIdAction, loading } from '../../store/users/users.actions';
+import { setGuestIdAction } from '../../store/users/users.actions';
 import { addPetAction } from '../../store/pets/pets.actions';
 import loadingEnum from '../../components/utils/loadingStateEnum';
+import { loading } from '../../store/appState/appState.actions';
 
 interface Props {
 	activeUser: User | null;
@@ -44,14 +45,7 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 	loading,
 	...props
 }): JSX.Element => {
-	// enum loadingEnum {
-	// 	Loading,
-	// 	Loaded,
-	// 	Error,
-	// }
-
 	//TODO Перенести всё это в СТОР
-	// const [loading, setLoading] = useState(loadingEnum.Loading);
 	const [needAdd, setNeedAdd] = useState(false);
 
 	useEffect(() => {
@@ -62,21 +56,6 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 			setGuestId(props.match.url.slice(6));
 		}
 	}, [guestId, props.match.url, setGuestId]);
-
-	// useEffect(() => {
-	// 	if (activeUser && pets && albums) {
-	// 		setLoading(loadingEnum.Loaded);
-	// 	} else if (activeUser === undefined) {
-	// 		setLoading(loadingEnum.Error);
-	// 	}
-	// }, [
-	// 	setLoading,
-	// 	activeUser,
-	// 	loadingEnum.Loaded,
-	// 	loadingEnum.Error,
-	// 	pets,
-	// 	albums,
-	// ]);
 
 	const hadlerAddPet = (): void => {
 		setNeedAdd((prevState: boolean): any => !prevState);
@@ -119,7 +98,7 @@ const mapStateToProps = (state: RootState) => ({
 	albums: state.users.albums,
 	pets: state.pets.pets,
 	editPet: state.pets.editPet,
-	statusApp: state.users.statusApp,
+	statusApp: state.appState.statusApp,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

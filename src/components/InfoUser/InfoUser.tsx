@@ -65,7 +65,7 @@ const mapStateToProps = (state: RootState) => ({
 	user: state.users.activeUser,
 	guest: state.users.guest,
 	pets: state.pets.pets,
-	login: state.users.login,
+	login: state.appState.login,
 	albums: state.users.albums,
 });
 

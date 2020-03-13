@@ -1,10 +1,8 @@
 import { Actions } from './users.actions';
 import { User, Album, Photo } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
-import loadingEnum from '../../components/utils/loadingStateEnum';
 
 export interface State {
-	login: boolean;
 	id: string;
 	loginUser: User;
 	activeUser: User | null;
@@ -14,16 +12,7 @@ export interface State {
 	albums: [Album] | null;
 	activeAlbum: string;
 	photos: [Photo];
-	statusApp: loadingEnum;
 }
-
-const checkLogin = (): boolean => {
-	if (localStorage.getItem('token')) {
-		return true;
-	} else {
-		return false;
-	}
-};
 
 const getId = (): string => {
 	const id = localStorage.getItem('id');
@@ -35,7 +24,6 @@ const getId = (): string => {
 };
 
 const initialState: State = {
-	login: checkLogin(),
 	id: getId(),
 	loginUser: {} as User,
 	activeUser: {} as User,
@@ -45,16 +33,10 @@ const initialState: State = {
 	albums: [{} as Album],
 	activeAlbum: '',
 	photos: [{} as Photo],
-	statusApp: loadingEnum.Loading,
 };
 
 export const reducer = (state: State = initialState, action: Action<any>) => {
 	switch (action.type) {
-		case Actions.SET_LOGIN:
-			return {
-				...state,
-				login: action.payload,
-			};
 		case Actions.LOGOUT_USER:
 			return {
 				...initialState,
@@ -111,21 +93,6 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 			return {
 				...state,
 				users: action.payload,
-			};
-		case Actions.LOADING_SUCCESSFUL_STATE:
-			return {
-				...state,
-				statusApp: loadingEnum.Loaded,
-			};
-		case Actions.LOADING_ERROR_STATE:
-			return {
-				...state,
-				statusApp: loadingEnum.Error,
-			};
-		case Actions.LOADING_STATE:
-			return {
-				...state,
-				statusApp: loadingEnum.Loading,
 			};
 		default:
 			return state;

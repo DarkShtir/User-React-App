@@ -9,7 +9,7 @@ import { RootState } from '../../store/interfaces/RootState';
 import { User } from '../../interfaces';
 import classes from './UsersPage.module.scss';
 import { Action, Dispatch } from 'redux';
-import { loading } from '../../store/users/users.actions';
+import { loading } from '../../store/appState/appState.actions';
 
 interface Props {
 	users: [User] | null;
@@ -64,7 +64,7 @@ const UsersPage: React.FC<Props> = ({
 
 const mapStateToProps = (state: RootState) => ({
 	users: state.users.users,
-	statusApp: state.users.statusApp,
+	statusApp: state.appState.statusApp,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

@@ -2,19 +2,14 @@ import { takeEvery, put, select } from 'redux-saga/effects';
 import {
 	Actions as UserActions,
 	putUser,
-	setLoginAction,
 	setUserIdAction,
 	putUserAlbums,
 	getUserAlbums,
-	getUser,
 	setGuestAction,
 	updateUserAction,
 	PutAlbumPhotos,
 	getAlbumPhotos,
 	putUsersInState,
-	loading,
-	loadingSuccessful,
-	loadingError,
 	putLoginUserInState,
 } from './users.actions';
 import {
@@ -26,6 +21,12 @@ import { getUserPets, logoutPetAction } from '../pets/pets.actions';
 import { Photo } from '../../interfaces';
 import checkVoidObject from '../../components/utils/checkVoidObject';
 import { logoutDialogAction } from '../dialogs/dialogs.actions';
+import {
+	loading,
+	loadingSuccessful,
+	loadingError,
+	setLoginAction,
+} from '../appState/appState.actions';
 
 //Workers
 function* workerSetGuestId(actions: any) {
@@ -34,7 +35,7 @@ function* workerSetGuestId(actions: any) {
 		const newUser = yield userService.getUserById(actions.payload);
 		const id = yield select(state => state.users.id);
 		const guestId = yield select(state => state.users.guestId);
-		const login = yield select(state => state.users.login);
+		const login = yield select(state => state.appState.login);
 		if (id !== guestId && id && guestId) {
 			yield put(setGuestAction(true));
 		} else {
@@ -59,12 +60,6 @@ function* workerLogoutUser() {
 	yield put(logoutDialogAction());
 	yield put(setLoginAction(false));
 	yield put(setUserIdAction(''));
-}
-function* workerLogin() {
-	const id = yield localStorage.getItem('id');
-	const loginUser = yield userService.getUserById(id);
-	yield put(putLoginUserInState(loginUser));
-	yield put(getUser(id));
 }
 function* workerSetUserAvatar(actions: any) {
 	const id = yield select(state => state.users.id);
@@ -171,7 +166,6 @@ function* workerGetLoginUser() {
 //Watchers
 export function* usersWatcher() {
 	yield takeEvery(UserActions.SET_GUEST_ID, workerSetGuestId);
-	yield takeEvery(UserActions.SET_LOGIN, workerLogin);
 	yield takeEvery(UserActions.GET_USER_ALBUMS, workerGetUserAlbums);
 	yield takeEvery(UserActions.LOGOUT_USER, workerLogoutUser);
 	yield takeEvery(UserActions.SET_USER_AVATAR, workerSetUserAvatar);

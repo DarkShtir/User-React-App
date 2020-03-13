@@ -11,7 +11,6 @@ import dialogService from '../../services/dialog-service';
 //Workers
 function* workerGetAllUserDialog(actions: any) {
 	try {
-		// const id = yield select(state => state.users.id);
 		const dialogList = yield dialogService.getAllDialogByUserId(
 			actions.payload
 		);

@@ -3,7 +3,6 @@ import { Paper, Typography } from '@material-ui/core';
 import classes from './MessageBubble.module.scss';
 
 interface Props {
-	// ref: any;
 	value: string;
 	yourMessage: boolean;
 	owner: string;

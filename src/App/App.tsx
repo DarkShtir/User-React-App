@@ -75,7 +75,7 @@ const App: React.FC<Props> = ({ login, id }) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-	login: state.users.login,
+	login: state.appState.login,
 	id: state.users.id,
 });
 

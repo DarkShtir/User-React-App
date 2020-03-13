@@ -9,10 +9,8 @@ import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
 import UserService from '../../services/user-service';
 import classes from './RegistrationPage.module.scss';
 import { User } from '../../interfaces';
-import {
-	setLoginAction,
-	setUserIdAction,
-} from '../../store/users/users.actions';
+import { setUserIdAction } from '../../store/users/users.actions';
+import { setLoginAction } from '../../store/appState/appState.actions';
 
 interface State {
 	needAdd: boolean;
@@ -62,7 +60,7 @@ class RegistrationPage extends Component<Props, State> {
 }
 
 const mapStateToProps = (state: RootState) => ({
-	login: state.users.login,
+	login: state.appState.login,
 	id: state.users.id,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

@@ -5,7 +5,8 @@ import { Button } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
-import { uploadPhotos, loading } from '../../store/users/users.actions';
+import { uploadPhotos } from '../../store/users/users.actions';
+import { loading } from '../../store/appState/appState.actions';
 
 interface Props {
 	id: string;

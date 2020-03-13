@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from './CardAlbum.module.scss';
 import AlbumFolder from '../AlbumFolder/AlbumFolder';
-// import { Album } from '../../interfaces';
 import { Typography, Button } from '@material-ui/core';
 import { Album } from '../../interfaces';
 import { useHistory } from 'react-router-dom';
@@ -12,9 +11,6 @@ interface Props {
 
 const CardAlbum: React.FC<Props> = ({ albums }) => {
 	const history = useHistory();
-	// const [renderAlbums, setAlbums] = useState(albums);
-
-	// useEffect(() => {});
 
 	return (
 		<div className={classes.CardAlbum}>
