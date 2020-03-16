@@ -10,7 +10,10 @@ export const Actions = {
 	PUT_DIALOGLIST_IN_STATE: '[dialog] Put dialog list in state',
 	LOGOUT_DIALOG: '[dialog] Clear dialog state during logout action',
 	PUT_MESSAGES_ACTIVE_DIALOG_IN_STATE:
-		'[messages] Put messages activ dialog in state',
+		'[messages] Put messages active dialog in state',
+	PUT_ONE_MESSAGES_IN_STATE: '[messages] Put one message in state',
+	PUT_ONE_MESSAGES_FROM_CHAT_IN_STATE:
+		'[messages] Put one message from general chat in state',
 	GET_MESSAGES_FROM_ACTIVE_DIALOG: '[messages] Get messages from activ dialog',
 };
 
@@ -45,13 +48,28 @@ export const putDialogListInStateAction = (
 	payload: dialogList,
 });
 export const putMessagesActiveDialogInStateAction = (
-	messages: Message[]
-): Action<Message[]> => ({
+	messages: Message[] | null
+): Action<Message[] | null> => ({
 	type: Actions.PUT_MESSAGES_ACTIVE_DIALOG_IN_STATE,
 	payload: messages,
 });
-export const getMessagesFromActiveDialogAction = (): Action<void> => ({
+export const putOneMessagesInStateAction = (
+	message: Message | null
+): Action<Message | null> => ({
+	type: Actions.PUT_ONE_MESSAGES_IN_STATE,
+	payload: message,
+});
+export const getMessagesFromActiveDialogAction = (
+	dialogId: string
+): Action<string> => ({
 	type: Actions.GET_MESSAGES_FROM_ACTIVE_DIALOG,
+	payload: dialogId,
+});
+export const putMessagesFromChatAction = (
+	message: Message | null
+): Action<Message | null> => ({
+	type: Actions.PUT_ONE_MESSAGES_FROM_CHAT_IN_STATE,
+	payload: message,
 });
 export const logoutDialogAction = (): Action<void> => ({
 	type: Actions.LOGOUT_DIALOG,

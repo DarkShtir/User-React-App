@@ -9,11 +9,9 @@ import {
 	Typography,
 } from '@material-ui/core/';
 
-// import openSocket from 'socket.io-client';
-
 import classes from './CardOtherUser.module.scss';
 import { User } from '../../interfaces';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { getDialogByMembersAction } from '../../store/dialogs/dialogs.actions';
@@ -27,21 +25,7 @@ const CardOtherUser: React.FC<Props> = ({
 	user,
 	getDialogByMembersAction,
 }): JSX.Element => {
-	//!
-	// const [openChat, setOpenChat] = useState(false);
-	// const socket = openSocket(`http://localhost:8000`);
-	// const chatHandlter = (id: string | undefined) => {
-	// 	if (id !== undefined) {
-	// 		if (!openChat) {
-	// 			socket.emit('create', id);
-	// 			setOpenChat(true);
-	// 		} else {
-	// 			socket.emit('leave', id);
-	// 			setOpenChat(false);
-	// 		}
-	// 	}
-	// };
-	//!
+	const history = useHistory();
 	return (
 		<Card className={classes.CardOtherUser}>
 			<CardActionArea>
@@ -78,8 +62,8 @@ const CardOtherUser: React.FC<Props> = ({
 						console.log(user._id);
 						if (user._id) {
 							getDialogByMembersAction(user._id);
+							history.push(`chat-room`);
 						}
-						// chatHandlter(user._id);
 					}}
 				>
 					Chatting

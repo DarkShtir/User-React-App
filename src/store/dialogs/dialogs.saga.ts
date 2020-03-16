@@ -6,6 +6,8 @@ import {
 	putDialogListInStateAction,
 	putIdActiveDialogInStateAction,
 	putMessagesActiveDialogInStateAction,
+	getMessagesFromActiveDialogAction,
+	putMessagesFromChatAction,
 } from './dialogs.actions';
 import dialogService from '../../services/dialog-service';
 
@@ -32,8 +34,8 @@ function* workerGetDialogByMembers(actions: any) {
 			if (!newDialog || newDialog.length === 0) {
 				yield put(createDialogAction({ members: [firstId, secondId] }));
 			} else {
-				yield put(putActiveDialogInStateAction(newDialog));
-				yield put(putIdActiveDialogInStateAction(newDialog._id));
+				yield put(putActiveDialogInStateAction(newDialog[0]));
+				yield put(putIdActiveDialogInStateAction(newDialog[0]._id));
 			}
 		}
 	} catch (error) {
@@ -51,19 +53,21 @@ function* workerCreateDialog(actions: any) {
 function* workerPutActiveDialogInState(actions: any) {
 	try {
 		if (actions.payload !== null) {
-			yield put(putIdActiveDialogInStateAction(actions.payload._id));
+			yield put(putMessagesFromChatAction(null));
+			const dialogId = yield select(state => state.dialogs.activeDialog._id);
+			yield put(putIdActiveDialogInStateAction(dialogId));
+			yield put(getMessagesFromActiveDialogAction(dialogId));
 		} else if (actions.payload === null) {
+			yield put(putMessagesActiveDialogInStateAction(null));
 			yield put(putIdActiveDialogInStateAction(''));
 		}
 	} catch (error) {
 		console.log(error);
 	}
 }
-function* workerGetMesasagesFromActiveDialog() {
+function* workerGetMesasagesFromActiveDialog(actions: any) {
 	try {
-		const dialogId = yield select(state => state.dialogs.activeDialogId);
-		console.log(dialogId);
-		const messages = yield dialogService.getMessagesByDialogId(dialogId);
+		const messages = yield dialogService.getMessagesByDialogId(actions.payload);
 		yield put(putMessagesActiveDialogInStateAction(messages));
 	} catch (error) {
 		console.log(error);

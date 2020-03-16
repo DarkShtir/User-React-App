@@ -6,13 +6,15 @@ import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { putActiveDialogInStateAction } from '../../store/dialogs/dialogs.actions';
-import socketService from '../../services/socket-service';
+// import socketService from '../../services/socket-service';
 
 interface Props {
 	id: string;
 	dialog: Dialog;
 	activeDialogId: string;
 	putActiveDialogInStateAction: (dialog: Dialog | null) => void;
+	enterInRoom: (nameRoom: string) => void;
+	leaveFromRoom: (nameRoom: string) => void;
 }
 
 const ChatList: React.FC<Props> = ({
@@ -20,6 +22,8 @@ const ChatList: React.FC<Props> = ({
 	dialog,
 	activeDialogId,
 	putActiveDialogInStateAction,
+	enterInRoom,
+	leaveFromRoom,
 }) => {
 	const userArr = dialog.members.filter((user: User, index: number) => {
 		if (user._id !== id) {
@@ -40,10 +44,10 @@ const ChatList: React.FC<Props> = ({
 			onClick={() => {
 				if (activeDialogId !== dialog._id && dialog._id !== undefined) {
 					putActiveDialogInStateAction(dialog);
-					socketService.enterInRoom(dialog._id);
+					enterInRoom(dialog._id);
 				} else if (dialog._id !== undefined && activeDialogId === dialog._id) {
 					putActiveDialogInStateAction(null);
-					socketService.leaveFromRoom(dialog._id);
+					leaveFromRoom(dialog._id);
 				}
 			}}
 		>

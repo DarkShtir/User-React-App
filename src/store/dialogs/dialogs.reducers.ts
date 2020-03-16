@@ -7,6 +7,7 @@ export interface State {
 	activeDialog: Dialog | null;
 	activeDialogId: string;
 	messagesActiveDialog: [Message] | null;
+	messagesGeneralChat: [Message] | null;
 }
 
 const initialState: State = {
@@ -14,6 +15,7 @@ const initialState: State = {
 	activeDialog: null,
 	activeDialogId: '',
 	messagesActiveDialog: null,
+	messagesGeneralChat: null,
 };
 
 export const reducer = (state: State = initialState, action: Action<any>) => {
@@ -34,12 +36,75 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 				dialogsList: action.payload,
 			};
 		case Actions.PUT_MESSAGES_ACTIVE_DIALOG_IN_STATE:
-			return {
-				...state,
-				messagesActiveDialog: (prevState: any) => {
-					return [...prevState, ...action.payload];
-				},
-			};
+			if (
+				action.payload !== null &&
+				state.messagesActiveDialog !== null &&
+				action.payload.length > 0
+			) {
+				return {
+					...state,
+					messagesActiveDialog: state.messagesActiveDialog.concat(
+						action.payload
+					),
+				};
+			} else if (
+				action.payload !== null &&
+				state.messagesActiveDialog === null &&
+				action.payload.length > 0
+			) {
+				return {
+					...state,
+					messagesActiveDialog: action.payload,
+				};
+			} else if (action.payload === null || action.payload.length === 0) {
+				return {
+					...state,
+					messagesActiveDialog: null,
+				};
+			} else {
+				return { ...state };
+			}
+		case Actions.PUT_ONE_MESSAGES_IN_STATE:
+			if (state.messagesActiveDialog !== null) {
+				return {
+					...state,
+					messagesActiveDialog: state.messagesActiveDialog.concat(
+						action.payload
+					),
+				};
+			} else if (
+				state.messagesActiveDialog === null &&
+				action.payload !== null
+			) {
+				return {
+					...state,
+					messagesActiveDialog: [action.payload],
+				};
+			} else {
+				return { ...state };
+			}
+		case Actions.PUT_ONE_MESSAGES_FROM_CHAT_IN_STATE:
+			if (state.messagesGeneralChat !== null && action.payload !== null) {
+				return {
+					...state,
+					messagesGeneralChat: state.messagesGeneralChat.concat(action.payload),
+				};
+			} else if (
+				state.messagesGeneralChat === null &&
+				action.payload !== null
+			) {
+				return {
+					...state,
+					messagesGeneralChat: [action.payload],
+				};
+			} else if (action.payload === null) {
+				return {
+					...state,
+					messagesGeneralChat: null,
+				};
+			} else {
+				return { ...state };
+			}
 		case Actions.LOGOUT_DIALOG:
 			return {
 				...initialState,
