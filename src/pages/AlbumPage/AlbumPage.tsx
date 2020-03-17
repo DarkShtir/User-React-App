@@ -166,7 +166,9 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 			/>
 			{statusApp === loadingEnum.Error ? <ErrorIndicator error={null} /> : null}
 			{statusApp === loadingEnum.Loading ? <Loading /> : null}
-			{statusApp === loadingEnum.Loaded && photos.length ? (
+			{statusApp === loadingEnum.Loaded &&
+			photos.length &&
+			currentPhoto !== undefined ? (
 				<div className={classes.gallery}>
 					<Gallery
 						photos={currentPhoto}

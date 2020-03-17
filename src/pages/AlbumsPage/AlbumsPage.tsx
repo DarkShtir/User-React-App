@@ -1,22 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Typography, Button } from '@material-ui/core';
 import { Action, Dispatch } from 'redux';
+import { Typography, Button } from '@material-ui/core';
 import classes from './AlbumsPage.module.scss';
 
 import AlbumFolder from '../../components/AlbumFolder/AlbumFolder';
 import { RootState } from '../../store/interfaces/RootState';
 import { Album } from '../../interfaces';
-import { addUserAlbums } from '../../store/albums/albums.actions';
+import {
+	addUserAlbum,
+	deleteUserAlbum,
+} from '../../store/albums/albums.actions';
 
 interface Props {
 	id: string;
 	albums: [Album] | null;
 	guest: boolean;
-	addUserAlbums: (ownerId: string) => void;
+	addUserAlbum: (ownerId: string) => void;
+	deleteUserAlbum: (albumId: string) => void;
 }
 
-const AlbumsPage: React.FC<Props> = ({ id, albums, guest, addUserAlbums }) => {
+const AlbumsPage: React.FC<Props> = ({
+	id,
+	albums,
+	guest,
+	addUserAlbum,
+	deleteUserAlbum,
+}) => {
 	return (
 		<div className={classes.AlbumsPage}>
 			<Typography variant="h5" className={classes.typography}>
@@ -27,20 +37,30 @@ const AlbumsPage: React.FC<Props> = ({ id, albums, guest, addUserAlbums }) => {
 					<Button
 						color="primary"
 						onClick={() => {
-							addUserAlbums(id);
+							addUserAlbum(id);
 						}}
 					>
 						ADD
 					</Button>
-					<Button color="default">EDIT</Button>
-					<Button color="secondary">DELETE</Button>
 				</>
 			)}
 
 			{albums && albums.length > 0 ? (
 				<div className={classes.albumWrapper}>
 					{albums.map((album: any, index: number) => {
-						return <AlbumFolder album={album} key={index} />;
+						return (
+							<div key={index} className={classes.wrapper}>
+								<AlbumFolder album={album} />
+								<Button
+									color="secondary"
+									onClick={() => {
+										deleteUserAlbum(album._id);
+									}}
+								>
+									DELETE
+								</Button>
+							</div>
+						);
 					})}
 				</div>
 			) : (
@@ -56,6 +76,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	addUserAlbums: (ownerId: string) => dispatch(addUserAlbums(ownerId)),
+	addUserAlbum: (ownerId: string) => dispatch(addUserAlbum(ownerId)),
+	deleteUserAlbum: (albumId: string) => dispatch(deleteUserAlbum(albumId)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumsPage);

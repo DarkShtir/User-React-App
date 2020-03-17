@@ -2,8 +2,10 @@ import { Album, Photo } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
 
 export const Actions = {
+	ADD_USER_ALBUM: '[albums] Add users albums',
 	GET_USER_ALBUMS: '[albums] Get users albums',
-	ADD_USER_ALBUMS: '[albums] Add users albums',
+	DELETE_USER_ALBUM: '[albums] Delete users albums',
+	UPDATE_ALBUM_ICON: '[albums] Update album icon',
 	PUT_USER_ALBUMS: '[albums] Put users albums in store',
 	PUT_ACTIVE_ALBUM: '[albums] Put active album in store',
 	UPLOAD_PHOTOS: '[photo] Upload photo in user album',
@@ -11,13 +13,27 @@ export const Actions = {
 	PUT_ALBUM_PHOTOS: '[photo] Upload photo in user album',
 };
 
-export const addUserAlbums = (id: string): Action<string> => ({
-	type: Actions.ADD_USER_ALBUMS,
+export const addUserAlbum = (id: string): Action<string> => ({
+	type: Actions.ADD_USER_ALBUM,
 	payload: id,
 });
 export const getUserAlbums = (id: string): Action<string> => ({
 	type: Actions.GET_USER_ALBUMS,
 	payload: id,
+});
+export const deleteUserAlbum = (albumId: string): Action<string> => ({
+	type: Actions.DELETE_USER_ALBUM,
+	payload: albumId,
+});
+export const updateAlbumIcon = (
+	albumId: string,
+	photoUrl: any
+): Action<{}> => ({
+	type: Actions.UPDATE_ALBUM_ICON,
+	payload: {
+		albumId: albumId,
+		photoUrl: photoUrl,
+	},
 });
 export const putUserAlbums = (albums: Album[]): Action<Album[]> => ({
 	type: Actions.PUT_USER_ALBUMS,

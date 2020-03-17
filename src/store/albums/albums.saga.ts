@@ -1,13 +1,14 @@
-import { takeEvery, put } from 'redux-saga/effects';
+import { takeEvery, put, select } from 'redux-saga/effects';
+import { albumService, photoService } from '../../services/services';
+import { Photo } from '../../interfaces';
 import {
 	Actions as AlbumsActions,
 	putUserAlbums,
 	getUserAlbums,
 	PutAlbumPhotos,
 	getAlbumPhotos,
+	updateAlbumIcon,
 } from './albums.actions';
-import { albumService, photoService } from '../../services/services';
-import { Photo } from '../../interfaces';
 import {
 	loading,
 	loadingSuccessful,
@@ -28,6 +29,17 @@ function* workerGetUserAlbums(actions: any) {
 function* workerAddUserAlbum(actions: any) {
 	yield albumService.addAlbum({ ownerId: actions.payload });
 	yield put(getUserAlbums(actions.payload));
+}
+function* workerDeleteUserAlbum(actions: any) {
+	try {
+		yield put(loading());
+		yield albumService.deleteAlbum(actions.payload);
+		const userId = yield select(state => state.users.id);
+		yield put(getUserAlbums(userId));
+		yield put(loadingSuccessful());
+	} catch (error) {
+		yield put(loadingError());
+	}
 }
 function* workerUploadPhotosInAlbum(actions: any) {
 	try {
@@ -60,6 +72,9 @@ function* workerGetAlbumPhotos(actions: any) {
 				actions.payload.filter
 			);
 			yield put(PutAlbumPhotos(newPhotos));
+			if (newPhotos.length !== 0) {
+				yield put(updateAlbumIcon(actions.payload.albumId, newPhotos[0].src));
+			}
 			yield put(loadingSuccessful());
 		}
 	} catch (error) {
@@ -77,14 +92,31 @@ function* workerPutActiveAlbum(actions: any) {
 		yield put(loadingError());
 	}
 }
+function* workerUpdateAlbumIcon(actions: any) {
+	try {
+		yield put(loading());
+		if (actions.payload) {
+			albumService.updateAlbum(actions.payload.albumId, {
+				previewUrl: actions.payload.photoUrl,
+			});
+			const userId = yield select(state => state.users.id);
+			yield put(getUserAlbums(userId));
+			yield put(loadingSuccessful());
+		}
+	} catch (error) {
+		yield put(loadingError());
+	}
+}
 
 //Watchers
 export function* albumsWatcher() {
 	yield takeEvery(AlbumsActions.GET_USER_ALBUMS, workerGetUserAlbums);
-	yield takeEvery(AlbumsActions.ADD_USER_ALBUMS, workerAddUserAlbum);
+	yield takeEvery(AlbumsActions.ADD_USER_ALBUM, workerAddUserAlbum);
+	yield takeEvery(AlbumsActions.DELETE_USER_ALBUM, workerDeleteUserAlbum);
 	yield takeEvery(AlbumsActions.UPLOAD_PHOTOS, workerUploadPhotosInAlbum);
 	yield takeEvery(AlbumsActions.GET_ALBUM_PHOTOS, workerGetAlbumPhotos);
 	yield takeEvery(AlbumsActions.PUT_ACTIVE_ALBUM, workerPutActiveAlbum);
+	yield takeEvery(AlbumsActions.UPDATE_ALBUM_ICON, workerUpdateAlbumIcon);
 }
 
 //Export
