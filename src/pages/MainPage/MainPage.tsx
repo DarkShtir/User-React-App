@@ -1,7 +1,7 @@
 import React from 'react';
 import { Paper } from '@material-ui/core';
-import classes from './MainPage.module.scss';
 import Loading from '../../components/shared/Loading/Loading';
+import classes from './MainPage.module.scss';
 
 const MainPage: React.FC = (): JSX.Element => {
 	return (

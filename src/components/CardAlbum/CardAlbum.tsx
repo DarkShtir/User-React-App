@@ -1,9 +1,11 @@
 import React from 'react';
-import classes from './CardAlbum.module.scss';
-import AlbumFolder from '../AlbumFolder/AlbumFolder';
-import { Typography, Button } from '@material-ui/core';
-import { Album } from '../../interfaces';
 import { useHistory } from 'react-router-dom';
+import { Typography, Button } from '@material-ui/core';
+
+import AlbumFolder from '../AlbumFolder/AlbumFolder';
+import { Album } from '../../interfaces';
+
+import classes from './CardAlbum.module.scss';
 
 interface Props {
 	albums: [Album];

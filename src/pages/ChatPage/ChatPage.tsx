@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Action, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import openSocket from 'socket.io-client';
 import { TextField, Button, Paper, Typography } from '@material-ui/core';
+
 import MessageBubble from '../../components/MessageBubble/MessageBubble';
 import ChatList from '../../components/ChatList/ChatList';
 import { RootState } from '../../store/interfaces/RootState';
 import { getLoginUser } from '../../store/users/users.actions';
+import { SocketService } from '../../services/socket-service';
 import {
 	getAllUserDialogAction,
 	putOneMessagesInStateAction,
@@ -14,11 +15,6 @@ import {
 } from '../../store/dialogs/dialogs.actions';
 import { Message, User, Dialog } from '../../interfaces';
 import classes from './ChatPage.module.scss';
-// import socketService from '../../services/socket-service';
-const socket = openSocket(`http://localhost:8000`);
-
-//!!! ПОЛУЧЕНИЕ СООБЩЕНИЙ ИЗ МОНГИ
-//!! Вывод сообщений на экран
 
 interface Props {
 	id: string;
@@ -49,35 +45,6 @@ const ChatPage: React.FC<Props> = ({
 
 	const targetElement: any = useRef<(HTMLDivElement | null)[]>([]);
 
-	const sendMessageInRoom = (
-		message: string,
-		name: string,
-		ownerId: string,
-		dialogId: string
-	) => {
-		socket.emit('send message in Room', {
-			message: message,
-			name: name,
-			ownerId: ownerId,
-			dialogId: dialogId,
-		});
-	};
-
-	const sendMessageAll = (message: string, name: string, ownerId: string) => {
-		socket.emit('send message', {
-			message: message,
-			name: name,
-			ownerId: ownerId,
-		});
-	};
-
-	const enterInRoom = (nameRoom: string) => {
-		socket.emit('create', nameRoom);
-	};
-	const leaveFromRoom = (nameRoom: string) => {
-		socket.emit('leave', nameRoom);
-	};
-
 	useEffect(() => {
 		getLoginUser();
 	}, [getLoginUser]);
@@ -87,12 +54,8 @@ const ChatPage: React.FC<Props> = ({
 	}, [getAllUserDialogAction, id]);
 
 	const getMessages = useCallback(() => {
-		socket.on('add message in room', (message: Message) => {
-			putOneMessagesInStateAction(message);
-		});
-		socket.on('add message', (message: Message) => {
-			putMessagesFromChatAction(message);
-		});
+		SocketService.getMessageFromRoom(putOneMessagesInStateAction);
+		SocketService.getAllMessage(putMessagesFromChatAction);
 	}, [putOneMessagesInStateAction, putMessagesFromChatAction]);
 
 	useEffect(() => {
@@ -108,9 +71,14 @@ const ChatPage: React.FC<Props> = ({
 			event.preventDefault();
 			if (value !== '') {
 				if (activeDialogId !== '') {
-					sendMessageInRoom(value, loginUser.firstName, id, activeDialogId);
+					SocketService.sendMessageInRoom(
+						value,
+						loginUser.firstName,
+						id,
+						activeDialogId
+					);
 				} else {
-					sendMessageAll(value, loginUser.firstName, id);
+					SocketService.sendMessageAll(value, loginUser.firstName, id);
 				}
 				setValue('');
 			}
@@ -120,7 +88,7 @@ const ChatPage: React.FC<Props> = ({
 
 	useEffect(() => {
 		targetElement.current.scrollTo({ top: 9999, behavior: 'smooth' });
-	}, [messagesActiveDialog]);
+	}, [messagesActiveDialog, messagesGeneralChat]);
 
 	return (
 		<Paper className={classes.ChatPage}>
@@ -132,8 +100,8 @@ const ChatPage: React.FC<Props> = ({
 									<React.Fragment key={index}>
 										<ChatList
 											dialog={dialog}
-											enterInRoom={enterInRoom}
-											leaveFromRoom={leaveFromRoom}
+											enterInRoom={SocketService.enterInRoom}
+											leaveFromRoom={SocketService.leaveFromRoom}
 										/>
 									</React.Fragment>
 								);

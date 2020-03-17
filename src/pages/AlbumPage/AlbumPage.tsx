@@ -4,13 +4,10 @@ import { Action, Dispatch } from 'redux';
 import Gallery from 'react-photo-gallery';
 import { RouteComponentProps } from 'react-router-dom';
 
-import classes from './AlbumPage.module.scss';
 import Photo from '../../components/Photo/Photo';
-import Previews from '../../components/Previews/Previews';
+import PreviewsAndDownload from '../../components/PreviewsAndDownload/PreviewsAndDownload';
 import Pagination from '../../components/Pagination/Pagination';
 import { RootState } from '../../store/interfaces/RootState';
-
-import { Photo as PhotoInterface } from '../../interfaces';
 import checkVoidObject from '../../components/utils/checkVoidObject';
 import loadingEnum from '../../components/utils/loadingStateEnum';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
@@ -19,6 +16,9 @@ import {
 	getAlbumPhotos,
 	putActiveAlbum,
 } from '../../store/albums/albums.actions';
+import { Photo as PhotoInterface } from '../../interfaces';
+
+import classes from './AlbumPage.module.scss';
 
 interface Props {
 	statusApp: loadingEnum;
@@ -155,7 +155,7 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 
 	return (
 		<div className={classes.AlbumPage}>
-			{needAdd ? <Previews /> : null}
+			{needAdd ? <PreviewsAndDownload /> : null}
 
 			<Pagination
 				pageInfo={pageInfo}

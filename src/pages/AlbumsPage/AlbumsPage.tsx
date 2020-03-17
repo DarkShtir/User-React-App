@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
 import { Typography, Button } from '@material-ui/core';
-import classes from './AlbumsPage.module.scss';
 
 import AlbumFolder from '../../components/AlbumFolder/AlbumFolder';
 import { RootState } from '../../store/interfaces/RootState';
-import { Album } from '../../interfaces';
 import {
 	addUserAlbum,
 	deleteUserAlbum,
 } from '../../store/albums/albums.actions';
+import { Album } from '../../interfaces';
+
+import classes from './AlbumsPage.module.scss';
 
 interface Props {
 	id: string;
@@ -51,14 +52,16 @@ const AlbumsPage: React.FC<Props> = ({
 						return (
 							<div key={index} className={classes.wrapper}>
 								<AlbumFolder album={album} />
-								<Button
-									color="secondary"
-									onClick={() => {
-										deleteUserAlbum(album._id);
-									}}
-								>
-									DELETE
-								</Button>
+								{guest ? null : (
+									<Button
+										color="secondary"
+										onClick={() => {
+											deleteUserAlbum(album._id);
+										}}
+									>
+										DELETE
+									</Button>
+								)}
 							</div>
 						);
 					})}

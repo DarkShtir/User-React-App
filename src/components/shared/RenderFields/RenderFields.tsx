@@ -1,6 +1,6 @@
 import React from 'react';
-import classes from './RenderFields.module.scss';
 import { ListItem, ListItemText } from '@material-ui/core';
+import classes from './RenderFields.module.scss';
 
 interface Props {
 	cardForm: { [index: string]: string };

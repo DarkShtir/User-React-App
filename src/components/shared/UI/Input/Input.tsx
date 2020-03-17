@@ -1,6 +1,6 @@
 import React from 'react';
-import classes from './Input.module.scss';
 import { TextField, Container } from '@material-ui/core';
+import classes from './Input.module.scss';
 
 type InputProps = {
 	type?: string,

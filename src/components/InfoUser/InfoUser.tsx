@@ -1,13 +1,15 @@
 import React from 'react';
-import classes from './InfoUser.module.scss';
+import { connect } from 'react-redux';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { Typography } from '@material-ui/core';
+
 import CardUser from '../CardUser/CardUser';
 import CardPets from '../CardPets/CardPets';
-import { Typography } from '@material-ui/core';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import { Pet, User, Album } from '../../interfaces';
 import CardAlbum from '../CardAlbum/CardAlbum';
 import { RootState } from '../../store/interfaces/RootState';
-import { connect } from 'react-redux';
+import { Pet, User, Album } from '../../interfaces';
+
+import classes from './InfoUser.module.scss';
 
 interface Props {
 	user: User | null;

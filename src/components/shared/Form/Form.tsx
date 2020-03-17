@@ -1,8 +1,10 @@
 import React from 'react';
-import Input from '../UI/Input/Input';
-import { Button, ButtonGroup } from '@material-ui/core';
-import classes from './Form.module.scss';
 import { useHistory } from 'react-router-dom';
+import { Button, ButtonGroup } from '@material-ui/core';
+
+import Input from '../UI/Input/Input';
+
+import classes from './Form.module.scss';
 
 interface TemplateForm {
 	[value: string]: string;

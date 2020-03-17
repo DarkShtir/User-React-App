@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import {
 	Card,
 	CardActionArea,
@@ -9,12 +12,10 @@ import {
 	Typography,
 } from '@material-ui/core/';
 
-import classes from './CardOtherUser.module.scss';
 import { User } from '../../interfaces';
-import { Link, useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Action, Dispatch } from 'redux';
 import { getDialogByMembersAction } from '../../store/dialogs/dialogs.actions';
+
+import classes from './CardOtherUser.module.scss';
 
 interface Props {
 	user: User;
@@ -25,7 +26,6 @@ const CardOtherUser: React.FC<Props> = ({
 	user,
 	getDialogByMembersAction,
 }): JSX.Element => {
-	const history = useHistory();
 	return (
 		<Card className={classes.CardOtherUser}>
 			<CardActionArea>
@@ -59,12 +59,12 @@ const CardOtherUser: React.FC<Props> = ({
 					size="medium"
 					color="primary"
 					onClick={() => {
-						console.log(user._id);
 						if (user._id) {
 							getDialogByMembersAction(user._id);
-							history.push(`chat-room`);
 						}
 					}}
+					component={Link}
+					to={`/chat-room`}
 				>
 					Chatting
 				</Button>

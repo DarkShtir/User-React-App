@@ -9,15 +9,14 @@ import CreatePet from '../../components/CreatePet/CreatePet';
 import EditPet from '../../components/EditPet/EditPet';
 import InfoUser from '../../components/InfoUser/InfoUser';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
-
-import { Pet, User, Album } from '../../interfaces';
-
-import classes from './UserPage.module.scss';
 import { RootState } from '../../store/interfaces/RootState';
 import { setGuestIdAction } from '../../store/users/users.actions';
 import { addPetAction } from '../../store/pets/pets.actions';
 import loadingEnum from '../../components/utils/loadingStateEnum';
 import { loading } from '../../store/appState/appState.actions';
+import { Pet, User, Album } from '../../interfaces';
+
+import classes from './UserPage.module.scss';
 
 interface Props {
 	activeUser: User | null;

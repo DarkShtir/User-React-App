@@ -7,10 +7,11 @@ import { Dispatch, Action } from 'redux';
 import { RootState } from '../../store/interfaces/RootState';
 import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
 import UserService from '../../services/user-service';
-import classes from './RegistrationPage.module.scss';
-import { User } from '../../interfaces';
 import { setUserIdAction } from '../../store/users/users.actions';
 import { setLoginAction } from '../../store/appState/appState.actions';
+import { User } from '../../interfaces';
+
+import classes from './RegistrationPage.module.scss';
 
 interface State {
 	needAdd: boolean;

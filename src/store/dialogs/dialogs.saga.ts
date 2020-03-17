@@ -10,6 +10,11 @@ import {
 	putMessagesFromChatAction,
 } from './dialogs.actions';
 import dialogService from '../../services/dialog-service';
+import {
+	loading,
+	loadingSuccessful,
+	loadingError,
+} from '../appState/appState.actions';
 
 //Workers
 function* workerGetAllUserDialog(actions: any) {
@@ -24,6 +29,7 @@ function* workerGetAllUserDialog(actions: any) {
 }
 function* workerGetDialogByMembers(actions: any) {
 	try {
+		yield put(loading());
 		const firstId = yield select(state => state.users.id);
 		const secondId = yield actions.payload;
 		if (firstId !== secondId) {
@@ -38,8 +44,9 @@ function* workerGetDialogByMembers(actions: any) {
 				yield put(putIdActiveDialogInStateAction(newDialog[0]._id));
 			}
 		}
+		yield put(loadingSuccessful());
 	} catch (error) {
-		console.log(error);
+		yield put(loadingError());
 	}
 }
 function* workerCreateDialog(actions: any) {

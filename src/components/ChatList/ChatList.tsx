@@ -1,12 +1,13 @@
 import React from 'react';
-import classes from './ChatList.module.scss';
-import { Typography, Avatar } from '@material-ui/core';
-import { Dialog, User } from '../../interfaces';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
+import { Typography, Avatar } from '@material-ui/core';
+
 import { RootState } from '../../store/interfaces/RootState';
 import { putActiveDialogInStateAction } from '../../store/dialogs/dialogs.actions';
-// import socketService from '../../services/socket-service';
+import { Dialog, User } from '../../interfaces';
+
+import classes from './ChatList.module.scss';
 
 interface Props {
 	id: string;

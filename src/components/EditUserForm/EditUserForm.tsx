@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { User } from '../../interfaces';
-import Form from '../shared/Form/Form';
 import { Container, Typography } from '@material-ui/core';
+
+import Form from '../shared/Form/Form';
+import { User } from '../../interfaces';
+
 import classes from './EditUserForm.module.scss';
 
 interface Props {

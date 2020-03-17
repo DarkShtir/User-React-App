@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import {
 	Card,
 	CardContent,
@@ -10,13 +12,13 @@ import {
 	TextField,
 } from '@material-ui/core';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import classes from './CardAvatar.module.scss';
+
 import { User } from '../../interfaces';
-import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
-import { Action, Dispatch } from 'redux';
 import { setUserAvatar, setUserQuotes } from '../../store/users/users.actions';
 import checkVoidObject from '../utils/checkVoidObject';
+
+import classes from './CardAvatar.module.scss';
 
 interface Props {
 	user: User | null;
@@ -91,7 +93,6 @@ const CardAvatar: React.FC<Props> = ({
 							src={avatar}
 							title="My Avatar"
 						/>
-						{/*! Разобраться с фото !*/}
 						{edit ? (
 							<form
 								onSubmit={submitHandler}
@@ -119,7 +120,6 @@ const CardAvatar: React.FC<Props> = ({
 								</label>
 							</form>
 						) : null}
-						{/*! Разобраться с фото !*/}
 					</div>
 					<Typography variant="h5" component="h2" className={classes.name}>
 						{user.firstName}, {user.lastName} ({user.login})

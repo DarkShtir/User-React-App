@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
 	Card,
 	CardContent,
@@ -6,12 +8,12 @@ import {
 	Button,
 	Typography,
 } from '@material-ui/core';
-import classes from './CardUser.module.scss';
+
 import { User } from '../../interfaces';
-import { Link } from 'react-router-dom';
 import RenderFields from '../shared/RenderFields/RenderFields';
-import { connect } from 'react-redux';
 import { RootState } from '../../store/interfaces/RootState';
+
+import classes from './CardUser.module.scss';
 
 interface Props {
 	id: string;

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import classes from './CreatePetForm.module.scss';
+import { Typography, Container } from '@material-ui/core';
+
 import { Pet } from '../../interfaces';
 import Form from '../shared/Form/Form';
-import { Typography, Container } from '@material-ui/core';
+
+import classes from './CreatePetForm.module.scss';
 
 interface Props {
 	onPetAdded(pet: Pet): void;

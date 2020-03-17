@@ -1,11 +1,13 @@
 import React from 'react';
-import { Card, CardContent, CardActions, Button } from '@material-ui/core';
-import classes from './CardPets.module.scss';
-import RenderFields from '../shared/RenderFields/RenderFields';
-import { Pet } from '../../interfaces';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
+import { Card, CardContent, CardActions, Button } from '@material-ui/core';
+
+import RenderFields from '../shared/RenderFields/RenderFields';
 import { putEditPet } from '../../store/pets/pets.actions';
+import { Pet } from '../../interfaces';
+
+import classes from './CardPets.module.scss';
 
 interface Props {
 	pet: Pet;

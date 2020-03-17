@@ -4,13 +4,14 @@ import { useHistory } from 'react-router-dom';
 import { Dispatch, Action } from 'redux';
 import { Paper, Typography } from '@material-ui/core';
 
-import { UserLogin } from '../../interfaces';
 import UserService from '../../services/user-service';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import { RootState } from '../../store/interfaces/RootState';
 import { setUserIdAction } from '../../store/users/users.actions';
-import classes from './LoginPage.module.scss';
 import { setLoginAction } from '../../store/appState/appState.actions';
+import { UserLogin } from '../../interfaces';
+
+import classes from './LoginPage.module.scss';
 
 interface Props {
 	setLogin: (isLogin: boolean) => void;

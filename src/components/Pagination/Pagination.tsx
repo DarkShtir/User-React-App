@@ -1,5 +1,4 @@
 import React from 'react';
-import classes from './Pagination.module.scss';
 import {
 	Checkbox,
 	FormControl,
@@ -10,6 +9,7 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { PageInfo } from '../../interfaces';
+import classes from './Pagination.module.scss';
 
 interface Props {
 	pageInfo: PageInfo;

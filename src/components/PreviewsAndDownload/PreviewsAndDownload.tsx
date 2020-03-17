@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import classes from './Previews.module.scss';
-import { Button } from '@material-ui/core';
-import { connect } from 'react-redux';
-import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { Button } from '@material-ui/core';
+
+import { RootState } from '../../store/interfaces/RootState';
 import { loading } from '../../store/appState/appState.actions';
 import { uploadPhotos } from '../../store/albums/albums.actions';
+
+import classes from './PreviewsAndDownload.module.scss';
 
 interface Props {
 	id: string;
@@ -14,7 +16,7 @@ interface Props {
 	uploadPhotos: (ownerId: string, albumId: string, photos: any) => void;
 }
 
-const Previews: React.FC<Props> = ({
+const PreviewsAndDownload: React.FC<Props> = ({
 	id,
 	activeAlbum,
 	uploadPhotos,
@@ -64,7 +66,7 @@ const Previews: React.FC<Props> = ({
 	);
 
 	return (
-		<section className={classes.Previews}>
+		<section className={classes.PreviewsAndDownload}>
 			<div className={classes.controlWrapper}>
 				<div {...getRootProps({ className: 'dropzone' })}>
 					<input {...getInputProps()} />
@@ -112,4 +114,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 		dispatch(loading());
 	},
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Previews);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(PreviewsAndDownload);

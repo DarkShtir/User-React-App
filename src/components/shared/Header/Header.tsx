@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { Button, Paper, Container } from '@material-ui/core';
+
 import {
 	logoutUserAction,
 	setUserIdAction,
@@ -10,6 +11,7 @@ import {
 } from '../../../store/users/users.actions';
 import { RootState } from '../../../store/interfaces/RootState';
 import { putActiveAlbum } from '../../../store/albums/albums.actions';
+
 import classes from './Header.module.scss';
 
 interface Props {

@@ -1,16 +1,18 @@
 import React from 'react';
-import classes from './EditPet.module.scss';
-import { Pet } from '../../interfaces';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { EditPetForm } from '../EditPetForm/EditPetForm';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
+import CancelIcon from '@material-ui/icons/Cancel';
+
+import { EditPetForm } from '../EditPetForm/EditPetForm';
 import { RootState } from '../../store/interfaces/RootState';
 import {
 	putEditPet,
 	deletePetAction,
 	updatePetAction,
 } from '../../store/pets/pets.actions';
+import { Pet } from '../../interfaces';
+
+import classes from './EditPet.module.scss';
 
 interface Props {
 	editPet: Pet | null;

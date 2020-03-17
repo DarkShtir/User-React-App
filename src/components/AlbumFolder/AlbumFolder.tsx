@@ -1,11 +1,13 @@
 import React from 'react';
-import classes from './AlbumFolder.module.scss';
-import { Album } from '../../interfaces';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { RootState } from '../../store/interfaces/RootState';
 import { Action, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+
+import { Album } from '../../interfaces';
+import { RootState } from '../../store/interfaces/RootState';
 import { putActiveAlbum } from '../../store/albums/albums.actions';
+
+import classes from './AlbumFolder.module.scss';
 
 interface Props {
 	album: Album;
