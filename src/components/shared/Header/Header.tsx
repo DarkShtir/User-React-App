@@ -57,19 +57,14 @@ const Header: React.FC<Props> = ({
 					Главная
 				</Button>
 				{login ? (
-					<>
-						<Button
-							className={classes.btn}
-							component={NavLink}
-							to={`/user/${id}`}
-							activeClassName={classes.qwe}
-						>
-							Моя Хата
-						</Button>
-						<Button className={classes.btn} onClick={logout}>
-							Вайсци атседава
-						</Button>
-					</>
+					<Button
+						className={classes.btn}
+						component={NavLink}
+						to={`/user/${id}`}
+						activeClassName={classes.qwe}
+					>
+						Моя Хата
+					</Button>
 				) : (
 					<React.Fragment>
 						<Button
@@ -116,6 +111,9 @@ const Header: React.FC<Props> = ({
 							activeClassName={classes.qwe}
 						>
 							Не суйся, для бацьки!
+						</Button>
+						<Button className={classes.btn} onClick={logout} variant="outlined">
+							Вайсци атседава
 						</Button>
 					</>
 				) : null}

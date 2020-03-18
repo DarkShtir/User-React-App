@@ -1,6 +1,7 @@
 import { Action } from '../interfaces/action.interface';
 import { Dialog, Message } from '../../interfaces';
 import { Actions } from '../dialogs/dialogs.actions';
+import loadingEnum from '../../components/utils/loadingStateEnum';
 
 export interface State {
 	dialogsList: [Dialog] | null;
@@ -8,6 +9,7 @@ export interface State {
 	activeDialogId: string;
 	messagesActiveDialog: [Message] | null;
 	messagesGeneralChat: [Message] | null;
+	dialogStatus: loadingEnum;
 }
 
 const initialState: State = {
@@ -16,6 +18,7 @@ const initialState: State = {
 	activeDialogId: '',
 	messagesActiveDialog: null,
 	messagesGeneralChat: null,
+	dialogStatus: loadingEnum.Loading,
 };
 
 export const reducer = (state: State = initialState, action: Action<any>) => {
@@ -108,6 +111,21 @@ export const reducer = (state: State = initialState, action: Action<any>) => {
 		case Actions.LOGOUT_DIALOG:
 			return {
 				...initialState,
+			};
+		case Actions.DIALOG_LOADED:
+			return {
+				...state,
+				dialogStatus: loadingEnum.Loaded,
+			};
+		case Actions.DIALOG_ERROR:
+			return {
+				...state,
+				dialogStatus: loadingEnum.Error,
+			};
+		case Actions.DIALOG_LOADING:
+			return {
+				...state,
+				dialogStatus: loadingEnum.Loading,
 			};
 		default:
 			return state;

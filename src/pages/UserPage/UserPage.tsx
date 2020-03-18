@@ -4,31 +4,26 @@ import { connect } from 'react-redux';
 import { Dispatch, Action } from 'redux';
 
 import CardAvatar from '../../components/CardAvatar/CardAvatar';
-import Loading from '../../components/shared/Loading/Loading';
 import CreatePet from '../../components/CreatePet/CreatePet';
 import EditPet from '../../components/EditPet/EditPet';
 import InfoUser from '../../components/InfoUser/InfoUser';
+import Loading from '../../components/shared/Loading/Loading';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
 import { RootState } from '../../store/interfaces/RootState';
 import { setGuestIdAction } from '../../store/users/users.actions';
 import { addPetAction } from '../../store/pets/pets.actions';
 import loadingEnum from '../../components/utils/loadingStateEnum';
-import { loading } from '../../store/appState/appState.actions';
-import { Pet, User, Album } from '../../interfaces';
+import { Pet } from '../../interfaces';
 
 import classes from './UserPage.module.scss';
 
 interface Props {
-	activeUser: User | null;
 	id: string;
 	guestId: string;
-	albums: [Album] | null;
-	pets: [Pet] | null;
 	editPet: Pet | null;
 	setGuestId: (guestId: string) => void;
 	addPet: (pet: Pet) => void;
 	statusApp: loadingEnum;
-	loading: () => void;
 }
 
 const UserPage: React.FC<Props & RouteComponentProps> = ({
@@ -89,9 +84,6 @@ const UserPage: React.FC<Props & RouteComponentProps> = ({
 const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
 	guestId: state.users.guestId,
-	activeUser: state.users.activeUser,
-	albums: state.albums.albumsList,
-	pets: state.pets.pets,
 	editPet: state.pets.editPet,
 	statusApp: state.appState.statusApp,
 });
@@ -99,7 +91,6 @@ const mapStateToProps = (state: RootState) => ({
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	setGuestId: (guestId: string) => dispatch(setGuestIdAction(guestId)),
 	addPet: (pet: Pet) => dispatch(addPetAction(pet)),
-	loading: () => dispatch(loading()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

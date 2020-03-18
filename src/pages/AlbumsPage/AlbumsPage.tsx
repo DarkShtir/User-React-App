@@ -72,6 +72,7 @@ const AlbumsPage: React.FC<Props> = ({
 		</div>
 	);
 };
+
 const mapStateToProps = (state: RootState) => ({
 	id: state.users.id,
 	albums: state.albums.albumsList,

@@ -15,6 +15,9 @@ export const Actions = {
 	PUT_ONE_MESSAGES_FROM_CHAT_IN_STATE:
 		'[messages] Put one message from general chat in state',
 	GET_MESSAGES_FROM_ACTIVE_DIALOG: '[messages] Get messages from activ dialog',
+	DIALOG_LOADED: '[dialog] Successful loading',
+	DIALOG_ERROR: '[dialog] Loading Error',
+	DIALOG_LOADING: '[dialog] Loading dialog',
 };
 
 export const createDialogAction = (dialog: Dialog): Action<Dialog> => ({
@@ -73,4 +76,13 @@ export const putMessagesFromChatAction = (
 });
 export const logoutDialogAction = (): Action<void> => ({
 	type: Actions.LOGOUT_DIALOG,
+});
+export const dialogLoaded = (): Action<void> => ({
+	type: Actions.DIALOG_LOADED,
+});
+export const dialogError = (): Action<void> => ({
+	type: Actions.DIALOG_ERROR,
+});
+export const dialogLoading = (): Action<void> => ({
+	type: Actions.DIALOG_LOADING,
 });

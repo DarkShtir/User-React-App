@@ -8,28 +8,30 @@ import {
 	putMessagesActiveDialogInStateAction,
 	getMessagesFromActiveDialogAction,
 	putMessagesFromChatAction,
+	getAllUserDialogAction,
+	dialogLoading,
+	dialogLoaded,
+	dialogError,
 } from './dialogs.actions';
 import dialogService from '../../services/dialog-service';
-import {
-	loading,
-	loadingSuccessful,
-	loadingError,
-} from '../appState/appState.actions';
 
 //Workers
 function* workerGetAllUserDialog(actions: any) {
 	try {
+		yield put(dialogLoading());
+
 		const dialogList = yield dialogService.getAllDialogByUserId(
 			actions.payload
 		);
 		yield put(putDialogListInStateAction(dialogList));
+		yield put(dialogLoaded());
 	} catch (error) {
+		yield put(dialogError());
 		console.log(error);
 	}
 }
 function* workerGetDialogByMembers(actions: any) {
 	try {
-		yield put(loading());
 		const firstId = yield select(state => state.users.id);
 		const secondId = yield actions.payload;
 		if (firstId !== secondId) {
@@ -44,23 +46,27 @@ function* workerGetDialogByMembers(actions: any) {
 				yield put(putIdActiveDialogInStateAction(newDialog[0]._id));
 			}
 		}
-		yield put(loadingSuccessful());
 	} catch (error) {
-		yield put(loadingError());
+		yield put(dialogError());
 	}
 }
 function* workerCreateDialog(actions: any) {
 	try {
 		const newDialog = yield dialogService.createDialog(actions.payload);
-		yield console.log(newDialog);
+		yield put(putActiveDialogInStateAction(newDialog));
+		yield put(putIdActiveDialogInStateAction(newDialog._id));
+		const userId = yield select(state => state.users.id);
+		yield put(getAllUserDialogAction(userId));
 	} catch (error) {
 		console.log(error);
+		yield put(dialogError());
 	}
 }
 function* workerPutActiveDialogInState(actions: any) {
 	try {
 		if (actions.payload !== null) {
 			yield put(putMessagesFromChatAction(null));
+			yield put(putMessagesActiveDialogInStateAction(null));
 			const dialogId = yield select(state => state.dialogs.activeDialog._id);
 			yield put(putIdActiveDialogInStateAction(dialogId));
 			yield put(getMessagesFromActiveDialogAction(dialogId));
@@ -70,6 +76,7 @@ function* workerPutActiveDialogInState(actions: any) {
 		}
 	} catch (error) {
 		console.log(error);
+		yield put(dialogError());
 	}
 }
 function* workerGetMesasagesFromActiveDialog(actions: any) {
@@ -78,6 +85,7 @@ function* workerGetMesasagesFromActiveDialog(actions: any) {
 		yield put(putMessagesActiveDialogInStateAction(messages));
 	} catch (error) {
 		console.log(error);
+		yield put(dialogError());
 	}
 }
 

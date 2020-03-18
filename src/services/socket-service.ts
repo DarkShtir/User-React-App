@@ -3,34 +3,30 @@ import { Message } from '../interfaces';
 const socket = openSocket(`http://localhost:8000`);
 
 export class SocketService {
-	static sendMessageAll = async (
-		message: string,
-		name: string,
-		ownerId: string
-	) => {
+	static sendMessageAll = (message: string, name: string, ownerId: string) => {
 		socket.emit('send message', {
 			message: message,
 			name: name,
 			ownerId: ownerId,
 		});
 	};
-	static getAllMessage = async (funcPutMessageInState: any) => {
+	static getAllMessage = (funcPutMessageInState: any) => {
 		socket.on('add message', (message: Message) => {
 			funcPutMessageInState(message);
 		});
 	};
-	static getMessageFromRoom = async (funcPutMessageInState: any) => {
+	static getMessageFromRoom = (funcPutMessageInState: any) => {
 		socket.on('add message in room', (message: Message) => {
 			funcPutMessageInState(message);
 		});
 	};
-	static enterInRoom = async (nameRoom: string) => {
+	static enterInRoom = (nameRoom: string) => {
 		socket.emit('create', nameRoom);
 	};
-	static leaveFromRoom = async (nameRoom: string) => {
+	static leaveFromRoom = (nameRoom: string) => {
 		socket.emit('leave', nameRoom);
 	};
-	static sendMessageInRoom = async (
+	static sendMessageInRoom = (
 		message: string,
 		name: string,
 		ownerId: string,
@@ -43,4 +39,16 @@ export class SocketService {
 			dialogId: dialogId,
 		});
 	};
+	static removeAllListeners = () => {
+		socket.removeAllListeners();
+		// socket.emit('disconnect');
+	};
+	// static connectSocket = () => {
+	// 	socket.connect();
+	// };
+
+	// static checkConnectStatus = () => {
+	// 	const status = socket.connected;
+	// 	return status;
+	// };
 }

@@ -61,7 +61,7 @@ const Pagination: React.FC<Props> = ({
 			<Typography className={classes.pagesMessage}>
 				Cтраница: {page}
 				<br />
-				из: {countOfPages}
+				из: {countOfPages === 0 ? 1 : countOfPages}
 			</Typography>
 
 			<Button

@@ -5,6 +5,11 @@
   width: 50%;
   margin: 0 0 1rem 0.5rem;
 
+  @media screen and (max-width:500px) {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
   .pets {
     display: flex;
     flex-direction: row;
