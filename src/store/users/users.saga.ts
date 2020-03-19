@@ -37,7 +37,6 @@ function* workerSetGuestId(actions: any) {
 			yield put(putUser(newUser));
 			yield put(getUserPets(guestId));
 			yield put(getUserAlbums(guestId));
-			yield put(loadingSuccessful());
 		}
 		yield put(loadingSuccessful());
 	} catch (error) {
@@ -92,6 +91,50 @@ function* workerGetLoginUser() {
 		yield put(loadingError());
 	}
 }
+function* workerLoginUser(actions: any) {
+	try {
+		yield put(loading());
+		const user = yield userService.login(actions.payload);
+		yield put(putLoginUserInState(user));
+		const id = yield localStorage.getItem('id');
+		yield put(setUserIdAction(id));
+
+		const loginUser = yield select(state => state.users.loginUser);
+		// const newId = yield select(state => state.users.id);
+		console.log(loginUser);
+		if (!loginUser && loginUser === undefined) {
+			setLoginAction(false);
+			throw new Error('Пользователь на найден!!');
+		} else {
+			yield put(setLoginAction(true));
+			yield put(loadingSuccessful());
+		}
+	} catch (error) {
+		yield put(loadingError());
+	}
+}
+function* workerAddUser(actions: any) {
+	try {
+		yield put(loading());
+		const user = yield userService.addUser(actions.payload);
+		yield put(putLoginUserInState(user));
+		const id = yield localStorage.getItem('id');
+		yield put(setUserIdAction(id));
+
+		const loginUser = yield select(state => state.users.loginUser);
+		// const newId = yield select(state => state.users.id);
+		console.log(loginUser);
+		if (!loginUser && loginUser === undefined) {
+			setLoginAction(false);
+			throw new Error('Ошибка регистрации!');
+		} else {
+			yield put(setLoginAction(true));
+			yield put(loadingSuccessful());
+		}
+	} catch (error) {
+		yield put(loadingError());
+	}
+}
 
 //Watchers
 export function* usersWatcher() {
@@ -102,6 +145,8 @@ export function* usersWatcher() {
 	yield takeEvery(UserActions.UPDATE_USER, workerUpdateUser);
 	yield takeEvery(UserActions.GET_USERS_BY_NAME, workerGetUsersByName);
 	yield takeEvery(UserActions.GET_LOGIN_USER, workerGetLoginUser);
+	yield takeEvery(UserActions.LOGIN_USER, workerLoginUser);
+	yield takeEvery(UserActions.ADD_USER, workerAddUser);
 }
 
 //Export

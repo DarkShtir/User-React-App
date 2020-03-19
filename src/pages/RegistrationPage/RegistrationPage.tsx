@@ -1,72 +1,44 @@
-import React, { Component } from 'react';
-import { Paper } from '@material-ui/core';
-import { createBrowserHistory } from 'history';
+import React, { useEffect } from 'react';
+import { Action, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { Dispatch, Action } from 'redux';
+import { useHistory } from 'react-router-dom';
+import { Paper } from '@material-ui/core';
 
+import { addUserAction } from '../../store/users/users.actions';
 import { RootState } from '../../store/interfaces/RootState';
 import { CreateUserForm } from '../../components/CreateUserForm/CreateUserForm';
-import UserService from '../../services/user-service';
-import { setUserIdAction } from '../../store/users/users.actions';
-import { setLoginAction } from '../../store/appState/appState.actions';
 import { User } from '../../interfaces';
 
 import classes from './RegistrationPage.module.scss';
 
-interface State {
-	needAdd: boolean;
-}
-
 interface Props {
 	login: boolean;
 	id: string;
-	setLogin: (isLogin: boolean) => void;
-	setUserId: (id: string) => void;
+	addUserAction: (user: User) => void;
 }
 
-const history = createBrowserHistory();
-class RegistrationPage extends Component<Props, State> {
-	state = {
-		needAdd: false,
-	};
-	//!!! Спросить про редирект, возможно нужен set login true!!!!
-	addUser = async (user: User): Promise<any> => {
-		await UserService.addUser(user);
-		const id = localStorage.getItem('id');
-		if (id) {
-			this.props.setLogin(true);
-			this.props.setUserId(id);
-		}
-		if (localStorage.getItem('id')) {
-			history.push(`user/${localStorage.getItem('id')}`);
-		}
-	};
+const RegistrationPage: React.FC<Props> = ({ login, id, addUserAction }) => {
+	const history = useHistory();
 
-	//TODO Added route on userpage after registration
-	addUserToggle = (): void => {
-		this.setState(({ needAdd }) => {
-			return { needAdd: !needAdd };
-		});
-	};
-	render(): JSX.Element {
-		return (
-			<Paper className={classes.RegistrationPage}>
-				<CreateUserForm
-					onUserAdded={this.addUser}
-					userAddToggle={this.addUserToggle}
-				/>
-			</Paper>
-		);
-	}
-}
+	useEffect(() => {
+		if (login && id !== '') {
+			history.push(`user/${id}`);
+		}
+	}, [login, history, id]);
+
+	return (
+		<Paper className={classes.RegistrationPage}>
+			<CreateUserForm onUserAdded={addUserAction} />
+		</Paper>
+	);
+};
 
 const mapStateToProps = (state: RootState) => ({
 	login: state.appState.login,
 	id: state.users.id,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
-	setUserId: (id: string) => dispatch(setUserIdAction(id)),
+	addUserAction: (user: User) => dispatch(addUserAction(user)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage);

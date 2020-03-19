@@ -8,7 +8,6 @@ import classes from './CreateUserForm.module.scss';
 
 interface Props {
 	onUserAdded(user: object): void;
-	userAddToggle(): void;
 }
 interface State {
 	user: User;
@@ -41,7 +40,6 @@ export class CreateUserForm extends Component<Props, State> {
 				phone: '',
 			},
 		});
-		this.props.userAddToggle();
 	};
 
 	handleInputChanges = (value: string, fieldName: string): void => {

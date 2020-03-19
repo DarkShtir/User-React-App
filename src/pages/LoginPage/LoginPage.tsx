@@ -1,56 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Dispatch, Action } from 'redux';
 import { Paper, Typography } from '@material-ui/core';
 
-import UserService from '../../services/user-service';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import { RootState } from '../../store/interfaces/RootState';
-import { setUserIdAction } from '../../store/users/users.actions';
-import { setLoginAction } from '../../store/appState/appState.actions';
+import { loginUserAction } from '../../store/users/users.actions';
 import { UserLogin } from '../../interfaces';
 
 import classes from './LoginPage.module.scss';
+import loadingEnum from '../../components/utils/loadingStateEnum';
+import Loading from '../../components/shared/Loading/Loading';
 
 interface Props {
-	setLogin: (isLogin: boolean) => void;
-	setUserId: (id: string) => void;
+	id: string;
+	statusApp: loadingEnum;
+	login: boolean;
+	loginUserAction: (loginData: UserLogin) => void;
 }
 
-const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
-	enum loadingEnum {
-		Loading,
-		Loaded,
-		Error,
-	}
-	const [loadingState, setLoading] = useState(loadingEnum.Loaded);
+const LoginPage: React.FC<Props> = ({
+	id,
+	statusApp,
+	login,
+	loginUserAction,
+}) => {
 	const history = useHistory();
 
-	const loginUser = async (loginData: UserLogin): Promise<void> => {
-		try {
-			const user = await UserService.login(loginData);
-			setLoading(loadingEnum.Loading);
-			if (!user && user === undefined) {
-				setLoading(loadingEnum.Error);
-				setLogin(false);
-				throw new Error('Пользователь на найден!!');
-			}
-			const id = localStorage.getItem('id');
-			if (id) {
-				setUserId(id);
-			}
-			setLogin(true);
-			setLoading(loadingEnum.Loaded);
-			history.push(`user/${localStorage.getItem('id')}`);
-		} catch (error) {
-			console.log(error);
-		}
+	const loginUser = (loginData: UserLogin): void => {
+		loginUserAction(loginData);
 	};
+	useEffect(() => {
+		if (login && statusApp === loadingEnum.Loaded) {
+			history.push(`user/${id}`);
+		}
+	}, [statusApp, login, history, id]);
+
 	return (
 		<Paper className={classes.LoginPage}>
 			<LoginForm onUserLogin={loginUser} />
-			{loadingState === loadingEnum.Error ? (
+			{statusApp === loadingEnum.Loading ? <Loading /> : null}
+			{statusApp === loadingEnum.Error ? (
 				<Typography
 					variant="h2"
 					align="center"
@@ -65,12 +56,13 @@ const LoginPage: React.FC<Props> = ({ setLogin, setUserId }) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-	login: state.appState.login,
 	id: state.users.id,
+	statusApp: state.appState.statusApp,
+	login: state.appState.login,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-	setLogin: (isLogin: boolean) => dispatch(setLoginAction(isLogin)),
-	setUserId: (id: string) => dispatch(setUserIdAction(id)),
+	loginUserAction: (loginData: UserLogin) =>
+		dispatch(loginUserAction(loginData)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

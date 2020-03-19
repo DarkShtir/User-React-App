@@ -18,10 +18,8 @@ import {
 //Workers
 function* workerGetUserAlbums(actions: any) {
 	try {
-		yield put(loading());
 		const newAlbums = yield albumService.getAllAlbumByUserId(actions.payload);
 		yield put(putUserAlbums(newAlbums));
-		yield put(loadingSuccessful());
 	} catch (error) {
 		yield put(loadingError());
 	}

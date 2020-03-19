@@ -1,28 +1,20 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Action, Dispatch } from 'redux';
-import Gallery from 'react-photo-gallery';
 import { RouteComponentProps } from 'react-router-dom';
 
-import Photo from '../../components/Photo/Photo';
+import AlbumContainer from '../../containers/Album/AlbumContainer';
 import PreviewsAndDownload from '../../components/PreviewsAndDownload/PreviewsAndDownload';
 import Pagination from '../../components/Pagination/Pagination';
 import { RootState } from '../../store/interfaces/RootState';
-import checkVoidObject from '../../components/utils/checkVoidObject';
-import loadingEnum from '../../components/utils/loadingStateEnum';
-import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
-import Loading from '../../components/shared/Loading/Loading';
 import {
 	getAlbumPhotos,
 	putActiveAlbum,
 } from '../../store/albums/albums.actions';
-import { Photo as PhotoInterface } from '../../interfaces';
 
 import classes from './AlbumPage.module.scss';
 
 interface Props {
-	statusApp: loadingEnum;
-	photos: [PhotoInterface];
 	activeAlbum: string;
 	guest: boolean;
 	getAlbumPhotos: (
@@ -35,17 +27,12 @@ interface Props {
 }
 
 const AlbumPage: React.FC<Props & RouteComponentProps> = ({
-	statusApp,
-	photos,
 	activeAlbum,
+	guest,
 	getAlbumPhotos,
 	putActiveAlbum,
-	guest,
 	...props
 }) => {
-	const [currentImage, setCurrentImage] = useState(0);
-	const [viewerIsOpen, setViewerIsOpen] = useState(false);
-	const [currentPhoto, setCurrentPhoto] = useState<any>();
 	const [elemPerPage, setElemPerPage] = useState(5);
 	const [page, setPage] = useState(1);
 	const [filter, setFilter] = useState(false);
@@ -69,47 +56,6 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 		elemPerPage,
 		filter,
 	]);
-
-	useEffect(() => {
-		if (!checkVoidObject(photos[0])) {
-			const newPhotos = photos.map(photo => {
-				return {
-					src: photo.src,
-					width: photo.width,
-					height: photo.height,
-				};
-			});
-			if (photos[0].totalCount) {
-				setCountOfPhotos(photos[0].totalCount[0]);
-			}
-			if (newPhotos && newPhotos.length > 0) {
-				setCurrentPhoto(newPhotos);
-			}
-		}
-	}, [photos]);
-
-	const openLightbox = useCallback((event, { photo, index }) => {
-		setCurrentImage(index);
-		setViewerIsOpen(true);
-	}, []);
-
-	const closeLightbox = (
-		event: React.MouseEvent<HTMLDivElement, MouseEvent>
-	): void => {
-		if (event.currentTarget === event.target) {
-			setCurrentImage(0);
-			setViewerIsOpen(false);
-		}
-	};
-
-	const nextImage = (): void => {
-		if (photos !== null && currentImage < photos.length - 1) {
-			const newCurrentImage = currentImage + 1;
-			setCurrentImage(newCurrentImage);
-		} else {
-			setCurrentImage(0);
-		}
-	};
 
 	const handleSelect = (event: React.ChangeEvent<{ value: number }>) => {
 		const newPage = (elemPerPage * page - elemPerPage) / event.target.value;
@@ -164,40 +110,14 @@ const AlbumPage: React.FC<Props & RouteComponentProps> = ({
 				handleSelect={handleSelect}
 				setNeedAdd={setNeedAdd}
 			/>
-			{statusApp === loadingEnum.Error ? <ErrorIndicator error={null} /> : null}
-			{statusApp === loadingEnum.Loading ? <Loading /> : null}
-			{statusApp === loadingEnum.Loaded &&
-			photos.length &&
-			currentPhoto !== undefined ? (
-				<div className={classes.gallery}>
-					<Gallery
-						photos={currentPhoto}
-						onClick={openLightbox}
-						targetRowHeight={50}
-						limitNodeSearch={3}
-					/>
-				</div>
-			) : (
-				<div className={classes.galleryMessage}>
-					<h3>Фотографий пока нету!</h3>
-				</div>
-			)}
-			{viewerIsOpen ? (
-				<div className={classes.wrapperModalWindow} onClick={closeLightbox}>
-					<div onClick={nextImage} className={classes.wrapperPhoto}>
-						<Photo src={photos[currentImage].src} alt="Album photograhpy" />
-					</div>
-				</div>
-			) : null}
+			<AlbumContainer setCountOfPhotos={setCountOfPhotos} />
 		</div>
 	);
 };
 
 const mapStateToProps = (state: RootState) => ({
-	photos: state.albums.photos,
 	activeAlbum: state.albums.activeAlbum,
 	guest: state.users.guest,
-	statusApp: state.appState.statusApp,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({

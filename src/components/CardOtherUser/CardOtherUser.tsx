@@ -35,7 +35,7 @@ const CardOtherUser: React.FC<Props> = ({
 					alt="User Avatar"
 					height="140"
 					image={`${user.avatarUrl}`}
-					title="Contemplative Reptile"
+					title={`${user.firstName} ${user.lastName}`}
 				/>
 				<CardContent className={classes.textContent}>
 					<Typography gutterBottom variant="h5" component="h2">

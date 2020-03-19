@@ -1,4 +1,4 @@
-import { User } from '../../interfaces';
+import { User, UserLogin } from '../../interfaces';
 import { Action } from '../interfaces/action.interface';
 
 export const Actions = {
@@ -7,6 +7,7 @@ export const Actions = {
 	PUT_USER: '[user] Put user in store',
 	UPDATE_USER: '[user] Update user',
 	DELETE_USER: '[user] Delete user',
+	LOGIN_USER: '[user] Login user',
 	LOGOUT_USER: '[user] Logout user',
 	SET_USER_ID: '[user] Set user Id',
 	SET_USER_AVATAR: '[user] Set user Avatar',
@@ -43,6 +44,10 @@ export const deleteUserAction = (id: string): Action<string> => ({
 });
 export const logoutUserAction = (): Action<void> => ({
 	type: Actions.LOGOUT_USER,
+});
+export const loginUserAction = (loginData: UserLogin): Action<UserLogin> => ({
+	type: Actions.LOGIN_USER,
+	payload: loginData,
 });
 export const setUserIdAction = (id: string): Action<string> => ({
 	type: Actions.SET_USER_ID,

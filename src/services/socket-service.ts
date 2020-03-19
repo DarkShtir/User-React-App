@@ -41,14 +41,5 @@ export class SocketService {
 	};
 	static removeAllListeners = () => {
 		socket.removeAllListeners();
-		// socket.emit('disconnect');
 	};
-	// static connectSocket = () => {
-	// 	socket.connect();
-	// };
-
-	// static checkConnectStatus = () => {
-	// 	const status = socket.connected;
-	// 	return status;
-	// };
 }

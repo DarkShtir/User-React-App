@@ -17,6 +17,7 @@ import classes from './Header.module.scss';
 interface Props {
 	login: boolean;
 	id: string;
+	activeAlbum: string;
 	logoutUser: () => void;
 	setUserId: (id: string) => void;
 	putActiveAlbum: (albumId: string) => void;
@@ -26,6 +27,7 @@ interface Props {
 const Header: React.FC<Props> = ({
 	login,
 	id,
+	activeAlbum,
 	logoutUser,
 	putActiveAlbum,
 }): JSX.Element => {
@@ -42,7 +44,7 @@ const Header: React.FC<Props> = ({
 			<Container
 				className={classes.menu_btn_group}
 				onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-					if (event.target !== event.currentTarget) {
+					if (event.target !== event.currentTarget && activeAlbum !== '') {
 						putActiveAlbum('');
 					}
 				}}
@@ -125,6 +127,7 @@ const Header: React.FC<Props> = ({
 const mapStateToProps = (state: RootState) => ({
 	login: state.appState.login,
 	id: state.users.id,
+	activeAlbum: state.albums.activeAlbum,
 });
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
 	logoutUser: () => dispatch(logoutUserAction()),
