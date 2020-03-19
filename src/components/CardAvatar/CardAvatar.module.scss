@@ -1,5 +1,4 @@
 .CardComponent {
-  // flex: 0.5;
   text-align: center;
   display: flex;
   align-items: center;
@@ -8,6 +7,11 @@
   height: fit-content;
   margin: 1rem 0.5rem 1rem 0;
   width: 50%;
+
+  @media screen and (max-width:500px) {
+    width: 100%;
+    margin: 0.5rem 0 0 0;
+  }
 
   .title {
     color: wheat;

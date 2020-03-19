@@ -1,51 +1,69 @@
-import React, { useState, useContext, useEffect, useCallback } from 'react';
-import classes from './AlbumsPage.module.scss';
-import albumService from '../../services/album-service';
-// import { Album } from '../../interfaces';
-
-import { isLoginContext } from '../../components/utils/state';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import { Typography, Button } from '@material-ui/core';
+
 import AlbumFolder from '../../components/AlbumFolder/AlbumFolder';
+import { RootState } from '../../store/interfaces/RootState';
+import {
+	addUserAlbum,
+	deleteUserAlbum,
+} from '../../store/albums/albums.actions';
+import { Album } from '../../interfaces';
 
-const AlbumsPage: React.FC = () => {
-	const { id } = useContext<any>(isLoginContext);
-	const [albums, setAlbums] = useState([]);
+import classes from './AlbumsPage.module.scss';
 
-	const getAlbum = useCallback(async id => {
-		try {
-			const albums = await albumService.getAllAlbumByUserId(id);
-			if (albums) {
-				setAlbums(albums);
-			}
-			console.log(albums);
-		} catch (error) {
-			throw new Error('Альбома не найдено!');
-		}
-	}, []);
+interface Props {
+	id: string;
+	albums: [Album] | null;
+	guest: boolean;
+	addUserAlbum: (ownerId: string) => void;
+	deleteUserAlbum: (albumId: string) => void;
+}
 
-	// const addAlbum = async (newAlbum: Album) => {
-	// 	await albumService.addAlbum(newAlbum);
-	// 	getAlbum(id);
-	// };
-
-	useEffect(() => {
-		getAlbum(id);
-	}, [getAlbum, id]);
-
+const AlbumsPage: React.FC<Props> = ({
+	id,
+	albums,
+	guest,
+	addUserAlbum,
+	deleteUserAlbum,
+}) => {
 	return (
 		<div className={classes.AlbumsPage}>
 			<Typography variant="h5" className={classes.typography}>
 				My albums
 			</Typography>
-			<h2>ADD input</h2>
-			<Button color="primary">ADD</Button>
-			<Button color="default">EDIT</Button>
-			<Button color="secondary">DELETE</Button>
+			{guest ? null : (
+				<>
+					<Button
+						color="primary"
+						onClick={() => {
+							addUserAlbum(id);
+						}}
+					>
+						ADD
+					</Button>
+				</>
+			)}
 
 			{albums && albums.length > 0 ? (
 				<div className={classes.albumWrapper}>
 					{albums.map((album: any, index: number) => {
-						return <AlbumFolder album={album} key={index} />;
+						return (
+							<div key={index} className={classes.wrapper}>
+								<AlbumFolder album={album} />
+								{guest ? null : (
+									<Button
+										color="secondary"
+										onClick={() => {
+											deleteUserAlbum(album._id);
+										}}
+									>
+										DELETE
+									</Button>
+								)}
+							</div>
+						);
 					})}
 				</div>
 			) : (
@@ -55,4 +73,14 @@ const AlbumsPage: React.FC = () => {
 	);
 };
 
-export default AlbumsPage;
+const mapStateToProps = (state: RootState) => ({
+	id: state.users.id,
+	albums: state.albums.albumsList,
+	guest: state.users.guest,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	addUserAlbum: (ownerId: string) => dispatch(addUserAlbum(ownerId)),
+	deleteUserAlbum: (albumId: string) => dispatch(deleteUserAlbum(albumId)),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumsPage);

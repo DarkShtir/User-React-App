@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Action, Dispatch } from 'redux';
 import {
 	Card,
 	CardActionArea,
@@ -9,15 +12,20 @@ import {
 	Typography,
 } from '@material-ui/core/';
 
-import classes from './CardOtherUser.module.scss';
 import { User } from '../../interfaces';
-import { Link } from 'react-router-dom';
+import { getDialogByMembersAction } from '../../store/dialogs/dialogs.actions';
+
+import classes from './CardOtherUser.module.scss';
 
 interface Props {
 	user: User;
+	getDialogByMembersAction: (secondId: string) => void;
 }
 
-export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
+const CardOtherUser: React.FC<Props> = ({
+	user,
+	getDialogByMembersAction,
+}): JSX.Element => {
 	return (
 		<Card className={classes.CardOtherUser}>
 			<CardActionArea>
@@ -27,7 +35,7 @@ export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
 					alt="User Avatar"
 					height="140"
 					image={`${user.avatarUrl}`}
-					title="Contemplative Reptile"
+					title={`${user.firstName} ${user.lastName}`}
 				/>
 				<CardContent className={classes.textContent}>
 					<Typography gutterBottom variant="h5" component="h2">
@@ -47,10 +55,26 @@ export const CardOtherUser: React.FC<Props> = ({ user }): JSX.Element => {
 				>
 					Enter
 				</Button>
-				<Button size="medium" color="primary">
-					Add to friends
+				<Button
+					size="medium"
+					color="primary"
+					onClick={() => {
+						if (user._id) {
+							getDialogByMembersAction(user._id);
+						}
+					}}
+					component={Link}
+					to={`/chat-room`}
+				>
+					Chatting
 				</Button>
 			</CardActions>
 		</Card>
 	);
 };
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	getDialogByMembersAction: (secondId: string) =>
+		dispatch(getDialogByMembersAction(secondId)),
+});
+export default connect(null, mapDispatchToProps)(CardOtherUser);

@@ -1,7 +1,4 @@
 import React from 'react';
-import classes from './UserList.module.scss';
-import UserListItem from './UserListItem/UserListItem';
-import { User } from '../../interfaces';
 import Button from '@material-ui/core/Button';
 import {
 	Grid,
@@ -12,6 +9,11 @@ import {
 	TableBody,
 	Typography,
 } from '@material-ui/core';
+
+import UserListItem from './UserListItem/UserListItem';
+import { User } from '../../interfaces';
+
+import classes from './UserList.module.scss';
 
 interface State {
 	users: User[];
@@ -73,7 +75,7 @@ export class UserList extends React.Component<Props, State> {
 					className={classes.button}
 					onClick={this.props.getUsersFromDB}
 				>
-					GET User
+					GET User in console
 				</Button>
 			</Grid>
 		);

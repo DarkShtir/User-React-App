@@ -1,8 +1,10 @@
 import React from 'react';
-import classes from './CreatePet.module.scss';
-import { CreatePetForm } from '../CreatePetForm/CreatePetForm';
 import CancelIcon from '@material-ui/icons/Cancel';
+
+import { CreatePetForm } from '../CreatePetForm/CreatePetForm';
 import { Pet } from '../../interfaces';
+
+import classes from './CreatePet.module.scss';
 
 interface Props {
 	setNeedAdd: (trueOrFalse: boolean) => void;

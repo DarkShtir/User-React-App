@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
 	Card,
 	CardContent,
@@ -6,14 +8,16 @@ import {
 	Button,
 	Typography,
 } from '@material-ui/core';
-import classes from './CardUser.module.scss';
+
 import { User } from '../../interfaces';
-import { isLoginContext } from '../utils/state';
-import { Link } from 'react-router-dom';
 import RenderFields from '../shared/RenderFields/RenderFields';
+import { RootState } from '../../store/interfaces/RootState';
+
+import classes from './CardUser.module.scss';
 
 interface Props {
-	user: User;
+	id: string;
+	user: User | null;
 	guest: boolean;
 }
 
@@ -25,16 +29,16 @@ const userCardForm = {
 	phone: 'Телефон',
 };
 
-const CardUser: React.FC<Props> = ({ user, guest }): JSX.Element => {
-	const { id } = useContext<any>(isLoginContext);
-
+const CardUser: React.FC<Props> = ({ user, guest, id }): JSX.Element => {
 	return (
 		<Card className={classes.CardComponent}>
 			<Typography variant="h5" className={classes.typography}>
 				About Me
 			</Typography>
 			<CardContent className={classes.content}>
-				<RenderFields cardForm={userCardForm} user={user} />
+				{user !== null ? (
+					<RenderFields cardForm={userCardForm} user={user} />
+				) : null}
 			</CardContent>
 			<CardActions className={classes.cardActions}>
 				{!guest ? (
@@ -54,4 +58,10 @@ const CardUser: React.FC<Props> = ({ user, guest }): JSX.Element => {
 	);
 };
 
-export default CardUser;
+const mapStateToProps = (state: RootState) => ({
+	id: state.users.id,
+	user: state.users.activeUser,
+	guest: state.users.guest,
+});
+
+export default connect(mapStateToProps)(CardUser);

@@ -1,18 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Typography, Container } from '@material-ui/core';
+
 import Form from '../shared/Form/Form';
 import { UserLogin } from '../../interfaces';
-import { isLoginContext } from '../utils/state';
 
 import classes from './LoginForm.module.scss';
 
 interface Props {
-	onUserLogin(user: UserLogin): void;
+	onUserLogin: (user: UserLogin) => void;
 }
 
-export const LoginForm: React.FC<Props> = props => {
-	const { setLogin } = useContext<any>(isLoginContext);
-
+const LoginForm: React.FC<Props> = ({ onUserLogin }) => {
 	const [user, setUser] = useState({
 		login: '',
 		password: '',
@@ -20,13 +18,11 @@ export const LoginForm: React.FC<Props> = props => {
 
 	const submitHandler = (event: React.FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		props.onUserLogin(user);
-		console.log(user);
+		onUserLogin(user);
 		setUser({
 			login: '',
 			password: '',
 		});
-		setLogin(true);
 	};
 
 	const handleInputChanges = (value: string, fieldName: string): void => {
@@ -55,3 +51,5 @@ export const LoginForm: React.FC<Props> = props => {
 		</Container>
 	);
 };
+
+export default LoginForm;

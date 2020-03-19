@@ -28,7 +28,10 @@ class AlbumService {
 		}
 	};
 
-	updateAlbum = async (id: string, album: Album): Promise<void | undefined> => {
+	updateAlbum = async (
+		id: string,
+		album: Album | {}
+	): Promise<void | undefined> => {
 		try {
 			const response = await axios.put(`/${id}`, album);
 			const updateAlbum = response.data.album;

@@ -1,0 +1,25 @@
+.ChatContainer {
+  height: 82vh;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
+
+  .sendForm {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+
+    .sendButton {
+      height: 100%;
+      margin: 0 1rem 0 1rem;
+      background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+    }
+
+    .messageInput {
+      width: 50%;
+      background-color: rgb(220, 245, 179);
+    }
+  }
+}

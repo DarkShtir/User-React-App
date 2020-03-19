@@ -1,0 +1,81 @@
+.PreviewsAndDownload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .controlWrapper {
+    display: flex;
+  }
+
+  .thumbsContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .thumb {
+    display: inline-flex;
+    border-radius: 2px;
+    border: 1px solid #eaeaea;
+    margin-right: 8px;
+    width: 100px;
+    height: 100px;
+    padding: 4px;
+    box-sizing: border-box;
+
+  }
+
+  .thumbInner {
+    display: flex;
+    min-width: 0px;
+    overflow: hidden;
+
+  }
+
+  .img {
+    display: block;
+    width: auto;
+    height: 100%;
+  }
+
+  .dragArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: yellowgreen;
+    width: 30rem;
+    height: 5rem;
+    background-color: rgba(149, 149, 233, 0.2);
+    border-radius: 1rem;
+    margin-top: 0;
+    font-size: 1.2rem;
+  }
+
+  .dragAreaActive {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    width: 30rem;
+    height: 5rem;
+    background-color: rgba(149, 233, 163, 0.568);
+    border-radius: 1rem;
+    margin-top: 0;
+    font-size: 1.2rem;
+    border: 2px solid yellowgreen;
+  }
+
+  .submit {
+    width: 5rem;
+    height: 5rem;
+    margin-left: 1rem;
+    background-color: rgba(149, 233, 163, 0.568)
+  }
+
+  .cancel {
+    width: 5rem;
+    height: 5rem;
+    margin-left: 1rem;
+    background-color: rgba(233, 149, 181, 0.568)
+  }
+}

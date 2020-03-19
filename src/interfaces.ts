@@ -1,5 +1,5 @@
 export interface User {
-	_id?: string | undefined;
+	_id?: string;
 	login: string;
 	password: string;
 	gender: string;
@@ -42,8 +42,34 @@ export interface Photo {
 	description?: string;
 	ownerId: string;
 	albumId: string;
-	width?: number;
-	height?: number;
+	width: number;
+	height: number;
+	createdAt?: string;
+	updatedAt?: string;
+	src: string;
+	totalCount?: [number];
+}
+
+export interface PageInfo {
+	elemPerPage: number;
+	page: number;
+	firstPage: boolean;
+	lastPage: boolean;
+	countOfPhotos: number;
+	setPage: (page: number) => void;
+	filter: boolean;
+	setFilter: (setFilter: boolean) => void;
+}
+
+export interface Message {
+	message: string;
+	name: string;
+	ownerId: string;
+	dialogId?: string;
+}
+export interface Dialog {
+	_id?: string;
+	members: User[];
 	createdAt?: string;
 	updatedAt?: string;
 }

@@ -25,15 +25,3 @@ export class PrivateRouter extends Route<ProtectedRouteProps> {
 		}
 	}
 }
-
-// const defaultProtectedRouteProps: ProtectedRouteProps = {
-// 	isAuthenticated: this.props.state.session.isAuthenticated,
-// 	authenticationPath: '/login',
-// };
-
-// <ProtectedRoute
-// 	{...defaultProtectedRouteProps}
-// 	exact={true}
-// 	path='/'
-// 	component={ProtectedContainer}
-// />

@@ -3,6 +3,7 @@ import { UserList } from '../../components/UserList/UserList';
 import { User } from '../../interfaces';
 import UserService from '../../services/user-service';
 import { Paper } from '@material-ui/core';
+import classes from './UsersListPage.module.scss';
 
 interface State {
 	newUsers: User[] | [];
@@ -13,18 +14,7 @@ interface State {
 
 export default class UsersListPage extends Component<{}, State> {
 	state = {
-		newUsers: [
-			// {
-			// 	_id: '1',
-			// 	login: 'Vas',
-			// 	password: '123456',
-			// 	firstName: 'Vasya',
-			// 	lastName: 'Petrov',
-			// 	nat: 'RU',
-			// 	gender: 'Male',
-			// 	phone: '+375 29 1234567',
-			// },
-		],
+		newUsers: [],
 		needAdd: false,
 		needEdit: false,
 		idEditUser: '0',
@@ -70,7 +60,7 @@ export default class UsersListPage extends Component<{}, State> {
 
 	render(): JSX.Element {
 		return (
-			<Paper>
+			<Paper className={classes.UsersListPage}>
 				<UserList
 					users={this.state.newUsers}
 					userAddToggle={this.addUserToggle}

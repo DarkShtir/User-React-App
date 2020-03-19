@@ -1,29 +1,54 @@
-import React, { useContext } from 'react';
-import classes from './Header.module.scss';
-import { Button, Paper, Container } from '@material-ui/core';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch, Action } from 'redux';
 import { NavLink, useHistory } from 'react-router-dom';
-import UserService from '../../../services/user-service';
-import { isLoginContext } from '../../utils/state';
+import { Button, Paper, Container } from '@material-ui/core';
 
-const Header: React.FC = (): JSX.Element => {
-	const { login, setLogin, id, setUserId, setUser } = useContext<any>(
-		isLoginContext
-	);
+import {
+	logoutUserAction,
+	setUserIdAction,
+	getLoginUser,
+} from '../../../store/users/users.actions';
+import { RootState } from '../../../store/interfaces/RootState';
+import { putActiveAlbum } from '../../../store/albums/albums.actions';
 
+import classes from './Header.module.scss';
+
+interface Props {
+	login: boolean;
+	id: string;
+	activeAlbum: string;
+	logoutUser: () => void;
+	setUserId: (id: string) => void;
+	putActiveAlbum: (albumId: string) => void;
+	getLoginUser: () => void;
+}
+
+const Header: React.FC<Props> = ({
+	login,
+	id,
+	activeAlbum,
+	logoutUser,
+	putActiveAlbum,
+}): JSX.Element => {
 	const history = useHistory();
 
 	const logout = (): void => {
-		UserService.logout();
-		setLogin(false);
-		setUser({});
-		setUserId('');
+		logoutUser();
 		history.push('/');
 	};
 
 	return (
 		<Paper className={classes.Header}>
 			<h2>CyberSELO</h2>
-			<Container className={classes.menu_btn_group}>
+			<Container
+				className={classes.menu_btn_group}
+				onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+					if (event.target !== event.currentTarget && activeAlbum !== '') {
+						putActiveAlbum('');
+					}
+				}}
+			>
 				<Button
 					exact
 					className={classes.btn}
@@ -34,21 +59,14 @@ const Header: React.FC = (): JSX.Element => {
 					Главная
 				</Button>
 				{login ? (
-					<>
-						<Button
-							className={classes.btn}
-							component={NavLink}
-							to={`/user/${id}`}
-							// activeStyle={{ color: 'yellowgreen' }}
-
-							activeClassName={classes.qwe}
-						>
-							Моя Хата
-						</Button>
-						<Button className={classes.btn} onClick={logout}>
-							Вайсци атседава
-						</Button>
-					</>
+					<Button
+						className={classes.btn}
+						component={NavLink}
+						to={`/user/${id}`}
+						activeClassName={classes.qwe}
+					>
+						Моя Хата
+					</Button>
 				) : (
 					<React.Fragment>
 						<Button
@@ -78,17 +96,44 @@ const Header: React.FC = (): JSX.Element => {
 				>
 					Местные
 				</Button>
-				<Button
-					className={classes.btn}
-					component={NavLink}
-					to="/user-list"
-					activeClassName={classes.qwe}
-				>
-					Не суйся, для бацьки!
-				</Button>
+				{login ? (
+					<>
+						<Button
+							className={classes.btn}
+							component={NavLink}
+							to="/chat-room"
+							activeClassName={classes.qwe}
+						>
+							Сельсовет
+						</Button>
+						<Button
+							className={classes.btn}
+							component={NavLink}
+							to="/user-list"
+							activeClassName={classes.qwe}
+						>
+							Не суйся, для бацьки!
+						</Button>
+						<Button className={classes.btn} onClick={logout} variant="outlined">
+							Вайсци атседава
+						</Button>
+					</>
+				) : null}
 			</Container>
 		</Paper>
 	);
 };
 
-export default Header;
+const mapStateToProps = (state: RootState) => ({
+	login: state.appState.login,
+	id: state.users.id,
+	activeAlbum: state.albums.activeAlbum,
+});
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	logoutUser: () => dispatch(logoutUserAction()),
+	setUserId: (id: string) => dispatch(setUserIdAction(id)),
+	putActiveAlbum: (albumId: string) => dispatch(putActiveAlbum(albumId)),
+	getLoginUser: () => dispatch(getLoginUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

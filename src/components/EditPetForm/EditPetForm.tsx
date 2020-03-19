@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Pet } from '../../interfaces';
-import Form from '../shared/Form/Form';
 import { Container, Typography, Button } from '@material-ui/core';
+
+import Form from '../shared/Form/Form';
+import { Pet } from '../../interfaces';
+
 import classes from './EditPetForm.module.scss';
 
 interface Props {
-	pet: Pet | undefined;
+	pet: Pet | null;
 	onPetUpdated(id: string, pet: Pet): void;
 	deletePet(petId: string): void;
 }

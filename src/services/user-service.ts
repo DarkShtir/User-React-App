@@ -1,4 +1,5 @@
 import { User } from '../interfaces';
+
 import axios from '../axios/axios-users';
 
 axios.interceptors.request.use(request => {
@@ -28,9 +29,11 @@ axios.interceptors.response.use(
 	}
 );
 class UserService {
-	getAllUsers = async (): Promise<any> => {
+	getAllUsers = async (pageNum = 1, usersPerPage = 0): Promise<any> => {
 		try {
-			const response = await axios.get('/');
+			const response = await axios.get(
+				`/?page=${pageNum}&usersPerPage=${usersPerPage}`
+			);
 			const users = response.data;
 			return users;
 		} catch (error) {
@@ -41,9 +44,11 @@ class UserService {
 
 	getUserById = async (id: string): Promise<[User] | undefined> => {
 		try {
-			const response = await axios.get(`/${id}`);
-			const user = response.data;
-			return user;
+			if (id) {
+				const response = await axios.get(`/${id}`);
+				const user = response.data;
+				return user;
+			}
 		} catch (error) {
 			console.log('Error in user-servicein method getUserById (front)');
 			throw error;
@@ -104,7 +109,6 @@ class UserService {
 	deleteUser = async (id: string): Promise<void | undefined> => {
 		try {
 			await axios.delete(`/${id}`);
-			// localStorage.removeItem('token');
 		} catch (error) {
 			console.log('Error in user-servicein method deleteUser (front)');
 			throw error;
@@ -114,7 +118,7 @@ class UserService {
 	updateUser = async (id: string, user: {}): Promise<void | undefined> => {
 		try {
 			const response = await axios.put(`/${id}`, user);
-			const updateUser = response.data.user;
+			const updateUser = response.data;
 			return updateUser;
 		} catch (error) {
 			console.log('Error in user-servicein method UpdateUser (front)');
@@ -122,7 +126,7 @@ class UserService {
 		}
 	};
 
-	setAvatar = async (id: string, avatar: any): Promise<void | undefined> => {
+	setAvatar = async (id: string, avatar: any): Promise<object | undefined> => {
 		try {
 			const fileData = new FormData();
 			fileData.append('ownerId', id);
@@ -130,8 +134,7 @@ class UserService {
 			const response = await axios.post(`../upload/`, fileData);
 			const newUserAvatar = response.data;
 			const newPathAvatar = `http://localhost:8080/static/${id}/${newUserAvatar}`;
-			console.log(newUserAvatar);
-			this.updateUser(id, { avatarUrl: newPathAvatar });
+			return { avatarUrl: newPathAvatar };
 		} catch (error) {
 			console.log('Error in user-servicein method setAvatar (front)');
 			throw error;
@@ -145,7 +148,16 @@ class UserService {
 			return pets;
 		} catch (error) {
 			console.log('Error in user-servicein method getUserPets (front)');
-			// throw error;
+		}
+	};
+
+	getAllUsersByName = async (name: string): Promise<void | undefined> => {
+		try {
+			const response = await axios.get(`/search/?name=${name}`);
+			const users = response.data;
+			return users;
+		} catch (error) {
+			console.log('Error in user-servicein method getAllUsersByName (front)');
 		}
 	};
 }

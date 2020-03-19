@@ -1,18 +1,19 @@
 .CardAlbum {
   display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 200px;
-  background-color: whitesmoke;
+  height: auto;
+  background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
 
   justify-content: center;
   align-items: center;
-  border-radius: 1rem;
+  border-radius: 5px;
   margin: 1rem 0;
 
   img {
     display: flex;
-    width: 100px;
-    height: 100px;
+    max-width: 200px;
+    margin: 1rem;
   }
 
   .typography {
@@ -20,5 +21,12 @@
     width: 100%;
     justify-content: center;
     color: black;
+  }
+
+  .albumFolders {
+    display: flex;
+    width: -webkit-fill-available;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 }

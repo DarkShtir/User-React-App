@@ -1,51 +1,74 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import { CardOtherUser } from '../../components/CardOtherUser/CardOtherUser';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import CardOtherUser from '../../components/CardOtherUser/CardOtherUser';
+import SearchPanel from '../../components/SearchPanel/SearchPanel';
+import loadingEnum from '../../components/utils/loadingStateEnum';
 import Loading from '../../components/shared/Loading/Loading';
 import { ErrorIndicator } from '../../components/shared/ErrorIndicator/ErrorIndicator';
-import UserService from '../../services/user-service';
+import { RootState } from '../../store/interfaces/RootState';
+import { User } from '../../interfaces';
 import classes from './UsersPage.module.scss';
+import { Action, Dispatch } from 'redux';
+import { loading } from '../../store/appState/appState.actions';
 
-const UsersPage = (): JSX.Element => {
-	enum loadingEnum {
-		Loading,
-		Loaded,
-		Error,
-	}
-	const [userList, setUserList] = useState([]);
-	const [loadingState, setLoading] = useState(loadingEnum.Loading);
+interface Props {
+	users: [User] | null;
+	statusApp: loadingEnum;
+	loading: () => void;
+}
 
-	const response = useCallback(async () => {
-		try {
-			const res = await UserService.getAllUsers();
-			if (!res || res === undefined || res === null) {
-				throw new Error('Не могу достучаться до сервера');
-			}
-			setUserList(res);
-			setLoading(loadingEnum.Loaded);
-		} catch (error) {
-			setLoading(loadingEnum.Error);
-			console.log(error);
-		}
-	}, [setLoading, loadingEnum.Loaded, loadingEnum.Error]);
-
+const UsersPage: React.FC<Props> = ({
+	users,
+	statusApp,
+	loading,
+}): JSX.Element => {
+	//!!Спросить про такую конструкуцию рендера, норм ли?
 	useEffect(() => {
-		response();
-	}, [response]);
-
-	switch (loadingState) {
-		case loadingEnum.Error:
-			return <ErrorIndicator error={null} />;
-		case loadingEnum.Loading:
-			return <Loading />;
-		case loadingEnum.Loaded:
+		loading();
+	}, [loading]);
+	const renderUsersCards = () => {
+		if (users !== null && users.length > 0) {
 			return (
-				<div className={classes.UsersPage}>
-					{userList.map((oneUser: any, index: number) => {
+				<div className={classes.usersCards}>
+					{users.map((oneUser: any, index: number) => {
 						return <CardOtherUser user={oneUser} key={index} />;
 					})}
 				</div>
 			);
-	}
+		} else {
+			return (
+				<h3 className={classes.notFoundMessage}>
+					Такого пользователя не найдено!
+				</h3>
+			);
+		}
+	};
+
+	return (
+		<div className={classes.UsersPage}>
+			<SearchPanel />
+
+			{(function() {
+				switch (statusApp) {
+					case loadingEnum.Error:
+						return <ErrorIndicator error={null} />;
+					case loadingEnum.Loading:
+						return <Loading />;
+					case loadingEnum.Loaded:
+						return renderUsersCards();
+				}
+			})()}
+		</div>
+	);
 };
 
-export default UsersPage;
+const mapStateToProps = (state: RootState) => ({
+	users: state.users.users,
+	statusApp: state.appState.statusApp,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
+	loading: () => dispatch(loading()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UsersPage);

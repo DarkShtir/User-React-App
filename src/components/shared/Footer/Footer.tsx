@@ -1,6 +1,6 @@
 import React from 'react';
-import classes from './Footer.module.scss';
 import { Paper, Typography } from '@material-ui/core';
+import classes from './Footer.module.scss';
 
 const Footer = (): JSX.Element => {
 	return (

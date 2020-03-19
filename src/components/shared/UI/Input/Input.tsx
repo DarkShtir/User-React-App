@@ -1,6 +1,6 @@
 import React from 'react';
-import classes from './Input.module.scss';
 import { TextField, Container } from '@material-ui/core';
+import classes from './Input.module.scss';
 
 type InputProps = {
 	type?: string,
@@ -14,7 +14,6 @@ type InputProps = {
 const Input = (props: InputProps): JSX.Element => {
 	const inputType = props.type || 'text';
 	const htmlFor = `${inputType}-${Math.random()}`;
-	// const cls = [classes.Input];
 	return (
 		<Container>
 			<TextField

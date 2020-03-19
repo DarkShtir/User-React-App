@@ -3,15 +3,20 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.15) 100%), radial-gradient(at top center, rgba(255, 255, 255, 0.40) 0%, rgba(0, 0, 0, 0.40) 120%) #989898;
-  background-blend-mode: multiply, multiply;
+  background-image: linear-gradient(-225deg, #5271C4 0%, #B19FFF 48%, #ECA1FE 100%);
   width: fit-content;
   margin: 0.5rem;
-
 
   .button {
     display: flex;
     margin: 0.1rem;
+    background-color: #F9FEA5;
+
+    color: darkblue;
+
+    &:hover {
+      background-color: rgb(247, 255, 91);
+    }
   }
 
   .content {
@@ -19,5 +24,12 @@
     flex-direction: row;
     padding: 0;
     margin: 0 auto;
+    color: black;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
   }
 }

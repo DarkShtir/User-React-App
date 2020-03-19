@@ -1,49 +1,52 @@
 import React from 'react';
-import classes from './InfoUser.module.scss';
+import { connect } from 'react-redux';
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import { Typography } from '@material-ui/core';
+
 import CardUser from '../CardUser/CardUser';
 import CardPets from '../CardPets/CardPets';
-import { Typography } from '@material-ui/core';
-import AddBoxIcon from '@material-ui/icons/AddBox';
-import { Pet, User, Album } from '../../interfaces';
 import CardAlbum from '../CardAlbum/CardAlbum';
+import { RootState } from '../../store/interfaces/RootState';
+import { Pet, User, Album } from '../../interfaces';
+
+import classes from './InfoUser.module.scss';
 
 interface Props {
-	activeUser: User;
+	user: User | null;
 	guest: boolean;
-	pets: [Pet];
+	pets: [Pet] | null;
 	login: boolean;
-	handlerEditPet: (pet: Pet) => void;
 	setNeedAdd: (trueOrFalse: boolean) => void;
-	albums: Album;
+	albums: [Album] | null;
 }
 
 const InfoUser: React.FC<Props> = ({
-	activeUser,
+	user,
 	guest,
 	pets,
 	login,
-	handlerEditPet,
 	setNeedAdd,
 	albums,
 }) => {
+	if (user === null) {
+		throw new Error();
+	}
 	return (
 		<div className={classes.InfoUser}>
-			<CardUser user={activeUser} guest={guest} />
+			<CardUser />
 			{(pets && pets.length > 0 && login) || !guest ? (
 				<div className={classes.pets}>
 					<Typography variant="h5" className={classes.typography}>
 						My pets
 					</Typography>
-					{pets.map((pet: Pet, index: number) => {
-						return (
-							<CardPets
-								pet={pet}
-								key={index}
-								guest={guest}
-								editPet={handlerEditPet}
-							/>
-						);
-					})}
+					{pets !== null && pets ? (
+						<>
+							{pets.map((pet: Pet, index: number) => {
+								return <CardPets pet={pet} key={index} guest={guest} />;
+							})}
+						</>
+					) : null}
+
 					{!guest ? (
 						<AddBoxIcon
 							fontSize="large"
@@ -55,9 +58,17 @@ const InfoUser: React.FC<Props> = ({
 					) : null}
 				</div>
 			) : null}
-			<CardAlbum albums={albums} />
+			{albums ? <CardAlbum albums={albums} /> : null}
 		</div>
 	);
 };
 
-export default InfoUser;
+const mapStateToProps = (state: RootState) => ({
+	user: state.users.activeUser,
+	guest: state.users.guest,
+	pets: state.pets.pets,
+	login: state.appState.login,
+	albums: state.albums.albumsList,
+});
+
+export default connect(mapStateToProps)(InfoUser);
