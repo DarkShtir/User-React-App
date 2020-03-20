@@ -35,12 +35,14 @@ const AlbumContainer: React.FC<Props> = ({
 					height: photo.height,
 				};
 			});
-			if (photos[0].totalCount) {
+			if (photos[0].totalCount && photos.length > 0) {
 				setCountOfPhotos(photos[0].totalCount[0]);
 			}
 			if (newPhotos && newPhotos.length > 0) {
 				setCurrentPhoto(newPhotos);
 			}
+		} else {
+			setCountOfPhotos(0);
 		}
 	}, [photos, setCountOfPhotos]);
 
